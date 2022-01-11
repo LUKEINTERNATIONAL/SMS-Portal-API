@@ -1,28 +1,9 @@
 const {User} = require('../models')
-const {Condition} = require('../models/Condition')
+const {Condition} = require('../models')
 
 module.exports = {
-  async register (req, res) {
-    try {
-      const user = await User.create(req.body)
-      const userJson = user.toJSON()
-      res.send({
-        user: userJson
-      })
-    } catch (err) {
-      res.status(400).send({
-        error: 'This email account is already in use.'
-      })
-    }
-  },
-
-  async addToConditionsTable(data) {
-    try {
-      const condition = await Condition.create(data)
-      console.log(condition)
-    } catch (err) {
-      console.log(err)
-    }
+  async prnt() {
+    await console.log("boy")
   },
 
   async post (req, res) {
@@ -52,7 +33,18 @@ module.exports = {
       if(user) {
         console.log("emr_facility_id: ", emr_facility_id)
         console.log("emr_facility_name: ", emr_facility_name)
-        console.log(payload)
+        //console.log(payload)
+        
+        for (let _condition in payload) { 
+          console.log(dt)
+          try {
+            const condition = await Condition.create({name: _condition})
+            console.log("here: ",condition)
+          } catch (err) {
+            console.log(err)
+          }
+        }
+
         const userJson = user.toJSON()
         res.send({
           user: userJson

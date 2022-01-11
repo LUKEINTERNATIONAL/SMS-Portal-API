@@ -1,7 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
     const Facility = sequelize.define('Facility', {
-        code: DataTypes.STRING,
-        name: DataTypes.STRING,
+        code: {
+            type: DataTypes.STRING,
+            unique: true
+        },
+        name: {
+            type: DataTypes.STRING,
+            unique: true
+        },
         region: DataTypes.STRING
     })
 
