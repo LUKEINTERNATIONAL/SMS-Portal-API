@@ -1,5 +1,6 @@
 const {User} = require('../models')
 const {Condition} = require('../models')
+const {Facility} = require('../models')
 
 module.exports = {
   async prnt() {
@@ -31,14 +32,15 @@ module.exports = {
       }
 
       if(user) {
-        console.log("emr_facility_id: ", emr_facility_id)
-        console.log("emr_facility_name: ", emr_facility_name)
-        //console.log(payload)
+        try {
+          await Facility.create({code: emr_facility_id, name: emr_facility_name})
+        } catch (err) {
+          console.log(err)
+        }
         
         for (let _condition in payload) { 
           try {
-            const condition = await Condition.create({name: _condition})
-            console.log("here: ",condition)
+            await Condition.create({name: _condition})
           } catch (err) {
             console.log(err)
           }
