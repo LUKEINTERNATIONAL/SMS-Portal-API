@@ -2,7 +2,7 @@
 an Express JS Api
 
 # How to seed your database (mysql)
-1. create db name `cloudstoresmw`
+1. create db name `eidsr_sms_portal`
 
 2. cd `seeders`
 
