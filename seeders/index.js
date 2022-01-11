@@ -2,14 +2,14 @@ const {
     sequelize,
     User,
     Facility,
-    Conditions,
+    Condition,
     Cases
 } = require('../src/models')
 
 const Promise = require('bluebird')
 const users = require('./Users.json')
 const facility = require('./Facility.json')
-const conditions = require('./Conditions.json')
+const condition = require('./Condition.json')
 const cases = require('./Cases.json')
 
 sequelize.sync({force: true})
@@ -27,8 +27,8 @@ sequelize.sync({force: true})
       )
 
       await Promise.all(
-        conditions.map(conditions => {
-          Conditions.create(conditions)
+        condition.map(condition => {
+          Condition.create(condition)
         })
       )
 

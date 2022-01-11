@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
-    const Conditions = sequelize.define('Conditions', {
+    const Condition = sequelize.define('Condition', {
         code: DataTypes.STRING,
         name: DataTypes.STRING
     })
 
-    return Conditions
+    return Condition
 }

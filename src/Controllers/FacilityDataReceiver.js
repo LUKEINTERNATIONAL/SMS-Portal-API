@@ -1,4 +1,5 @@
 const {User} = require('../models')
+const {Condition} = require('../models/Condition')
 
 module.exports = {
   async register (req, res) {
@@ -12,6 +13,15 @@ module.exports = {
       res.status(400).send({
         error: 'This email account is already in use.'
       })
+    }
+  },
+
+  async addToConditionsTable(data) {
+    try {
+      const condition = await Condition.create(data)
+      console.log(condition)
+    } catch (err) {
+      console.log(err)
     }
   },
 
