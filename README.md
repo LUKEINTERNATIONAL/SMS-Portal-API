@@ -1,4 +1,4 @@
-# CloudStores-BackEndSever
+# SMS-Portal-API
 an Express JS Api
 
 # How to seed your database (mysql)
