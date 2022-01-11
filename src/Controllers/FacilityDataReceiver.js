@@ -36,7 +36,6 @@ module.exports = {
         //console.log(payload)
         
         for (let _condition in payload) { 
-          console.log(dt)
           try {
             const condition = await Condition.create({name: _condition})
             console.log("here: ",condition)
