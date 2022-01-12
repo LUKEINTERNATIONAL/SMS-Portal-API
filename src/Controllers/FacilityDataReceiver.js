@@ -9,7 +9,7 @@ module.exports = {
 
   async post (req, res) {
     try {
-      const {email, password, payload, emr_facility_id, emr_facility_name} = req.body
+      const {email, password, payload, emr_facility_id, emr_facility_name, concept_name_collection} = req.body
       const user = await User.findOne({
         where: {
           email: email
@@ -32,18 +32,50 @@ module.exports = {
       }
 
       if(user) {
+        //console.log(concept_name_collection)
+
+        for(let key in concept_name_collection) {
+
+          if (concept_name_collection[key].length > 1 ) {
+            for (let id of concept_name_collection[key]) {
+              try {
+                await Condition.create({code: id, name: key})
+              } catch (err) {
+                //console.log(err)
+              }
+            }
+          } else {
+            for (let id of concept_name_collection[key]) {
+              try {
+                await Condition.create({code: id, name: key})
+              } catch (err) {
+                //console.log(err)
+              }
+            }
+          }
+
+          // if (concept_name_collection[key].length == 0) {
+          //   try {
+          //     await Condition.create({ name: key})
+          //   } catch (err) {
+          //     //console.log(err)
+          //   }
+          // }
+        }
+
+        for (let key in payload) {
+          console.log("IN for Payload: ", payload[key])
+
+          for (let age_range in payload[key]) {
+            console.log("In age range: ", age_range)
+            console.log( payload[key][age_range].length)
+          }
+        }
+
         try {
           await Facility.create({code: emr_facility_id, name: emr_facility_name})
         } catch (err) {
-          console.log(err)
-        }
-        
-        for (let _condition in payload) { 
-          try {
-            await Condition.create({name: _condition})
-          } catch (err) {
-            console.log(err)
-          }
+          //console.log(err)
         }
 
         const userJson = user.toJSON()
