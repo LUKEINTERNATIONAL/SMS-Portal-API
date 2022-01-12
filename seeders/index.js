@@ -3,14 +3,18 @@ const {
     User,
     Facility,
     Condition,
-    Cases
+    Case,
+    Respondent,
+    Message
 } = require('../src/models')
 
 const Promise = require('bluebird')
 const users = require('./Users.json')
 const facility = require('./Facility.json')
 const condition = require('./Condition.json')
-const cases = require('./Cases.json')
+const _case = require('./Case.json')
+const respondent = require('./Respondent.json')
+const messsage = require('./Message.json')
 
 sequelize.sync({force: true})
   .then ( async function() {
@@ -33,8 +37,20 @@ sequelize.sync({force: true})
       )
 
       await Promise.all(
-        cases.map(cases => {
-          Cases.create(cases)
+        _case.map(_case => {
+          Case.create(_case)
+        }) 
+      )
+
+      await Promise.all(
+        respondent.map(respondent => {
+         Respondent.create(respondent)
+        }) 
+      )
+
+      await Promise.all(
+        messsage.map(messsage => {
+         Message.create(messsage)
         }) 
       )
  

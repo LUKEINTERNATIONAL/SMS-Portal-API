@@ -1,7 +1,7 @@
 const {User} = require('../models')
 const {Condition} = require('../models')
 const {Facility} = require('../models')
-const {Cases} = require('../models')
+const {Case} = require('../models')
 
 module.exports = {
   async prnt() {
@@ -16,8 +16,6 @@ module.exports = {
           email: email
         }
       })
-
-      console.log("###############################user: ", user)
 
       if (!user) {
         return res.status(403).send({
@@ -87,7 +85,7 @@ module.exports = {
 
           if (total > 0) {
             try {
-              await Cases.create({facility_code: emr_facility_id, condition_name: ConditionName, less_five_years: lessFiveYearsCases, greater_equal_five_years: GreaterEqualFiveYearsCases})
+              await Case.create({facility_code: emr_facility_id, condition_name: ConditionName, less_five_years: lessFiveYearsCases, greater_equal_five_years: GreaterEqualFiveYearsCases})
             } catch (err) {
               //console.log(err)
             } 
