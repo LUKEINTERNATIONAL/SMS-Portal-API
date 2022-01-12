@@ -1,6 +1,6 @@
 
 module.exports = {
-    port: process.env.PORT || 8186,
+    port: process.env.PORT || 8184,
     db: {
         database: process.env.DB_NAME || 'eidsr_sms_portal',
         user: process.env.DB_USER || 'root',
