@@ -65,29 +65,33 @@ module.exports = {
         }
 
         for (let key in payload) {
-
           let lessFiveYearsCases
           let GreaterEqualFiveYearsCases
           let ConditionName = key
+          let total = 0
 
           for (let age_range in payload[key]) {
-            console.log("In age range: ", age_range)
             if (age_range == '<5yrs') {
               lessFiveYearsCases = payload[key][age_range].length
+              if (lessFiveYearsCases != 0) {
+                total++
+              }
             }
             if (age_range == '>=5yrs') {
               GreaterEqualFiveYearsCases = payload[key][age_range].length
+              if (GreaterEqualFiveYearsCases != 0) {
+                total++
+              }
             }
-            console.log("LESS #: ", lessFiveYearsCases)
-            console.log("Greater #: ", GreaterEqualFiveYearsCases)
           }
 
-          try {
-            await Cases.create({facility_code: emr_facility_id, condition_name: ConditionName, less_five_years: lessFiveYearsCases, greater_equal_five_years: GreaterEqualFiveYearsCases})
-          } catch (err) {
-            //console.log(err)
+          if (total > 0) {
+            try {
+              await Cases.create({facility_code: emr_facility_id, condition_name: ConditionName, less_five_years: lessFiveYearsCases, greater_equal_five_years: GreaterEqualFiveYearsCases})
+            } catch (err) {
+              //console.log(err)
+            } 
           }
-          
         }
 
         try {
