@@ -1,4 +1,4 @@
-const {Message} = require('../models')
+const {Respondent} = require('../models')
 const { Op } = require("sequelize")
 
 module.exports = {
@@ -9,47 +9,47 @@ module.exports = {
                 UserId: userId
             }
 
-            const messages = await Message.findAll()
-            res.send(messages)
+            const respondents = await Respondent.findAll()
+            res.send(respondents)
         } catch(err) {
             res.status(500).send({
-                error: 'An error has occured trying to retrive a message'
+                error: 'An error has occured trying to retrive a respondent'
             })
         }
     },
 
     async post(req, res) {
         try {
-            const message = await Message.create(req.body)
-            res.send(message)
+            const respondent = await Respondent.create(req.body)
+            res.send(respondent)
         } catch (err) {
             res.status(500).send({
-                error: 'An error has occured tryn to create a message'
+                error: 'An error has occured tryn to create a respondent'
             })
         }
     },
 
     async show (req, res) {
         try {
-            const message = await Message.findByPk(req.params.messageId)
-            res.send(message)
+            const respondent = await Respondent.findByPk(req.params.respondentId)
+            res.send(respondent)
         } catch(error) {
             res.status(500).send({
-                error: 'An error has occured tryn to retrive a message'
+                error: 'An error has occured tryn to retrive a respondent'
             })
         }
     },
 
     async put (req, res) {
         try {
-            await Message.update(req.body, {
+            await Respondent.update(req.body, {
                 where: {
-                    id: req.params.messageId
+                    id: req.params.respondentId
                 }
             })
         } catch(err) {
             res.status(500).send({
-                error: 'An error has occured tryn to update the message'
+                error: 'An error has occured tryn to update the respondent'
             })
         }
     }

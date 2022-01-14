@@ -2,6 +2,7 @@ const AuthenticationController = require('../src/Controllers/AuthenticationContr
 const AuthenticationControllerPolicy = require('../src/policies/AuthenticationControllerPolicy')
 const FacilityDataReceiver = require("../src/Controllers/FacilityDataReceiver")
 const MessageController = require("../src/Controllers/MessageController")
+const RespondentController = require("../src/Controllers/RespondentController")
 
 
 module.exports = (app) => {
@@ -20,7 +21,16 @@ module.exports = (app) => {
     MessageController.post)
   app.get('/messages/:messageId',
     MessageController.show),
-  app.put('/,message/:messageId',
+  app.put('/message/:messageId',
+    MessageController.put)
+
+  app.get('/respondents',
+    MessageController.index)
+  app.post('/respondent',
+    MessageController.post)
+  app.get('/respondents/:respondentId',
+    MessageController.show),
+  app.put('/respondent/:respondentId',
     MessageController.put)
 
 }
