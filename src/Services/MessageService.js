@@ -6,7 +6,7 @@ const https = require('http')
 let cases
 let respondents
 
-async function getConditions() {
+async function getCases() {
     cases = await Case.findAll()
     
     if (cases) { 
@@ -94,4 +94,4 @@ function sendMessage(data) {
       req.end()
 }
 
- getConditions()
+ getCases()
