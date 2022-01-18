@@ -41,14 +41,28 @@ module.exports = {
 
     async put (req, res) {
         try {
-            await Respondent.update(req.body, {
+            const respondent = await Respondent.update(req.body, {
                 where: {
                     id: req.params.respondentId
                 }
             })
+            res.send(respondent)
         } catch(err) {
             res.status(500).send({
                 error: 'An error has occured tryn to update the respondent'
+            })
+        }
+    },
+
+    async delete(req, res) {
+        try {
+           const {respondentId} = req.params
+           const respondent = await Respondent.findByPk(respondentId)
+           await respondent.destroy()
+           res.send(respondent)
+        } catch(err) {
+            res.status(500).send({
+                error: 'An error has occured trying to delete a respondent'
             })
         }
     }

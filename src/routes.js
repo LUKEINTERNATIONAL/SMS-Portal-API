@@ -32,5 +32,7 @@ module.exports = (app) => {
     RespondentController.show),
   app.put('/respondent/:respondentId',
     RespondentController.put)
+  app.delete('/respondent/:respondentId',
+    RespondentController.delete)
 
 }

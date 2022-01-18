@@ -2,6 +2,7 @@ const {Respondent} = require('../models')
 const {Message} = require('../models')
 const {Case} = require('../models')
 const https = require('http')
+const controller = new AbortController()
 
 let cases
 let respondents
@@ -65,11 +66,13 @@ async function SaveMessage(respondent_,messsage_body) {
 }
 
 function sendMessage(data) {
+
+    let timeout = null
+    let max = null
       
       const options = {
         hostname: '192.168.11.45',
         port: 3003,
-        path: '/todos',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -79,7 +82,9 @@ function sendMessage(data) {
       
       const req = https.request(options, res => {
         console.log(`statusCode: ${res.statusCode}`)
-      
+
+
+      setTimeout( () => controller.abort(), 500)
         res.on('data', d => {
           process.stdout.write(d)
         })
