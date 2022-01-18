@@ -1,5 +1,4 @@
 const {Respondent} = require('../models')
-const { Op } = require("sequelize")
 
 module.exports = {
     async index(req, res) {

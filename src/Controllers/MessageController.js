@@ -19,6 +19,7 @@ module.exports = {
     },
 
     async post(req, res) {
+        console.log("body",req.body)
         try {
             const message = await Message.create(req.body)
             res.send(message)
@@ -41,12 +42,18 @@ module.exports = {
     },
 
     async put (req, res) {
+        console.log("hahahaha")
+        console.log(req.body)
+        console.log(req.params)
+  
+
         try {
-            await Message.update(req.body, {
+            const message = await Message.update(req.body, {
                 where: {
                     id: req.params.messageId
                 }
             })
+            res.send(message)
         } catch(err) {
             res.status(500).send({
                 error: 'An error has occured tryn to update the message'

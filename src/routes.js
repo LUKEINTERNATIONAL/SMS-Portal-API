@@ -25,12 +25,12 @@ module.exports = (app) => {
     MessageController.put)
 
   app.get('/respondents',
-    MessageController.index)
+    RespondentController.index)
   app.post('/respondent',
-    MessageController.post)
+    RespondentController.post)
   app.get('/respondents/:respondentId',
-    MessageController.show),
+    RespondentController.show),
   app.put('/respondent/:respondentId',
-    MessageController.put)
+    RespondentController.put)
 
 }
