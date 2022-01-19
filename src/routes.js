@@ -3,6 +3,7 @@ const AuthenticationControllerPolicy = require('../src/policies/AuthenticationCo
 const FacilityDataReceiver = require("../src/Controllers/FacilityDataReceiver")
 const MessageController = require("../src/Controllers/MessageController")
 const RespondentController = require("../src/Controllers/RespondentController")
+const CaseController = require("../src/Controllers/CaseController")
 
 
 module.exports = (app) => {
@@ -34,5 +35,12 @@ module.exports = (app) => {
     RespondentController.put)
   app.delete('/respondent/:respondentId',
     RespondentController.delete)
+
+  app.get('/cases',
+    CaseController.index)
+  app.post('/case',
+    CaseController.post)
+  app.get('/cases/:caseId',
+    CaseController.show)
 
 }
