@@ -43,12 +43,12 @@ module.exports = {
 
     async put (req, res) {
         console.log("hahahaha")
-        console.log(req.body)
-        console.log(req.params)
+        // console.log(req.body)
+        // console.log(req.params)
   
 
         try {
-            const message = await Message.update(req.body, {
+            const message = await Message.update({ status:req.params.status }, {
                 where: {
                     id: req.params.messageId
                 }

@@ -1,11 +1,13 @@
 const {Respondent} = require('../models')
 const {Message} = require('../models')
 const {Case} = require('../models')
-const https = require('http')
-const controller = new AbortController()
+const  request = require ('http');
 
 let cases
 let respondents
+var collection = []
+let collectionTracker = 0
+let caseTracker = 0
 
 async function getCases() {
     cases = await Case.findAll()
@@ -27,6 +29,7 @@ async function getRespondents() {
 
                 if (respond_.facility_code == case_.facility_code) {
                     SaveMessage(respond_, case_.condition_name)
+                    caseTracker = caseTracker + 1
                 }
             }
         }
@@ -40,63 +43,46 @@ async function SaveMessage(respondent_,messsage_body) {
     })
 
     if (message) {
-        console.log(message.dataValues)
         let msg_id = message.dataValues.id
         let phone = respondent_.phone_pri
         let msg = message.body
-
-        console.log(msg_id)
-        console.log(phone)
-        console.log(msg)
         
-        let payload = [
-            {
-                message: msg,
-                phone: phone,
-                message_id: msg_id
+        let payload = {
+              message: msg,
+              phone: phone,
+              message_id: msg_id
             }
-        ]
+        
+        collection.push(payload)
 
+        collectionTracker = collectionTracker + 1
 
-
-        console.log(payload)
-
-        sendMessage(JSON.stringify(payload))
+        if (caseTracker == collectionTracker) {
+          sendToPhone(JSON.stringify(collection)) 
+        }
     }
 }
 
-function sendMessage(data) {
 
-    let timeout = null
-    let max = null
-      
-      const options = {
-        hostname: '192.168.11.45',
-        port: 3003,
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Content-Length': data.length
-        }
+function sendToPhone(data) {
+  const req = request.request(
+    {
+      host: '192.168.11.21',
+      port: '3003',
+      path: '/',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
       }
-      
-      const req = https.request(options, res => {
-        console.log(`statusCode: ${res.statusCode}`)
-
-
-      setTimeout( () => controller.abort(), 500)
-        res.on('data', d => {
-          process.stdout.write(d)
-        })
-      })
-      
-      req.on('error', error => {
-          console.log("ine error mode")
-        console.error(error)
-      })
-      
-      req.write(data)
-      req.end()
+    },
+    response => {
+      console.log(response.statusCode); // 200
+    }
+  );
+   
+  req.write(data)
+   
+  req.end();
 }
 
  getCases()

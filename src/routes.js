@@ -22,7 +22,7 @@ module.exports = (app) => {
     MessageController.post)
   app.get('/messages/:messageId',
     MessageController.show),
-  app.put('/message/:messageId',
+  app.put('/message/:messageId/:status',
     MessageController.put)
 
   app.get('/respondents',
