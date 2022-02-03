@@ -42,11 +42,6 @@ module.exports = {
     },
 
     async put (req, res) {
-        console.log("hahahaha")
-        // console.log(req.body)
-        // console.log(req.params)
-  
-
         try {
             const message = await Message.update({ status:req.params.status }, {
                 where: {
@@ -57,6 +52,19 @@ module.exports = {
         } catch(err) {
             res.status(500).send({
                 error: 'An error has occured tryn to update the message'
+            })
+        }
+    },
+
+    async delete(req, res) {
+        try {
+           const {messageId} = req.params
+           const message = await Message.findByPk(messageId)
+           await message.destroy()
+           res.send(message)
+        } catch(err) {
+            res.status(500).send({
+                error: 'An error has occured trying to delete a message'
             })
         }
     }

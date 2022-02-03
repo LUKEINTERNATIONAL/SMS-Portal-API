@@ -24,6 +24,8 @@ module.exports = (app) => {
     MessageController.show),
   app.put('/message/:messageId/:status',
     MessageController.put)
+  app.delete('/message/:messageId',
+   MessageController.delete)
 
   app.get('/respondents',
     RespondentController.index)
