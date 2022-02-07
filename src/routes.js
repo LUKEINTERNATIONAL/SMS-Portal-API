@@ -4,6 +4,7 @@ const FacilityDataReceiver = require("../src/Controllers/FacilityDataReceiver")
 const MessageController = require("../src/Controllers/MessageController")
 const RespondentController = require("../src/Controllers/RespondentController")
 const CaseController = require("../src/Controllers/CaseController")
+const UserController = require("../src/Controllers/UserController")
 
 
 module.exports = (app) => {
@@ -44,5 +45,16 @@ module.exports = (app) => {
     CaseController.post)
   app.get('/cases/:caseId',
     CaseController.show)
+
+  app.get('/users',
+    UserController.index)
+  app.post('/user',
+    UserController.post)
+  app.get('/users/:userId',
+    UserController.show),
+  app.put('/user/:userId',
+    UserController.put)
+  app.delete('/user/:userId',
+    UserController.delete)
 
 }
