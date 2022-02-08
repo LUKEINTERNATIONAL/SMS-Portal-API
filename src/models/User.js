@@ -1,8 +1,7 @@
 const bcrypt = require('bcryptjs')
+const SALT_FACTOR = 8
 
 function hashPassword (user, options) {
-  const SALT_FACTOR = 8
-
   if (!user.changed('password')) {
     return
   }
@@ -37,6 +36,12 @@ module.exports = (sequelize, DataTypes) => {
     console.log(password)
     console.log(this.password)
     return bcrypt.compareSync(password, this.password)
+  }
+
+  User.prototype.updatePassword = function (password) {
+    const salt = bcrypt.genSaltSync(SALT_FACTOR)
+    const hash = bcrypt.hashSync(password, salt)
+    return hash
   }
 
 //   User.associate = function (models) {

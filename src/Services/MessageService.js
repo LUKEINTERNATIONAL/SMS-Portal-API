@@ -28,7 +28,8 @@ async function getRespondents() {
                 const case_ = cases[_case].dataValues
 
                 if (respond_.facility_code == case_.facility_code) {
-                    SaveMessage(respond_, case_.condition_name)
+                    var str = "Thare are "+case_.less_five_years+" "+case_.condition_name+" cases at Facilicty code: "+ case_.facility_code 
+                    SaveMessage(respond_, str)
                     caseTracker = caseTracker + 1
                 }
             }
@@ -67,7 +68,7 @@ async function SaveMessage(respondent_,messsage_body) {
 function sendToPhone(data) {
   const req = request.request(
     {
-      host: '192.168.11.21',
+      host: '192.168.11.12',
       port: '3003',
       path: '/',
       method: 'POST',

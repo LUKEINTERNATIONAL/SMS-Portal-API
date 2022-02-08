@@ -40,10 +40,24 @@ module.exports = {
     },
 
     async put (req, res) {
-        try {
-            const user = await User.update(req.body, {
+        let dataObject = req.body
+        let { password } = req.body
+
+        if (password) {
+            const user = await User.findOne({
                 where: {
-                    id: req.params.respondentId
+                    id: req.params.userId
+                }
+              })
+            
+            password = await user.updatePassword(password)
+            dataObject = { password: password }
+        }
+        
+        try {
+            const user = await User.update(dataObject, {
+                where: {
+                    id: req.params.userId
                 }
             })
             res.send(user)
@@ -56,8 +70,8 @@ module.exports = {
 
     async delete(req, res) {
         try {
-           const {respondentId} = req.params
-           const user = await User.findByPk(respondentId)
+           const {userId} = req.params
+           const user = await User.findByPk(userId)
            await user.destroy()
            res.send(user)
         } catch(err) {
