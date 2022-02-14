@@ -37,7 +37,7 @@ module.exports = {
 
       if (!user) {
         return res.status(403).send({
-          error: 'The login information was incorrect email'
+          error: 'The provided email does not exist in the database'
         })
       }
 
