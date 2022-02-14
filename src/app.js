@@ -4,6 +4,8 @@ const cors = require('cors')
 const morgan = require('morgan');
 const {sequelize} = require('../src/models')
 const config = require('../src/config/config')
+var cron = require('node-cron');
+const MessageService = require('../src/Services/MessageService') 
 
 const app = express()
 
@@ -24,3 +26,10 @@ sequelize.sync({})
     app.listen(process.env.PORT || 8186)
     console.log(`Server started on port ${config.port}`)
   })
+
+  // '*/10 * * * * *'
+
+  cron.schedule('* * * * *', () => {
+    console.log('running a task every minute');
+    MessageService.getCases()
+  });

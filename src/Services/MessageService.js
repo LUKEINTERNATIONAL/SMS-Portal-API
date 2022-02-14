@@ -10,7 +10,11 @@ let collectionTracker = 0
 let caseTracker = 0
 
 async function getCases() {
-    cases = await Case.findAll()
+    cases = await Case.findAll({
+      where: {
+        message_generated: 0
+      }
+    })
     
     if (cases) { 
         getRespondents()
@@ -30,11 +34,20 @@ async function getRespondents() {
                 if (respond_.facility_code == case_.facility_code) {
                     var str = "Thare are "+case_.less_five_years+" "+case_.condition_name+" cases at Facilicty code: "+ case_.facility_code 
                     SaveMessage(respond_, str)
+                    changeCaseStatus(case_.id)
                     caseTracker = caseTracker + 1
                 }
             }
         }
     }
+}
+
+async function changeCaseStatus(caseId) {
+  await Case.update({message_generated: 1}, {
+    where: {
+      id: caseId
+    }
+  })
 }
 
 async function SaveMessage(respondent_,messsage_body) {
@@ -79,11 +92,16 @@ function sendToPhone(data) {
     response => {
       console.log(response.statusCode); // 200
     }
+    
   );
+
+  req.on('error', (e) => {
+    console.error(`problem with request: ${e.message}`);
+  });
    
   req.write(data)
    
   req.end();
 }
 
- getCases()
+ module.exports = { getCases } 

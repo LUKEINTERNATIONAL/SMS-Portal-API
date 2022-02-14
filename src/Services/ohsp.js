@@ -1,4 +1,3 @@
-const { response } = require('express');
 const  request = require ('https');
 
 let data = {"user": ""}
@@ -29,17 +28,16 @@ function send(data) {
           var str = "";
           console.log("######", response.body)
         console.log(response.statusCode); // 200
+
         response.on('data', (d) => {
-          str+=d;
-       }).on('end',()=>{
-          console.log(str);
-       });
+            str+=d;
+        }).on('end',()=>{
+             console.log(str);
+        });
       }
     );
      
     req.write(data)
-
-    console.log("DATA", req.data)
      
     req.end();
   }
