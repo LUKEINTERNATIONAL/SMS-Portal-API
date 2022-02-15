@@ -53,35 +53,55 @@ async function changeCaseStatus(caseId) {
 async function SaveMessage(respondent_,messsage_body) {
     const message = await Message.create({
         respondent_id: respondent_.id,
-        body: messsage_body
+        body: messsage_body,
+        status: 'pending'
     })
 
     if (message) {
-        let msg_id = message.dataValues.id
-        let phone = respondent_.phone_pri
-        let msg = message.body
-        
-        let payload = {
-              message: msg,
-              phone: phone,
-              message_id: msg_id
-            }
-        
-        collection.push(payload)
-
-        collectionTracker = collectionTracker + 1
-
-        if (caseTracker == collectionTracker) {
-          sendToPhone(JSON.stringify(collection)) 
+      let payload = {
+          message: message.body,
+          phone: respondent_.phone_pri,
+          message_id: message.dataValues.id
         }
+      
+      collection.push(payload)
+
+      collectionTracker = collectionTracker + 1
+
+      if (caseTracker == collectionTracker) {
+        sendToPhone(JSON.stringify(collection)) 
+      }
     }
 }
 
+async function resendMessage(messages) {
+  for (let message of messages) {
+    let payload = {
+      message: message.dataValues.body,
+      phone: (await findRespondent(message.dataValues.respondent_id)).phone_pri,
+      message_id: message.dataValues.id
+    }
+
+    collection.push(payload)
+  }
+
+  sendToPhone(JSON.stringify(collection))
+}
+
+async function findRespondent(respondentId) {
+  const respondent = await Respondent.findOne({
+    where: {
+      id: respondentId
+    }
+  })
+
+  return respondent.dataValues
+}
 
 function sendToPhone(data) {
   const req = request.request(
     {
-      host: '192.168.11.12',
+      host: '192.168.1.116',
       port: '3003',
       path: '/',
       method: 'POST',
@@ -104,4 +124,4 @@ function sendToPhone(data) {
   req.end();
 }
 
- module.exports = { getCases } 
+ module.exports = { getCases, resendMessage } 

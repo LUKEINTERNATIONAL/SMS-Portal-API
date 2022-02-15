@@ -29,7 +29,7 @@ sequelize.sync({})
 
   // '*/10 * * * * *'
 
-  cron.schedule('* * * * *', () => {
-    console.log('running a task every minute');
-    MessageService.getCases()
-  });
+  // cron.schedule('*/10 * * * * *', () => {
+  //   console.log('running a task every minute');
+  //   //MessageService.getCases()
+  // });
