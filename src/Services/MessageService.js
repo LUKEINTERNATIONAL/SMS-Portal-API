@@ -25,20 +25,21 @@ async function getRespondents() {
     respondents = await Respondent.findAll()
 
     if (respondents) {
-        for(let respondent in respondents) {
-            const respond_ = respondents[respondent].dataValues
+      for(let respondent in respondents) {
+          const respond_ = respondents[respondent].dataValues
 
-            for(let _case in cases) {
-                const case_ = cases[_case].dataValues
+          for(let _case in cases) {
+              const case_ = cases[_case].dataValues
 
-                if (respond_.facility_code == case_.facility_code) {
-                    var str = "Thare are "+case_.less_five_years+" "+case_.condition_name+" cases at Facilicty code: "+ case_.facility_code 
-                    SaveMessage(respond_, str)
-                    changeCaseStatus(case_.id)
-                    caseTracker = caseTracker + 1
-                }
-            }
-        }
+              if (respond_.facility_code == case_.facility_code) {
+                  var messageBody = "There are " +case_.less_five_years+ " " +case_.condition_name+ " case(s) for UNDER FIVE And " +case_.greater_equal_five_years+
+                  " " +case_.condition_name+ " case(s) for ABOVE FIVE at Facility Code: " +case_.facility_code
+                  SaveMessage(respond_, messageBody)
+                  changeCaseStatus(case_.id)
+                  caseTracker = caseTracker + 1
+              }
+          }
+      }
     }
 }
 
