@@ -21,12 +21,18 @@ function pullData() {
             response.on('data', (d) => {
                 str+=d;
             }).on('end',()=>{
-                console.log(str);
+                //console.log(JSON.parse(str))
+                return JSON.parse(str)
             });
         }
     )
+
+    req.on('error', (e) => {
+        console.error(`problem with request: ${e.message}`)
+        return 0
+      });
      
     req.end();
 }
 
-pullData()
+module.exports = { pullData }
