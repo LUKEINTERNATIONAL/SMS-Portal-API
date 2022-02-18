@@ -3,6 +3,7 @@ const fs = require('fs')
 const results = []
 const Weekly = []
 const  https = require ('https')
+const SaveCase = require('../Services/SaveCase')
 
 /* reading Health Facilities.csv */
 fs.createReadStream('../IDSRMetadata/Health Facilities.csv')
@@ -69,7 +70,13 @@ function mapCase(type, dataValues) {
       return el.value > 0
     })
 
+    let caseName
+    let lessFiveYears
+    let greaterEqualFiveYears
+
     for (let condition of filteredObj) {
+     
+
       let dataElement = condition.dataElement
       let categoryOptionCombo = condition.categoryOptionCombo
       let attributeOptionCombo = condition.attributeOptionCombo
@@ -84,21 +91,32 @@ function mapCase(type, dataValues) {
 
         if (DataElementUID == dataElement) {
           console.log(DataElementName)
+          caseName = DataElementName
 
           if (OptionLessFive == categoryOptionCombo) {
             console.log("Less than five years <")
             console.log(condition.value)
+            lessFiveYears = condition.value
           }
           if (OptionGreaterEqualFive == categoryOptionCombo) {
             console.log("Greater than five years >")
             console.log(condition.value)
+            greaterEqualFiveYears = condition.value
           }
         } 
           
-
-
-
       }
+
+
     }
+
+    let dataObj = {
+      facility_code: '272',
+      condition_name: caseName,
+      less_five_years: lessFiveYears,
+      greater_equal_five_years: greaterEqualFiveYears
+    }
+
+    SaveCase.store(dataObj)
   })
 }
