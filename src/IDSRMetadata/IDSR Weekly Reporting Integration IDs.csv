@@ -1,4 +1,4 @@
-Data Set ID,Data Element Name,Data Element UID,Option <5 Yrs,Option >=5Yrs
+DataSetID,DataElementName,DataElementUID,OptionLessFive,OptionGreaterEqualFive
 waoQ016uOz1,Human influenza due to new sub-type,r1AT49VBKqg,FPN4D0s6K3m,zE8k2BtValu
 waoQ016uOz1,AEFI,Y1WAaHi5AAy,FPN4D0s6K3m,zE8k2BtValu
 waoQ016uOz1,Yellow Fever,iD01AZLACNO,FPN4D0s6K3m,zE8k2BtValu
