@@ -64,30 +64,35 @@ function mapCase(type, dataValues) {
     Weekly.push(data)
   })
   .on('end', () => {
-      console.log(Weekly)
       for (let case_ of Weekly) {
         let DataSetID = case_.DataSetID
         let DataElementName = case_.DataElementName
         let DataElementUID = case_.DataElementUID
         let OptionLessFive = case_.OptionLessFive
         let OptionGreaterEqualFive = case_.OptionGreaterEqualFive
+        let count = 1
 
         for (let condition of dataValues) {
+          count++
 
-          if (DataElementUID == condition.dataElement) {
-            console.log(DataElementName)
-          } 
-            
-          
-          if (OptionLessFive == condition.categoryOptionCombo) {
-            console.log("here")
-          }
+          if (condition.value > 0) {
+            if (DataElementUID == condition.dataElement) {
+              console.log(DataElementName)
 
-          if (OptionGreaterEqualFive == condition.attributeOptionCombo) {
-            console.log("ereh")
-          }
+            } 
               
             
+            if (OptionLessFive == condition.categoryOptionCombo) {
+              console.log("Less than five years <")
+              console.log(condition.value)
+            }
+
+            if (OptionGreaterEqualFive == condition.categoryOptionCombo) {
+              console.log("Greater than five years >")
+              console.log(condition.value)
+            }
+          }
+               
         }
       }
   })
