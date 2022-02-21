@@ -24,7 +24,7 @@ async function map(csv_Obj) {
   const req = https.request(
     {
       host: 'covmw.com',
-      path: '/ohspdev/api/dataValueSets.json?dataSet=waoQ016uOz1&period=2022W6&orgUnit=XcRAuC6ZPi0',
+      path: '/ohspdev/api/dataValueSets.json?dataSet=waoQ016uOz1&period=2022W7&orgUnit=XcRAuC6ZPi0',
       method: 'GET',
       headers: {
           'Content-Type': 'application/json',
@@ -75,8 +75,6 @@ function mapCase(type, dataValues) {
     let greaterEqualFiveYears
 
     for (let condition of filteredObj) {
-     
-
       let dataElement = condition.dataElement
       let categoryOptionCombo = condition.categoryOptionCombo
       let attributeOptionCombo = condition.attributeOptionCombo
@@ -99,24 +97,22 @@ function mapCase(type, dataValues) {
             lessFiveYears = condition.value
           }
           if (OptionGreaterEqualFive == categoryOptionCombo) {
-            console.log("Greater than five years >")
+            console.log("Greater and Equal to five years >")
             console.log(condition.value)
             greaterEqualFiveYears = condition.value
+
+            //last in iteration
+            let dataObj = {
+              facility_code: '272',
+              condition_name: caseName,
+              less_five_years: lessFiveYears,
+              greater_equal_five_years: greaterEqualFiveYears
+            }
+        
+            SaveCase.store(dataObj)
           }
-        } 
-          
+        }    
       }
-
-
     }
-
-    let dataObj = {
-      facility_code: '272',
-      condition_name: caseName,
-      less_five_years: lessFiveYears,
-      greater_equal_five_years: greaterEqualFiveYears
-    }
-
-    SaveCase.store(dataObj)
   })
 }
