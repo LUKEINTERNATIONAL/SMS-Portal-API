@@ -17,30 +17,40 @@ async function getCases() {
     })
     
     if (cases) { 
-        getRespondents()
+      CasesToMessages(cases)
     }
 }
 
-async function getRespondents() {
-    respondents = await Respondent.findAll()
+// async function getRespondents() {
+//     respondents = await Respondent.findAll()
 
-    if (respondents) {
-      for(let respondent in respondents) {
-          const respond_ = respondents[respondent].dataValues
+//     if (respondents) {
+//       for(let respondent in respondents) {
+//           const respond_ = respondents[respondent].dataValues
 
-          for(let _case in cases) {
-              const case_ = cases[_case].dataValues
+//           for(let _case in cases) {
+//               const case_ = cases[_case].dataValues
 
-              if (respond_.facility_code == case_.facility_code) {
-                  var messageBody = "There are " +case_.less_five_years+ " " +case_.condition_name+ " case(s) for UNDER FIVE And " +case_.greater_equal_five_years+
-                  " " +case_.condition_name+ " case(s) for ABOVE FIVE at Facility Code: " +case_.facility_code
-                  SaveMessage(respond_, messageBody)
-                  changeCaseStatus(case_.id)
-                  caseTracker = caseTracker + 1
-              }
-          }
-      }
-    }
+//               if (respond_.facility_code == case_.facility_code) {
+//                   var messageBody = "There are " +case_.less_five_years+ " " +case_.condition_name+ " case(s) for under five And " +case_.greater_equal_five_years+
+//                   " " +case_.condition_name+ " case(s) for above five at Facility Code: " +case_.facility_code
+//                   SaveMessage(respond_, messageBody)
+//                   changeCaseStatus(case_.id)
+//                   caseTracker = caseTracker + 1
+//               }
+//           }
+//       }
+//     }
+// }
+
+function CasesToMessages(cases) {
+  for(let _case in cases) {
+    const case_ = cases[_case].dataValues
+    var messageBody = "There are " +case_.less_five_years+ " " +case_.condition_name+ " case(s) for under five And " +case_.greater_equal_five_years+
+    " " +case_.condition_name+ " case(s) for above five at Facility Code: " +case_.facility_code
+    SaveMessage(messageBody)
+    changeCaseStatus(case_.id)
+  }
 }
 
 async function changeCaseStatus(caseId) {
@@ -51,28 +61,34 @@ async function changeCaseStatus(caseId) {
   })
 }
 
-async function SaveMessage(respondent_,messsage_body) {
-    const message = await Message.create({
-        respondent_id: respondent_.id,
-        body: messsage_body,
-        status: 'pending'
+async function SaveMessage(messsage_body) {
+    await Message.create({
+      respondent_id: 0,
+      body: messsage_body,
+      status: 'pending'
     })
+}
 
-    if (message) {
-      let payload = {
-          message: message.body,
-          phone: respondent_.phone_pri,
+async function ToAllRespondents(messages) {
+  respondents = await Respondent.findAll()
+
+  if (respondents) {
+    for(let respondent in respondents) {
+      const respond_ = respondents[respondent].dataValues
+
+      for (let message of messages) {
+        let payload = {
+          message: message.dataValues.body,
+          phone: respond_.phone_pri,
           message_id: message.dataValues.id
         }
-      
-      collection.push(payload)
-
-      collectionTracker = collectionTracker + 1
-
-      if (caseTracker == collectionTracker) {
-        sendToPhone(JSON.stringify(collection)) 
+    
+        collection.push(payload)  
       }
     }
+    console.log("size of collection: ", collection.length)
+    sendToPhone(JSON.stringify(collection)) 
+  }
 }
 
 async function resendMessage(messages) {
@@ -102,7 +118,7 @@ async function findRespondent(respondentId) {
 function sendToPhone(data) {
   const req = request.request(
     {
-      host: '192.168.1.116',
+      host: '192.168.11.30',
       port: '3003',
       path: '/',
       method: 'POST',
@@ -125,4 +141,6 @@ function sendToPhone(data) {
   req.end();
 }
 
- module.exports = { getCases, resendMessage } 
+ module.exports = { getCases, resendMessage, ToAllRespondents} 
+
+ getCases()

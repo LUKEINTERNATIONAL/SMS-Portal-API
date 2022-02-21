@@ -9,9 +9,11 @@ async function findMessages() {
     })
 
     if (messages) {
-      MessageService.resendMessage(messages)
+      MessageService.ToAllRespondents(messages)
     }
 
     }
+
+module.exports = { findMessages }
 
 findMessages()
