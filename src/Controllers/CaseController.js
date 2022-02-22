@@ -1,5 +1,5 @@
 const {Case} = require('../models')
-
+const { Op } = require("sequelize"); 
 module.exports = {
     async index(req, res) {
         try {
@@ -10,6 +10,32 @@ module.exports = {
 
             const cases = await Case.findAll()
             res.send(cases)
+        } catch(err) {
+            res.status(500).send({
+                error: 'An error has occured trying to retrive a _case'
+            })
+        }
+    },
+    async getYearCases(req, res) {
+        let startDate = new Date();
+        startDate = startDate.toISOString().slice(0, 10);
+        let endDate = new Date();
+        endDate.setDate(endDate.getDate() - 365);
+        endDate = endDate.toISOString().slice(0, 10);
+
+        try {
+
+            let cases = await Case.findAll({
+                where: {
+                    createdAt: { [Op.between]:[endDate,startDate]}
+                }
+            })
+
+            // console.log()
+            const identfier =cases[0].filter(function (el){
+                return el.createdAt.toISOString().slice(0, 10) == endDate;
+              });
+            res.send(identfier)
         } catch(err) {
             res.status(500).send({
                 error: 'An error has occured trying to retrive a _case'
