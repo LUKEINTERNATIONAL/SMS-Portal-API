@@ -77,7 +77,7 @@ async function sendMessage(messages) {
 async function findRespondent(respondentId) {
   const respondent = await Respondent.findOne({
     where: {
-      id: 1
+      id: respondentId
     }
   })
   
