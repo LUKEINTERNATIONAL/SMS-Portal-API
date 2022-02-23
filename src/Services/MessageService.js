@@ -2,7 +2,6 @@ const {Respondent} = require('../models')
 const {Message} = require('../models')
 const {Case} = require('../models')
 const  request = require ('http');
-var collection = []
 
 async function getCases() {
   let cases = await Case.findAll({
@@ -13,6 +12,11 @@ async function getCases() {
     
     if (cases) { 
       CasesToMessages(cases)
+    }
+
+    else {
+      console.log("There are no pending cases to pull")
+      return
     }
 }
 
@@ -48,9 +52,15 @@ async function SaveMessage(messsage_body) {
       })
     }
   }
+
+  else {
+    console.log("There are no respondents in table")
+  }
 }
 
 async function sendMessage(messages) {
+  var collection = []
+  
   for (let message of messages) {
     let payload = {
       message: message.dataValues.body,
