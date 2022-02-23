@@ -2,15 +2,10 @@ const {Respondent} = require('../models')
 const {Message} = require('../models')
 const {Case} = require('../models')
 const  request = require ('http');
-
-let cases
-let respondents
 var collection = []
-let collectionTracker = 0
-let caseTracker = 0
 
 async function getCases() {
-    cases = await Case.findAll({
+  let cases = await Case.findAll({
       where: {
         message_generated: 0
       }
@@ -20,28 +15,6 @@ async function getCases() {
       CasesToMessages(cases)
     }
 }
-
-// async function getRespondents() {
-//     respondents = await Respondent.findAll()
-
-//     if (respondents) {
-//       for(let respondent in respondents) {
-//           const respond_ = respondents[respondent].dataValues
-
-//           for(let _case in cases) {
-//               const case_ = cases[_case].dataValues
-
-//               if (respond_.facility_code == case_.facility_code) {
-//                   var messageBody = "There are " +case_.less_five_years+ " " +case_.condition_name+ " case(s) for under five And " +case_.greater_equal_five_years+
-//                   " " +case_.condition_name+ " case(s) for above five at Facility Code: " +case_.facility_code
-//                   SaveMessage(respond_, messageBody)
-//                   changeCaseStatus(case_.id)
-//                   caseTracker = caseTracker + 1
-//               }
-//           }
-//       }
-//     }
-// }
 
 function CasesToMessages(cases) {
   for(let _case in cases) {
@@ -53,7 +26,6 @@ function CasesToMessages(cases) {
   }
 }
 
-
 async function changeCaseStatus(caseId) {
   await Case.update({message_generated: 1}, {
     where: {
@@ -63,7 +35,7 @@ async function changeCaseStatus(caseId) {
 }
 
 async function SaveMessage(messsage_body) {
-  respondents = await Respondent.findAll()
+  let respondents = await Respondent.findAll()
 
   if (respondents) {
     for(let respondent in respondents) {
@@ -76,7 +48,6 @@ async function SaveMessage(messsage_body) {
       })
     }
   }
-
 }
 
 async function sendMessage(messages) {
