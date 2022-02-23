@@ -41,6 +41,8 @@ module.exports = (app) => {
 
   app.get('/cases',
     CaseController.index)
+  app.get('/cases/year',
+    CaseController.getYearCases)
   app.post('/case',
     CaseController.post)
   app.get('/cases/:caseId',
