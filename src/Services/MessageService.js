@@ -81,7 +81,6 @@ async function SaveMessage(messsage_body) {
 
 async function sendMessage(messages) {
   for (let message of messages) {
-    console.log(message.dataValues.respondent_id)
     let payload = {
       message: message.dataValues.body,
       phone: (await findRespondent(message.dataValues.respondent_id)).phone_pri,
@@ -90,8 +89,6 @@ async function sendMessage(messages) {
 
     collection.push(payload)
   }
-
-  //console.log(collection)
 
   sendToPhone(JSON.stringify(collection))
 }
