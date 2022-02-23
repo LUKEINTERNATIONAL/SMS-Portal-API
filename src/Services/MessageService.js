@@ -53,6 +53,7 @@ function CasesToMessages(cases) {
   }
 }
 
+
 async function changeCaseStatus(caseId) {
   await Case.update({message_generated: 1}, {
     where: {
@@ -62,37 +63,25 @@ async function changeCaseStatus(caseId) {
 }
 
 async function SaveMessage(messsage_body) {
-    await Message.create({
-      respondent_id: 0,
-      body: messsage_body,
-      status: 'pending'
-    })
-}
-
-async function ToAllRespondents(messages) {
   respondents = await Respondent.findAll()
 
   if (respondents) {
     for(let respondent in respondents) {
       const respond_ = respondents[respondent].dataValues
 
-      for (let message of messages) {
-        let payload = {
-          message: message.dataValues.body,
-          phone: respond_.phone_pri,
-          message_id: message.dataValues.id
-        }
-    
-        collection.push(payload)  
-      }
+      await Message.create({
+        respondent_id: respond_.id,
+        body: messsage_body,
+        status: 'pending'
+      })
     }
-    console.log("size of collection: ", collection.length)
-    sendToPhone(JSON.stringify(collection)) 
   }
+
 }
 
-async function resendMessage(messages) {
+async function sendMessage(messages) {
   for (let message of messages) {
+    console.log(message.dataValues.respondent_id)
     let payload = {
       message: message.dataValues.body,
       phone: (await findRespondent(message.dataValues.respondent_id)).phone_pri,
@@ -102,23 +91,32 @@ async function resendMessage(messages) {
     collection.push(payload)
   }
 
+  //console.log(collection)
+
   sendToPhone(JSON.stringify(collection))
 }
 
 async function findRespondent(respondentId) {
   const respondent = await Respondent.findOne({
     where: {
-      id: respondentId
+      id: 1
     }
   })
-
+  
+  if (respondent) {
   return respondent.dataValues
+  }
+  
+  else {
+    console.log("respondent not found by id: ", respondentId)
+  }
+  
 }
 
 function sendToPhone(data) {
   const req = request.request(
     {
-      host: '192.168.11.30',
+      host: '192.168.11.10',
       port: '3003',
       path: '/',
       method: 'POST',
@@ -141,6 +139,6 @@ function sendToPhone(data) {
   req.end();
 }
 
- module.exports = { getCases, resendMessage, ToAllRespondents} 
+ module.exports = { getCases, sendMessage} 
 
  getCases()
