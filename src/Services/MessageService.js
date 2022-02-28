@@ -1,6 +1,7 @@
 const {Respondent} = require('../models')
 const {Message} = require('../models')
 const {Case} = require('../models')
+const {Facility} = require('../models')
 const  request = require ('http');
 
 async function getCases() {
@@ -20,13 +21,30 @@ async function getCases() {
     }
 }
 
-function CasesToMessages(cases) {
+async function CasesToMessages(cases) {
   for(let _case in cases) {
     const case_ = cases[_case].dataValues
-    var messageBody = "There are " +case_.less_five_years+ " " +case_.condition_name+ " case(s) for under five And " +case_.greater_equal_five_years+
-    " " +case_.condition_name+ " case(s) for above five at Facility Code: " +case_.facility_code
+    let total = parseInt(case_.less_five_years ) + parseInt(case_.greater_equal_five_years)
+    let facility_name = await GetFacilityName(case_.facility_code)
+    var messageBody = "There are " +total+ " " +case_.condition_name+ " case(s) at " +facility_name
     SaveMessage(messageBody)
     changeCaseStatus(case_.id)
+  }
+}
+
+async function GetFacilityName(facility_code) {
+  let facility = await Facility.findAll({
+    where: {
+      code: facility_code
+  }
+  })
+
+  if(facility) {
+    return facility[0].dataValues.name
+  }
+   
+  else {
+    return facility_code
   }
 }
 
@@ -77,7 +95,7 @@ async function sendMessage(messages) {
 async function findRespondent(respondentId) {
   const respondent = await Respondent.findOne({
     where: {
-      id: 1
+      id: respondentId
     }
   })
   
