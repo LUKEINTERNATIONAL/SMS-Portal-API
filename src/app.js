@@ -6,7 +6,7 @@ const {sequelize} = require('../src/models')
 const config = require('../src/config/config')
 var cron = require('node-cron');
 const MessageService = require('../src/Services/MessageService')
-const ResendFailedMessages = require('../src/Services/ResendFailedMessages')
+const InitiateSendMessages = require('../src/Services/InitiateSendMessages')
 
 const app = express()
 
@@ -33,5 +33,14 @@ sequelize.sync({})
   cron.schedule('*/10 * * * * *', () => {
    console.log('running a task every 10 seconds');
    MessageService.getCases()
-    //ResendFailedMessages.findMessages()
+   InitiateSendMessages.findMessages()
   });
+
+  // * * * * * *
+  // | | | | | |
+  // | | | | | day of week
+  // | | | | month
+  // | | | day of month
+  // | | hour
+  // | minute
+  // second ( optional )

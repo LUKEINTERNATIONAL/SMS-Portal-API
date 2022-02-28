@@ -1,10 +1,13 @@
 const {Message} = require('../models')
 const MessageService = require('./MessageService')
+const { Op } = require("sequelize")
 
 async function findMessages() {
     const messages = await Message.findAll({
         where: {
-            status: 'pending'
+            status: {
+                [Op.not]: 'SMS sent'
+              }
         }
     })
 
@@ -15,5 +18,3 @@ async function findMessages() {
     }
 
 module.exports = { findMessages }
-
-findMessages()

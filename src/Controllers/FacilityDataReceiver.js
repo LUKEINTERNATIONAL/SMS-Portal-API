@@ -2,6 +2,7 @@ const {User} = require('../models')
 const {Condition} = require('../models')
 const {Facility} = require('../models')
 const {Case} = require('../models')
+const SaveCase = require('../Services/SaveCase')
 
 module.exports = {
   async prnt() {
@@ -86,7 +87,8 @@ module.exports = {
 
           if (total > 0) {
             try {
-              await Case.create({facility_code: emr_facility_id, condition_name: ConditionName, less_five_years: lessFiveYearsCases, greater_equal_five_years: GreaterEqualFiveYearsCases})
+              SaveCase.store({facility_code: emr_facility_id, condition_name: ConditionName, less_five_years: lessFiveYearsCases, greater_equal_five_years: GreaterEqualFiveYearsCases})
+              // await Case.create({facility_code: emr_facility_id, condition_name: ConditionName, less_five_years: lessFiveYearsCases, greater_equal_five_years: GreaterEqualFiveYearsCases})
             } catch (err) {
               //console.log(err)
             } 
