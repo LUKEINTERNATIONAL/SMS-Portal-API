@@ -64,7 +64,6 @@ module.exports = {
         }
 
         for (let key in payload) {
-          console.log(payload)
           let lessFiveYearsCases
           let GreaterEqualFiveYearsCases
           let ConditionName = key

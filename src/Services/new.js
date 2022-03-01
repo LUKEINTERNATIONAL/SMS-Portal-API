@@ -18,6 +18,5 @@ function handleResults(results){
 }
 
 makeCall(url, function(results){
-    console.log('results:',results);
     handleResults(results);        
 });

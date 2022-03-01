@@ -33,7 +33,6 @@ module.exports = {
         }
       })
 
-      console.log("###############################user: ", user)
 
       if (!user) {
         return res.status(403).send({

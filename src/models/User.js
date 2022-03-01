@@ -6,7 +6,6 @@ function hashPassword (user, options) {
     return
   }
 
-  console.log(user.changed('password'))
   const salt = bcrypt.genSaltSync(SALT_FACTOR)
   const hash = bcrypt.hashSync(user.password, salt)
   return user.setDataValue('password', hash)
@@ -33,8 +32,7 @@ module.exports = (sequelize, DataTypes) => {
   })
 
    User.prototype.comparePassword = function (password) {
-    console.log(password)
-    console.log(this.password)
+  
     return bcrypt.compareSync(password, this.password)
   }
 

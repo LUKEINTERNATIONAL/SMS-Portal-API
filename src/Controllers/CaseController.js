@@ -31,7 +31,6 @@ module.exports = {
                 }
             })
 
-            // console.log()
             const identfier =cases[0].filter(function (el){
                 return el.createdAt.toISOString().slice(0, 10) == endDate;
               });
@@ -44,7 +43,6 @@ module.exports = {
     },
 
     async post(req, res) {
-        console.log("body",req.body)
         try {
             const _case = await Case.create(req.body)
             res.send(_case)

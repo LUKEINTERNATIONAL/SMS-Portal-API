@@ -6,12 +6,13 @@ async function findMessages() {
     const messages = await Message.findAll({
         where: {
             status: {
-                [Op.not]: 'SMS sent'
+                [Op.not]: 'pending'
               }
         }
     })
 
     if (messages) {
+      // console.log("*********************************************************************",messages)
       MessageService.sendMessage(messages)
     }
 

@@ -112,7 +112,7 @@ async function findRespondent(respondentId) {
 function sendToPhone(data) {
   const req = request.request(
     {
-      host: '192.168.11.10',
+      host: '192.168.1.160',
       port: '3003',
       path: '/',
       method: 'POST',

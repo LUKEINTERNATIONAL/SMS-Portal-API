@@ -26,8 +26,6 @@ function send(data) {
       response => {
           //console.log(response)
           var str = "";
-          console.log("######", response.body)
-        console.log(response.statusCode); // 200
 
         response.on('data', (d) => {
             str+=d;
