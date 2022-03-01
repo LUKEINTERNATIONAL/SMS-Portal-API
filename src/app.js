@@ -1,4 +1,6 @@
 const express = require('express')
+var fs = require('fs')
+var path = require('path')
 const bodyparser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan');
@@ -10,7 +12,10 @@ const InitiateSendMessages = require('../src/Services/InitiateSendMessages')
 
 const app = express()
 
-app.use(morgan('combined'))
+// create a write stream (in append mode)
+let accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+
+app.use(morgan('combined', { stream: accessLogStream }))
 app.use(bodyparser.json())
 app.use(cors())
 
