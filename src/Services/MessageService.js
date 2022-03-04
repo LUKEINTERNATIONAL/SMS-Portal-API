@@ -2,6 +2,7 @@ const {Respondent} = require('../models')
 const {Message} = require('../models')
 const {Case} = require('../models')
 const {Facility} = require('../models')
+const { Op } = require("sequelize")
 const  request = require ('http');
 
 async function getCases() {
@@ -75,38 +76,53 @@ async function SaveMessage(messsage_body) {
     console.log("There are no respondents in table")
   }
 }
-
-async function sendMessage(messages) {
-  var collection = []
-  
-  for (let message of messages) {
-    let payload = {
-      message: message.dataValues.body,
-      phone: (await findRespondent(message.dataValues.respondent_id)).phone_pri,
-      message_id: message.dataValues.id
-    }
-
-    collection.push(payload)
+async function sendFailedMessage() {
+  Respondent.hasMany(Message, {foreignKey: 'respondent_id'})
+  Message.belongsTo(Respondent, {foreignKey: 'respondent_id'})
+  var message = await Respondent.findAll({
+    include: [{
+      model: Message,
+      where: {
+        status: {
+          [Op.not]: 'SMS sent'
+        }
+      },
+      limit: 1
+     }]
+  });
+  console.log("{{{{{{{{{{{{{{{{{{{{{{{{{",message)
+  if(message[0].dataValues.Messages.length > 0)
+  {
+    let payload = [{
+      message: message[0].dataValues.Messages[0].dataValues.body,
+      phone: message[0].dataValues.phone_pri,
+      message_id: message[0].dataValues.Messages[0].dataValues.id
+    }]
+    sendToPhone(JSON.stringify(payload))
   }
-
-  sendToPhone(JSON.stringify(collection))
 }
-
-async function findRespondent(respondentId) {
-  const respondent = await Respondent.findOne({
-    where: {
-      id: respondentId
-    }
-  })
-  
-  if (respondent) {
-  return respondent.dataValues
+async function sendMessage() {
+  Respondent.hasMany(Message, {foreignKey: 'respondent_id'})
+  Message.belongsTo(Respondent, {foreignKey: 'respondent_id'})
+  var message = await Respondent.findAll({
+    include: [{
+      model: Message,
+      where: {status: 'pending'},
+      limit: 1
+     }]
+  });
+  if(message[0].dataValues.Messages.length > 0)
+  {
+    let payload = [{
+      message: message[0].dataValues.Messages[0].dataValues.body,
+      phone: message[0].dataValues.phone_pri,
+      message_id: message[0].dataValues.Messages[0].dataValues.id
+    }]
+    sendToPhone(JSON.stringify(payload))
+  }else
+  {
+    sendFailedMessage();
   }
-  
-  else {
-    console.log("respondent not found by id: ", respondentId)
-  }
-  
 }
 
 function sendToPhone(data) {
@@ -136,5 +152,3 @@ function sendToPhone(data) {
 }
 
  module.exports = { getCases, sendMessage} 
-
- getCases()

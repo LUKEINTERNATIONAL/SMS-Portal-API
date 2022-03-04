@@ -1,4 +1,5 @@
 const {Message} = require('../models')
+const MessageService = require('../Services/MessageService')
 const { Op } = require("sequelize")
 
 module.exports = {
@@ -48,6 +49,7 @@ module.exports = {
                     id: req.params.messageId
                 }
             })
+            MessageService.sendMessage();
             res.send(message)
         } catch(err) {
             res.status(500).send({
