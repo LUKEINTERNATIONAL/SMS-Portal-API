@@ -6,7 +6,7 @@ async function findMessages() {
     const messages = await Message.findAll({
         where: {
             status: {
-                [Op.not]: 'pending'
+                [Op.not]: 'SMS sent'
               }
         }
     })

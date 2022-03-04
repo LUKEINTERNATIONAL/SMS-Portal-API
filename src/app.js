@@ -35,10 +35,12 @@ sequelize.sync({})
 
   // '*/10 * * * * *'
 
-  cron.schedule('*/10 * * * * *', () => {
-   MessageService.getCases()
-   InitiateSendMessages.findMessages()
-  });
+  cron.schedule('*/60 * * * * *', () => {
+    MessageService.getCases()
+  //  InitiateSendMessages.findMessages()
+    MessageService.sendMessage()
+  }); 
+  
 
   // * * * * * *
   // | | | | | |
