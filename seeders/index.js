@@ -5,7 +5,8 @@ const {
     Condition,
     Case,
     Respondent,
-    Message
+    Message,
+    Role
 } = require('../src/models')
 
 const Promise = require('bluebird')
@@ -15,6 +16,7 @@ const condition = require('./Condition.json')
 const _case = require('./Case.json')
 const respondent = require('./Respondent.json')
 const messsage = require('./Message.json')
+const role = require('./Role.json')
 
 sequelize.sync({force: true})
   .then ( async function() {
@@ -51,6 +53,12 @@ sequelize.sync({force: true})
       await Promise.all(
         messsage.map(messsage => {
          Message.create(messsage)
+        }) 
+      )
+
+      await Promise.all(
+        role.map(role => {
+         Role.create(role)
         }) 
       )
  
