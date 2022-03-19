@@ -5,6 +5,7 @@ const MessageController = require("../src/Controllers/MessageController")
 const RespondentController = require("../src/Controllers/RespondentController")
 const CaseController = require("../src/Controllers/CaseController")
 const UserController = require("../src/Controllers/UserController")
+const RoleController = require("../src/Controllers/RoleController")
 
 
 module.exports = (app) => {
@@ -58,5 +59,16 @@ module.exports = (app) => {
     UserController.put)
   app.delete('/user/:userId',
     UserController.delete)
+
+  app.get('/roles',
+    RoleController.index)
+  app.post('/role',
+    RoleController.post)
+  app.get('/roles/:roleId',
+    RoleController.show),
+  app.put('/role/:roleId/:status',
+    RoleController.put)
+  app.delete('/role/:roleId',
+   RoleController.delete)
 
 }

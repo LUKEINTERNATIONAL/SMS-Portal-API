@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
         phone_sec:  DataTypes.STRING,
         email:  DataTypes.STRING,
         about: DataTypes.STRING,
-        facility_code:  DataTypes.STRING
+        facility_code:  DataTypes.STRING,
+        role_id: DataTypes.STRING
     })
 
     return Respondent
