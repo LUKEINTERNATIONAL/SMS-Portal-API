@@ -8,6 +8,9 @@ an Express JS Api
 
 3. run command `node index.js`
 
+# Then also need to run migrations
+1. `npx sequelize-cli db:migrate`
+
 "this will populate your db instance"
              
              OR
