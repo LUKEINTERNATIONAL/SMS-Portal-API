@@ -1,3 +1,8 @@
 [
-    {}
+    {
+        "facility_code": "272",
+        "condition_name": "cholera",
+        "less_five_years": "4",
+        "greater_equal_five_years": "8"
+    }
 ]
