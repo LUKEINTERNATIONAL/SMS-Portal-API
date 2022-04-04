@@ -1,4 +1,5 @@
-const {Respondent, Role} = require('../models')
+const {Respondent} = require('../models')
+const { Role} = require('../models')
 
 module.exports = {
     async index(req, res) {
@@ -8,14 +9,14 @@ module.exports = {
                 UserId: userId
             }
 
-            Respondent.hasMany(Role, {foreignKey: 'role_id'})
-            Role.belongsTo(Respondent, {foreignKey: 'role_id'})
-            const respondents = await Respondent.findAll({
+            Role.hasMany(Respondent, {foreignKey: 'role_id'})
+            // Role.belongsTo(Respondent, {foreignKey: 'role_id'})
+            const role = await Role.findAll({
                 include: [{
-                    model: Role
+                    model: Respondent
                 }],
             })
-            res.send(respondents)
+            res.send(role)
         } catch(err) {
             res.status(500).send({
                 error: 'An error has occured trying to retrive a respondents'
