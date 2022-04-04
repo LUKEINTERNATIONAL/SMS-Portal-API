@@ -1,38 +1,29 @@
-"u se strict";
-const nodemailer = require("nodemailer");
+const config = require('../config/config')
+const sgMail = require('@sendgrid/mail');
 
-// async..await is not allowed in global scope, must use a wrapper
-async function main() {
-  // Generate test SMTP service account from ethereal.email
-  // Only needed if you don't have a real mail account for testing
-  let testAccount = await nodemailer.createTestAccount();
+sgMail.setApiKey('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')
 
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: testAccount.user, // generated ethereal user
-      pass: testAccount.pass, // generated ethereal password
-    },
-  });
+const sendMail = async (msg) => {
+  try {
+    await sgMail.send(msg)
+    console.log("An Email was sent successfully")
 
-  // send mail with defined transport object
-  let info = await transporter.sendMail({
-    from: '"Fred Foo 👻" <foo@example.com>', // sender address
-    to: "dominickasanga@gmail.com, domstig248@gmail.com", // list of receivers
-    subject: "Hello ✔", // Subject line
-    text: "Hello world?", // plain text body
-    html: "<b>Hello world?</b>", // html body
-  });
+  } catch (error) {
+    console.log(error)
 
-  console.log("Message sent: %s", info.messageId);
-  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+    if (error.response) {
+      console.error(error.response.body)
+    }
+  }
+};
 
-  // Preview only available when sending through an Ethereal account
-  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-  // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+function sendEmail(to, message) {
+  sendMail({
+    to: to,
+    from: config.emailVariables.from,
+    subject: "EIDSR Notifications",
+    text: message
+  })  
 }
 
-main().catch(console.error);
+module.exports = {sendEmail}

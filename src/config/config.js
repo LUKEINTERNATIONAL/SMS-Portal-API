@@ -12,5 +12,9 @@ module.exports = {
     },
     authentication: {
         jwtSecret: process.env.JWT_SECRET || 'sedret'
+    },
+    emailVariables: {
+        apikey: 'xVK4d9W0RG2e8tRl9Z5z8w',
+        from: 'dominickasanga@gmail.com'
     }
 }

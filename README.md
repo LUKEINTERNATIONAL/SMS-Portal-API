@@ -1,18 +1,8 @@
 # SMS-Portal-API
 an Express JS Api
 
-# How to seed your database (mysql)
+# How to seed your database (mysql) and run the API
 1. create db name `eidsr_sms_portal`
-
-2. cd `seeders`
-
-3. run command `node index.js`
-
-# Then also need to run migrations
-1. `npx sequelize-cli db:migrate`
-
-"this will populate your db instance"
-             
-             OR
-    while in the root project dir,run command `npm run seed`
+2. seed database `npm run seed`
+3. run migrations `npx sequelize-cli db:migrate`
 # use `npm start` to run the server while in root dir

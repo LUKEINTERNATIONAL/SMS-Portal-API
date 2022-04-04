@@ -3,6 +3,7 @@ const {Message} = require('../models')
 const {Case} = require('../models')
 const {Facility} = require('../models')
 const { Op } = require("sequelize")
+const {sendEmail} = require('./EmailService')
 const  request = require ('http');
 
 async function getCases() {
@@ -67,7 +68,8 @@ async function SaveMessage(messsage_body) {
       await Message.create({
         respondent_id: respond_.id,
         body: messsage_body,
-        status: 'pending'
+        status: 'pending',
+        email_status: '0'
       })
     }
   }
@@ -90,7 +92,6 @@ async function sendFailedMessage() {
       limit: 1
      }]
   });
-  console.log("{{{{{{{{{{{{{{{{{{{{{{{{{",message)
   if(message[0].dataValues.Messages.length > 0)
   {
     let payload = [{
@@ -101,6 +102,24 @@ async function sendFailedMessage() {
     sendToPhone(JSON.stringify(payload))
   }
 }
+
+async function sendEmailMessage() {
+  Respondent.hasMany(Message, {foreignKey: 'respondent_id'})
+  Message.belongsTo(Respondent, {foreignKey: 'respondent_id'})
+  var message = await Respondent.findAll({
+    include: [{
+      model: Message,
+      where: {email_status: '0'}
+     }]
+  });
+
+  for ( let respondent of message) {
+    for (let message of respondent.dataValues.Messages) {
+      sendEmail(respondent.dataValues.email, message.dataValues.body)
+    }
+  }
+}
+
 async function sendMessage() {
   Respondent.hasMany(Message, {foreignKey: 'respondent_id'})
   Message.belongsTo(Respondent, {foreignKey: 'respondent_id'})
@@ -111,16 +130,14 @@ async function sendMessage() {
       limit: 1
      }]
   });
-  if(message[0].dataValues.Messages.length > 0)
-  {
+  if(message[0].dataValues.Messages.length > 0) {
     let payload = [{
       message: message[0].dataValues.Messages[0].dataValues.body,
       phone: message[0].dataValues.phone_pri,
       message_id: message[0].dataValues.Messages[0].dataValues.id
     }]
     sendToPhone(JSON.stringify(payload))
-  }else
-  {
+  } else {
     sendFailedMessage();
   }
 }
@@ -139,16 +156,13 @@ function sendToPhone(data) {
     response => {
       console.log(response.statusCode); // 200
     }
-    
   );
-
   req.on('error', (e) => {
     console.error(`problem with request: ${e.message}`);
-  });
-   
+  }); 
   req.write(data)
-   
   req.end();
 }
 
- module.exports = { getCases, sendMessage} 
+sendEmailMessage()
+module.exports = { getCases, sendMessage} 

@@ -36,9 +36,9 @@ sequelize.sync({})
   // '*/10 * * * * *'
 
   cron.schedule('*/60 * * * * *', () => {
-    MessageService.getCases()
-    InitiateSendMessages.findMessages()
-    MessageService.sendMessage()
+    // MessageService.getCases()
+    // InitiateSendMessages.findMessages()
+    // MessageService.sendMessage()
   }); 
   
 

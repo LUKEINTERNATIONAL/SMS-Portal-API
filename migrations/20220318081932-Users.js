@@ -30,3 +30,4 @@ module.exports = {
      await queryInterface.dropTable('users');
   }
 };
+//npx sequelize migration:generate --name Users
