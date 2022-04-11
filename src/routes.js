@@ -20,6 +20,8 @@ module.exports = (app) => {
 
   app.get('/messages',
     MessageController.index)
+  app.get('/messages/year',
+    MessageController.getYearMessages)
   app.post('/message',
     MessageController.post)
   app.get('/messages/:messageId',
@@ -42,7 +44,7 @@ module.exports = (app) => {
 
   app.get('/cases',
     CaseController.index)
-  app.get('/cases/year',
+  app.post('/cases/year',
     CaseController.getYearCases)
   app.post('/case',
     CaseController.post)

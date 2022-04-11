@@ -18,6 +18,75 @@ module.exports = {
             })
         }
     },
+    async getYearMessages(req, res) {
+        try {
+            let totalSMSStatus = []
+            let totalEmailStatus = []
+
+            let totalSmsSent = []
+            let totalSmsFailed = []
+            let totalEmailSent = []
+            let totalEmailFailed = []
+
+            let allMessageStatus = [];
+            var allMonths = []
+            for(let i=0; i<12; i++){
+                
+                var date = new Date();
+                date.setDate(date.getDate() - 335);
+                var startDate = new Date(date.getFullYear(), date.getMonth()+i, 2);
+                var getMonth = startDate.getMonth();
+                var endDate = new Date(date.getFullYear(), date.getMonth()+1+i,1);
+                startDate= startDate.toISOString().slice(0, 10)
+                endDate= endDate.toISOString().slice(0, 10)
+
+                var messages = await Message.findAll({
+                    where: {
+                        createdAt: { [Op.between]:[startDate,endDate]},
+                    }
+                })
+
+                var countSentSMS =0;
+                var countFailedSMS =0;
+                var countFailedEmail =0;
+                var countSentEmail =0;
+                messages.map((message)=>{
+                    console.log(message.email_status) 
+                    console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy")
+                    console.log(message.status)
+                    if(message.status == "SMS sent")
+                    countSentSMS++; 
+                    else
+                    countFailedSMS++;
+
+                    if(message.email_status > 0 )
+                        countSentEmail++;
+                    else
+                        countFailedEmail++;
+
+                        console.log(countFailedEmail)
+                })
+                totalSmsSent.push(countSentSMS);
+                totalSmsFailed.push(countFailedSMS);
+                totalEmailSent.push(countSentEmail);
+                totalEmailFailed.push(countFailedEmail);
+                let month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                allMonths.push(month[getMonth])
+            }
+            totalSMSStatus.push({name: "SMS sent",data:totalSmsSent},{name: "SMS failed",data:totalSmsFailed})
+            totalEmailStatus.push({name: "Email sent",data:totalEmailSent},{name: "Email failed",data:totalEmailFailed})
+
+            allMessageStatus.push(totalSMSStatus);
+            allMessageStatus.push(totalEmailStatus);
+            allMessageStatus.push(allMonths);
+
+            res.send(JSON.stringify(allMessageStatus))
+        } catch(err) {
+            res.status(500).send({
+                error: 'An error has occurred while trying to retrieve a message'
+            })
+        }
+    },
 
     async post(req, res) {
         console.log("body",req.body)
