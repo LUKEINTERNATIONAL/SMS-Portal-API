@@ -114,7 +114,7 @@ async function sendEmailMessage() {
   });
 
   for ( let respondent of message) {
-    let message_body
+    let message_body = ''
     let message_ids = []
     let email_address = respondent.dataValues.email
     for (let _message of respondent.dataValues.Messages) {
@@ -168,6 +168,5 @@ function sendToPhone(data) {
   req.write(data)
   req.end();
 }
-
 
 module.exports = { getCases, sendMessage, sendEmailMessage} 
