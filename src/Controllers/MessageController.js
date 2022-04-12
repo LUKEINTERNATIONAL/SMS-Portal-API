@@ -51,8 +51,7 @@ module.exports = {
                 var countFailedEmail =0;
                 var countSentEmail =0;
                 messages.map((message)=>{
-                    console.log(message.email_status) 
-                    console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy")
+                    console.log(message.email_status)
                     console.log(message.status)
                     if(message.status == "SMS sent")
                     countSentSMS++; 

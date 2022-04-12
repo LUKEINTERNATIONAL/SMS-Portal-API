@@ -1,29 +1,41 @@
-const config = require('../config/config')
-const sgMail = require('@sendgrid/mail');
-
-sgMail.setApiKey('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')
-
-const sendMail = async (msg) => {
-  try {
-    await sgMail.send(msg)
-    console.log("An Email was sent successfully")
-
-  } catch (error) {
-    console.log(error)
-
-    if (error.response) {
-      console.error(error.response.body)
-    }
+const {Message} = require('../models')
+var nodemailer = require('nodemailer')
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'idsrnotifications@gmail.com',
+    pass: 'Axifgesczvgakugw'
   }
-};
+});
 
-function sendEmail(to, message) {
-  sendMail({
+
+async function sendEmail(to, message, messageID) {
+  var mailOptions = {
+    from: 'idsrnotifications@gmail.com',
     to: to,
-    from: config.emailVariables.from,
-    subject: "EIDSR Notifications",
+    subject: 'EIDSR Notifications',
     text: message
-  })  
+  }; 
+
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+      changeEmailStatus(messageID)
+    }
+  });
+}
+
+function changeEmailStatus(messageIdsArray) {
+  messageIdsArray.forEach(messageId => {
+    Message.update({email_status: 1}, {
+      where: {
+        id: messageId
+      }
+    })
+  });
+
 }
 
 module.exports = {sendEmail}

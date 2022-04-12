@@ -39,6 +39,7 @@ sequelize.sync({})
     MessageService.getCases()
     InitiateSendMessages.findMessages()
     MessageService.sendMessage()
+    MessageService.sendEmailMessage()
   }); 
   
 

@@ -114,9 +114,14 @@ async function sendEmailMessage() {
   });
 
   for ( let respondent of message) {
-    for (let message of respondent.dataValues.Messages) {
-      sendEmail(respondent.dataValues.email, message.dataValues.body)
+    let message_body
+    let message_ids = []
+    let email_address = respondent.dataValues.email
+    for (let _message of respondent.dataValues.Messages) {
+      message_ids.push(_message.dataValues.id)
+      message_body+=_message.dataValues.body+'\n'
     }
+    sendEmail(email_address, message_body, message_ids)
   }
 }
 
@@ -164,5 +169,5 @@ function sendToPhone(data) {
   req.end();
 }
 
-sendEmailMessage()
-module.exports = { getCases, sendMessage} 
+
+module.exports = { getCases, sendMessage, sendEmailMessage} 
