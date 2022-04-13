@@ -1,5 +1,6 @@
 const {Message} = require('../models')
-var nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer')
+const hbs = require('nodemailer-express-handlebars')
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -8,23 +9,34 @@ var transporter = nodemailer.createTransport({
   }
 });
 
-
-async function sendEmail(to, message, messageID) {
+async function sendEmail(to, message, messageIDs) {
   var mailOptions = {
-    from: 'idsrnotifications@gmail.com',
+    from: 'dsrnotification@linmalawi.org',
     to: to,
     subject: 'EIDSR Notifications',
-    text: message
+    template: 'src/views/index',
+    context: {
+      message: message
+  }
   }; 
+
+    transporter.use('compile', hbs({
+    viewEngine: {
+      defaultLayout: false,
+    },
+    viewPath: '.',
+  }))
 
   transporter.sendMail(mailOptions, function(error, info){
     if (error) {
       console.log(error);
     } else {
       console.log('Email sent: ' + info.response);
-      changeEmailStatus(messageID)
+      changeEmailStatus(messageIDs)
     }
   });
+
+
 }
 
 function changeEmailStatus(messageIdsArray) {
@@ -35,7 +47,6 @@ function changeEmailStatus(messageIdsArray) {
       }
     })
   });
-
 }
 
 module.exports = {sendEmail}
