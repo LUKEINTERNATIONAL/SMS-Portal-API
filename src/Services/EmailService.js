@@ -2,10 +2,12 @@ const {Message} = require('../models')
 const nodemailer = require('nodemailer')
 const hbs = require('nodemailer-express-handlebars')
 var transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: "mx-10.globemw.net",
+  port: 587,
+  secure: false, // true for 465, false for other ports
   auth: {
-    user: 'idsrnotifications@gmail.com',
-    pass: 'Axifgesczvgakugw'
+    user: 'idsrnotification@linmalawi.org',
+    pass: 'lukeinternational'
   }
 });
 
