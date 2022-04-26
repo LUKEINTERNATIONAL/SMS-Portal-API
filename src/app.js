@@ -36,10 +36,10 @@ sequelize.sync({})
   // '*/10 * * * * *'
 
   cron.schedule('*/10 * * * * *', () => {
-    MessageService.getCases()
-    InitiateSendMessages.findMessages()
-    MessageService.sendMessage()
-    MessageService.sendEmailMessage()
+    // MessageService.getCases()
+    // InitiateSendMessages.findMessages()
+    // MessageService.sendMessage()
+    // MessageService.sendEmailMessage()
   }); 
   
 
@@ -51,3 +51,5 @@ sequelize.sync({})
   // | | hour
   // | minute
   // second ( optional )
+  // 11.250
+  // lin1088

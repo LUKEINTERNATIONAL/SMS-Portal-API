@@ -13,21 +13,11 @@ var transporter = nodemailer.createTransport({
 
 async function sendEmail(to, message, messageIDs) {
   var mailOptions = {
-    from: 'dsrnotification@linmalawi.org',
+    from: 'idsrnotification@linmalawi.org',
     to: to,
     subject: 'EIDSR Notifications',
-    template: 'src/views/index',
-    context: {
-      message: message
-  }
-  }; 
-
-    transporter.use('compile', hbs({
-    viewEngine: {
-      defaultLayout: false,
-    },
-    viewPath: '.',
-  }))
+    text: message
+  };
 
   transporter.sendMail(mailOptions, function(error, info){
     if (error) {
