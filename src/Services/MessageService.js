@@ -3,7 +3,7 @@ const {Message} = require('../models')
 const {Case} = require('../models')
 const {Facility} = require('../models')
 const { Op } = require("sequelize")
-const {sendEmail} = require('./EmailService')
+const {sendEmail, sendEmailViaExternalAPI} = require('./EmailService')
 const  request = require ('http');
 
 async function getCases() {
@@ -121,7 +121,8 @@ async function sendEmailMessage() {
       message_ids.push(_message.dataValues.id)
       message_body+=_message.dataValues.body+'\n'
     }
-    sendEmail(email_address, message_body, message_ids)
+    //sendEmail(email_address, message_body, message_ids)
+    sendEmailViaExternalAPI(email_address, message_body, message_ids)
   }
 }
 

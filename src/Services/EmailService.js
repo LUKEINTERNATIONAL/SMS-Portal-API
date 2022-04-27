@@ -1,6 +1,7 @@
 const {Message} = require('../models')
 const nodemailer = require('nodemailer')
 const hbs = require('nodemailer-express-handlebars')
+const request = require ('http');
 var transporter = nodemailer.createTransport({
   host: "mx-10.globemw.net",
   port: 587,
@@ -27,8 +28,6 @@ async function sendEmail(to, message, messageIDs) {
       changeEmailStatus(messageIDs)
     }
   });
-
-
 }
 
 function changeEmailStatus(messageIdsArray) {
@@ -41,4 +40,34 @@ function changeEmailStatus(messageIdsArray) {
   });
 }
 
-module.exports = {sendEmail}
+function sendEmailViaExternalAPI(to, message, messageIDs) {
+  const data = {
+    to: to,
+    message: message,
+    messageIDs: messageIDs
+  }
+
+  const payload = JSON.stringify(data)
+  const req = request.request(
+    {
+      host: 'localhost',
+      port: '8188',
+      path: '/sendemail',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    },
+    response => {
+      console.log(response.statusCode); // 200
+    }
+  );
+  req.on('error', (e) => {
+    console.error(`problem with request: ${e.message}`);
+  }); 
+  req.write(payload)
+  req.end(); 
+
+}
+
+module.exports = {sendEmail, sendEmailViaExternalAPI}
