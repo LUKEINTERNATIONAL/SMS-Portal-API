@@ -1,6 +1,7 @@
 const {Message} = require('../models')
 const MessageService = require('../Services/MessageService')
 const { Op } = require("sequelize")
+const e = require('express')
 
 module.exports = {
     async index(req, res) {
@@ -119,6 +120,32 @@ module.exports = {
             })
             MessageService.sendMessage();
             res.send(message)
+        } catch(err) {
+            res.status(500).send({
+                error: 'An error has occured tryn to update the message'
+            })
+        }
+    },
+
+    async updateEmailStatus (req, res) {
+        try {
+            var {messageId, status} = req.body
+            console.log(messageId)
+            if (typeof(messageId) == "undefined" || typeof(status) == "undefined") {
+                res.send('request parameters unfulfilled')
+            } else {
+                if(messageId != '' && status != '') {
+                    const message = await Message.update({ email_status: status }, {
+                        where: {
+                            id: messageId
+                        }
+                    })
+                    MessageService.sendMessage();
+                    res.send(message)
+                }
+                else
+                res.send('request parameters unfulfilled')
+            }
         } catch(err) {
             res.status(500).send({
                 error: 'An error has occured tryn to update the message'

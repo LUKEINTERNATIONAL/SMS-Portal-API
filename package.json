@@ -15,7 +15,6 @@
   "dependencies": {
     "@sendgrid/mail": "^7.6.2",
     "axios": "^0.24.0",
-    "bcrypt": "^5.0.1",
     "bcrypt-nodejs": "0.0.3",
     "bcryptjs": "^2.4.3",
     "bluebird": "^3.5.0",

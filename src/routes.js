@@ -29,7 +29,9 @@ module.exports = (app) => {
   app.put('/message/:messageId/:status',
     MessageController.put)
   app.delete('/message/:messageId',
-   MessageController.delete)
+   MessageController.delete),
+  app.post('/updateemailstatus',
+   MessageController.updateEmailStatus)
 
   app.get('/respondents',
     RespondentController.index)
