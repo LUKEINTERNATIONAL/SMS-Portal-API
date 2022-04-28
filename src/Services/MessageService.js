@@ -4,6 +4,7 @@ const {Case} = require('../models')
 const {Facility} = require('../models')
 const { Op } = require("sequelize")
 const {sendEmail, sendEmailViaExternalAPI} = require('./EmailService')
+const { getIpAddress } = require('./MachineIpAddress')
 const  request = require ('http');
 
 async function getCases() {
@@ -140,7 +141,8 @@ async function sendMessage() {
     let payload = [{
       message: message[0].dataValues.Messages[0].dataValues.body,
       phone: message[0].dataValues.phone_pri,
-      message_id: message[0].dataValues.Messages[0].dataValues.id
+      message_id: message[0].dataValues.Messages[0].dataValues.id,
+      ipAddress: getIpAddress()
     }]
     sendToPhone(JSON.stringify(payload))
   } else {

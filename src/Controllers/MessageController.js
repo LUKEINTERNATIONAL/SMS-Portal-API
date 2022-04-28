@@ -135,6 +135,7 @@ module.exports = {
                 res.send('request parameters unfulfilled')
             } else {
                 if(messageId != '' && status != '') {
+                    console.log({messageId})
                     const message = await Message.update({ email_status: status }, {
                         where: {
                             id: messageId
