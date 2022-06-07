@@ -9,8 +9,24 @@ const config = require('../src/config/config')
 var cron = require('node-cron');
 const MessageService = require('../src/Services/MessageService')
 const InitiateSendMessages = require('../src/Services/InitiateSendMessages')
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUI = require('swagger-ui-express');
+
 
 const app = express()
+
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      title: "SMS Portal API",
+      version: '1.0.0',
+    },
+  },
+  apis: [`${__dirname}/Controllers/RespondentController.js`],
+}
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs))
 
 // create a write stream (in append mode)
 let accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
