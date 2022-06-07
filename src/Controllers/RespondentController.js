@@ -56,6 +56,15 @@ module.exports = {
         }
     },
 
+    /**
+     * @swagger
+     * /Respondents:
+     *   put:
+     *     description: update a respondent
+     *     responses:
+     *       200:
+     *         description: Success
+     */
     async put (req, res) {
         try {
             const respondent = await Respondent.update(req.body, {

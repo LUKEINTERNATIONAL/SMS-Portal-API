@@ -33,14 +33,104 @@ module.exports = (app) => {
   app.post('/updateemailstatus',
    MessageController.updateEmailStatus)
 
+  /**
+   * @swagger
+   * /respondents:
+   *   get:
+   *     tags: [
+   *       "Respondents"
+   *     ]
+   *     description: Get all respondents
+   *     responses:
+   *       200:
+   *         description: Success
+   * 
+  */
   app.get('/respondents',
     RespondentController.index)
+  
+  /**
+   * @swagger
+   * /respondent:
+   *   post:
+   *     tags: [
+   *       "Respondents"
+   *     ]
+   *     description: add a respondent
+   *     responses:
+   *       200:
+   *         description: Success
+   * 
+  */  
   app.post('/respondent',
     RespondentController.post)
+    
+  /**
+   * @swagger
+   * /respondents/{respondentId}:
+   *   get:
+   *     tags: [
+   *       "Respondents"
+   *     ]
+   *     description: get a respondent
+   *     parameters:
+   *       - in: path
+   *         name: respondentId
+   *         required: true
+   *         description: Numeric ID of the respondent to retrieve.
+   *         schema:
+   *           type: integer
+   *     responses:
+   *       200:
+   *         description: Success
+   *     
+  */
   app.get('/respondents/:respondentId',
     RespondentController.show),
+
+  /**
+   * @swagger
+   * /respondents/{respondentId}:
+   *   put:
+   *     tags: [
+   *       "Respondents"
+   *     ]
+   *     description: update a respondent
+   *     parameters:
+   *       - in: path
+   *         name: respondentId
+   *         required: true
+   *         description: Numeric ID of the respondent to retrieve.
+   *         schema:
+   *           type: integer
+   *     responses:
+   *       200:
+   *         description: Success
+   *     
+  */ 
   app.put('/respondent/:respondentId',
     RespondentController.put)
+
+  /**
+   * @swagger
+   * /respondents/{respondentId}:
+   *   delete:
+   *     tags: [
+   *       "Respondents"
+   *     ]
+   *     description: delete a respondent
+   *     parameters:
+   *       - in: path
+   *         name: respondentId
+   *         required: true
+   *         description: Numeric ID of the respondent to retrieve.
+   *         schema:
+   *           type: integer
+   *     responses:
+   *       200:
+   *         description: Success
+   *     
+  */
   app.delete('/respondent/:respondentId',
     RespondentController.delete)
 
