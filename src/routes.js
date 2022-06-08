@@ -7,6 +7,7 @@ const CaseController = require("../src/Controllers/CaseController")
 const UserController = require("../src/Controllers/UserController")
 const RoleController = require("../src/Controllers/RoleController")
 
+const isAuthenticated = require('./policies/isAuthenticated')
 
 module.exports = (app) => {
   app.post('/register',
@@ -47,6 +48,7 @@ module.exports = (app) => {
    * 
   */
   app.get('/respondents',
+    isAuthenticated,
     RespondentController.index)
   
   /**

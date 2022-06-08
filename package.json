@@ -10,7 +10,7 @@
     "seed": "node ./seeders"
   },
   "keywords": [],
-  "author": "",
+  "author": "https://github.com/dominickasanga",
   "license": "ISC",
   "dependencies": {
     "@sendgrid/mail": "^7.6.2",
@@ -25,6 +25,8 @@
     "joi": "^10.6.0",
     "jsonwebtoken": "^8.0.0",
     "morgan": "^1.10.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^3.0.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "node-cron": "^3.0.0",
@@ -35,7 +37,8 @@
     "sequelize-cli": "^6.4.1",
     "sqlite3": "^5.0.2",
     "swagger-jsdoc": "^4.0.0",
-    "swagger-ui-express": "^4.1.4"
+    "swagger-ui-express": "^4.1.4",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.3.1",
