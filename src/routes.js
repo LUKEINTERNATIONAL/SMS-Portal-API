@@ -33,14 +33,153 @@ module.exports = (app) => {
   app.post('/updateemailstatus',
    MessageController.updateEmailStatus)
 
+  /**
+   * @swagger
+   * /respondents:
+   *   get:
+   *     tags: [
+   *       "Respondents"
+   *     ]
+   *     description: Get all respondents
+   *     responses:
+   *       200:
+   *         description: Success
+   * 
+  */
   app.get('/respondents',
     RespondentController.index)
+  
+  /**
+   * @swagger
+   * /respondent:
+   *   post:
+   *     tags: [
+   *       "Respondents"
+   *     ]
+   *     description: add a respondent
+   *     consumes:
+   *      - application/json
+   *     parameters:
+   *       - in: body
+   *         name: respondent
+   *         required: true
+   *         description: The respondent to create.
+   *         schema:
+   *           type: object
+   *           required:
+   *             - userName
+   *           properties:
+   *             first_name:
+   *               type: string
+   *             last_name:
+   *               type: string
+   *             phone_pri:
+   *               type: integer
+   *             phone_sec:
+   *               type: integer
+   *             email:
+   *               type: string
+   *             role_id:
+   *               type: integer
+   *             about:
+   *               type: string
+   *     responses:
+   *       200:
+   *         description: Success
+   * 
+  */  
   app.post('/respondent',
     RespondentController.post)
+    
+  /**
+   * @swagger
+   * /respondents/{respondentId}:
+   *   get:
+   *     tags: [
+   *       "Respondents"
+   *     ]
+   *     description: get a respondent
+   *     parameters:
+   *       - in: path
+   *         name: respondentId
+   *         required: true
+   *         description: Numeric ID of the respondent to retrieve.
+   *         schema:
+   *           type: integer
+   *     responses:
+   *       200:
+   *         description: Success
+   *     
+  */
   app.get('/respondents/:respondentId',
     RespondentController.show),
+
+  /**
+   * @swagger
+   * /respondent/{respondentId}:
+   *   put:
+   *     tags: [
+   *       "Respondents"
+   *     ]
+   *     description: update a respondent
+   *     parameters:
+   *       - in: path
+   *         name: respondentId
+   *         required: true
+   *         description: Numeric ID of the respondent to retrieve.
+   *         schema:
+   *           type: integer
+   *       - in: body
+   *         name: respondent
+   *         required: true
+   *         description: The respondent to create.
+   *         schema:
+   *           type: object
+   *           required:
+   *             - userName
+   *           properties:
+   *             first_name:
+   *               type: string
+   *             last_name:
+   *               type: string
+   *             phone_pri:
+   *               type: integer
+   *             phone_sec:
+   *               type: integer
+   *             email:
+   *               type: string
+   *             role_id:
+   *               type: integer
+   *             about:
+   *               type: string
+   *     responses:
+   *       200:
+   *         description: Success
+   *     
+  */ 
   app.put('/respondent/:respondentId',
     RespondentController.put)
+
+  /**
+   * @swagger
+   * /respondent/{respondentId}:
+   *   delete:
+   *     tags: [
+   *       "Respondents"
+   *     ]
+   *     description: delete a respondent
+   *     parameters:
+   *       - in: path
+   *         name: respondentId
+   *         required: true
+   *         description: Numeric ID of the respondent to retrieve.
+   *         schema:
+   *           type: integer
+   *     responses:
+   *       200:
+   *         description: Success
+   *     
+  */
   app.delete('/respondent/:respondentId',
     RespondentController.delete)
 

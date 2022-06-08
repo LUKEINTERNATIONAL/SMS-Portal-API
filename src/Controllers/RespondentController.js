@@ -2,6 +2,16 @@ const {Respondent} = require('../models')
 const { Role} = require('../models')
 
 module.exports = {
+    /**
+     * @swagger
+     * /Respondents:
+     *   get:
+     *     description: Get all respondents
+     *     responses:
+     *       200:
+     *         description: Success
+     * 
+     */
     async index(req, res) {
         try {
             const { userId} = req.query
@@ -46,6 +56,15 @@ module.exports = {
         }
     },
 
+    /**
+     * @swagger
+     * /Respondents:
+     *   put:
+     *     description: update a respondent
+     *     responses:
+     *       200:
+     *         description: Success
+     */
     async put (req, res) {
         try {
             const respondent = await Respondent.update(req.body, {

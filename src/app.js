@@ -9,8 +9,53 @@ const config = require('../src/config/config')
 var cron = require('node-cron');
 const MessageService = require('../src/Services/MessageService')
 const InitiateSendMessages = require('../src/Services/InitiateSendMessages')
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUI = require('swagger-ui-express');
+
 
 const app = express()
+
+const swaggerOptions = {
+  swaggerDefinition: {
+    openapi: '3.0.1', // YOU NEED THIS
+    info: {
+      title: "SMS Portal API",
+      version: '1.0.0',
+      description:
+        'This is a REST API application made with Express. It retrieves data from JSONPlaceholder.',
+      license: {
+        name: 'Licensed Under MIT',
+        url: 'https://spdx.org/licenses/MIT.html',
+      },
+      contact: {
+        name: 'JSONPlaceholder',
+        url: 'https://jsonplaceholder.typicode.com',
+      },
+    },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        }
+      }
+    },
+    security: [{
+      bearerAuth: []
+    }],
+    servers: [
+      {
+        url: 'http://localhost:8186',
+        description: 'Development server',
+      },
+    ],
+  },
+  apis: [`${__dirname}/routes.js`],
+}
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs))
 
 // create a write stream (in append mode)
 let accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
@@ -35,12 +80,13 @@ sequelize.sync({})
 
   // '*/10 * * * * *'
 
-  cron.schedule('*/10 * * * * *', () => {
+  cron.schedule('*/60 * * * * *', () => {
     // MessageService.getCases()
     // InitiateSendMessages.findMessages()
-    // MessageService.sendMessage()
+     MessageService.sendMessage()
     // MessageService.sendEmailMessage()
   }); 
+
   
 
   // * * * * * *

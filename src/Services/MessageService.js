@@ -142,7 +142,7 @@ async function sendMessage() {
       message: message[0].dataValues.Messages[0].dataValues.body,
       phone: message[0].dataValues.phone_pri,
       message_id: message[0].dataValues.Messages[0].dataValues.id,
-      ipAddress: getIpAddress()
+      ipAddress: getIpAddress()+":8186"
     }]
     sendToPhone(JSON.stringify(payload))
   } else {
@@ -153,7 +153,7 @@ async function sendMessage() {
 function sendToPhone(data) {
   const req = request.request(
     {
-      host: '192.168.1.160',
+      host: '192.168.11.10',
       port: '3003',
       path: '/',
       method: 'POST',
