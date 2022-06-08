@@ -17,6 +17,7 @@ const app = express()
 
 const swaggerOptions = {
   swaggerDefinition: {
+    openapi: '3.0.1', // YOU NEED THIS
     info: {
       title: "SMS Portal API",
       version: '1.0.0',
@@ -31,6 +32,18 @@ const swaggerOptions = {
         url: 'https://jsonplaceholder.typicode.com',
       },
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        }
+      }
+    },
+    security: [{
+      bearerAuth: []
+    }],
     servers: [
       {
         url: 'http://localhost:8186',
