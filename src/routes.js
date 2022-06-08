@@ -57,6 +57,32 @@ module.exports = (app) => {
    *       "Respondents"
    *     ]
    *     description: add a respondent
+   *     consumes:
+   *      - application/json
+   *     parameters:
+   *       - in: body
+   *         name: respondent
+   *         required: true
+   *         description: The respondent to create.
+   *         schema:
+   *           type: object
+   *           required:
+   *             - userName
+   *           properties:
+   *             first_name:
+   *               type: string
+   *             last_name:
+   *               type: string
+   *             phone_pri:
+   *               type: integer
+   *             phone_sec:
+   *               type: integer
+   *             email:
+   *               type: string
+   *             role_id:
+   *               type: integer
+   *             about:
+   *               type: string
    *     responses:
    *       200:
    *         description: Success
@@ -90,7 +116,7 @@ module.exports = (app) => {
 
   /**
    * @swagger
-   * /respondents/{respondentId}:
+   * /respondent/{respondentId}:
    *   put:
    *     tags: [
    *       "Respondents"
@@ -103,6 +129,29 @@ module.exports = (app) => {
    *         description: Numeric ID of the respondent to retrieve.
    *         schema:
    *           type: integer
+   *       - in: body
+   *         name: respondent
+   *         required: true
+   *         description: The respondent to create.
+   *         schema:
+   *           type: object
+   *           required:
+   *             - userName
+   *           properties:
+   *             first_name:
+   *               type: string
+   *             last_name:
+   *               type: string
+   *             phone_pri:
+   *               type: integer
+   *             phone_sec:
+   *               type: integer
+   *             email:
+   *               type: string
+   *             role_id:
+   *               type: integer
+   *             about:
+   *               type: string
    *     responses:
    *       200:
    *         description: Success
@@ -113,7 +162,7 @@ module.exports = (app) => {
 
   /**
    * @swagger
-   * /respondents/{respondentId}:
+   * /respondent/{respondentId}:
    *   delete:
    *     tags: [
    *       "Respondents"
