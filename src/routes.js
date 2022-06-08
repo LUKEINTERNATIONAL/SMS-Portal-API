@@ -20,16 +20,21 @@ module.exports = (app) => {
     FacilityDataReceiver.post)
 
   app.get('/messages',
+    isAuthenticated,
     MessageController.index)
   app.get('/messages/year',
+    isAuthenticated,
     MessageController.getYearMessages)
   app.post('/message',
+    isAuthenticated,
     MessageController.post)
   app.get('/messages/:messageId',
+    isAuthenticated,
     MessageController.show),
   app.put('/message/:messageId/:status',
     MessageController.put)
   app.delete('/message/:messageId',
+   isAuthenticated,
    MessageController.delete),
   app.post('/updateemailstatus',
    MessageController.updateEmailStatus)
@@ -91,6 +96,7 @@ module.exports = (app) => {
    * 
   */  
   app.post('/respondent',
+    isAuthenticated,
     RespondentController.post)
     
   /**
@@ -114,6 +120,7 @@ module.exports = (app) => {
    *     
   */
   app.get('/respondents/:respondentId',
+    isAuthenticated,
     RespondentController.show),
 
   /**
@@ -160,6 +167,7 @@ module.exports = (app) => {
    *     
   */ 
   app.put('/respondent/:respondentId',
+    isAuthenticated,
     RespondentController.put)
 
   /**
@@ -183,37 +191,51 @@ module.exports = (app) => {
    *     
   */
   app.delete('/respondent/:respondentId',
+    isAuthenticated,
     RespondentController.delete)
 
   app.get('/cases',
+    isAuthenticated,
     CaseController.index)
   app.post('/cases/year',
+    isAuthenticated,
     CaseController.getYearCases)
   app.post('/case',
+    isAuthenticated,
     CaseController.post)
   app.get('/cases/:caseId',
+    isAuthenticated,
     CaseController.show)
 
   app.get('/users',
+    isAuthenticated,
     UserController.index)
   app.post('/user',
+    isAuthenticated,
     UserController.post)
   app.get('/users/:userId',
+    isAuthenticated,
     UserController.show),
   app.put('/user/:userId',
+    isAuthenticated,
     UserController.put)
   app.delete('/user/:userId',
+    isAuthenticated,
     UserController.delete)
 
   app.get('/roles',
     RoleController.index)
   app.post('/role',
+    isAuthenticated,
     RoleController.post)
   app.get('/roles/:roleId',
+    isAuthenticated,
     RoleController.show),
   app.put('/role/:roleId/:status',
+    isAuthenticated,
     RoleController.put)
   app.delete('/role/:roleId',
+   isAuthenticated,
    RoleController.delete)
 
 }
