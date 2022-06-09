@@ -1,16 +1,9 @@
 const {User} = require('../models')
-const jwt = require('jsonwebtoken')
-const config = require('../config/config')
 const { isEmpty } = require('lodash')
-
-function jwtSignUser (user) {
-  const ONE_WEEK = 60 * 60 * 24 * 7
-  return jwt.sign(user, config.authentication.jwtSecret, {
-    expiresIn: ONE_WEEK
-  })
-}
+const { jwtSignUser } = require('../Services/AuthenticationService')
 
 module.exports = {
+
   async register (req, res) {
     if (!isEmpty(!req.body)) {
       try {
@@ -31,7 +24,9 @@ module.exports = {
       })
     }
   },
+
   async login (req, res) {
+
     try {
       const {email, password} = req.body
       const user = await User.findOne({
@@ -64,5 +59,6 @@ module.exports = {
         error: 'An error has occured trying to log in'
       })
     }
+    
   }
 }

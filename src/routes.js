@@ -23,11 +23,13 @@ module.exports = (app) => {
    *      - application/json
    *     parameters:
    *       - in: body
-   *         name: user
+   *         name: register
    *         required: true
    *         description: The user to create.
    *         schema:
    *           type: object
+   *           required:
+   *             - userName
    *           properties:
    *             email:
    *               type: string
@@ -49,7 +51,7 @@ module.exports = (app) => {
    *     tags: [
    *       "Users"
    *     ]
-   *     description: login (get Auth Token)
+   *     description: add a respondent
    *     consumes:
    *      - application/json
    *     parameters:
@@ -59,6 +61,8 @@ module.exports = (app) => {
    *         description: The user to login.
    *         schema:
    *           type: object
+   *           required:
+   *             - userName
    *           properties:
    *             email:
    *               type: string
@@ -288,7 +292,7 @@ module.exports = (app) => {
    *       - in: path
    *         name: caseId
    *         required: true
-   *         description: Numeric ID of the respondent to retrieve.
+   *         description: Numeric ID of the case to retrieve.
    *         schema:
    *           type: integer
    *     responses:

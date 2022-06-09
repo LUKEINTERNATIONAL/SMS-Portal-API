@@ -45,6 +45,17 @@ module.exports = {
         }
     },
 
+    async reg(req, res) {
+        try {
+            const respondent = await Respondent.create(req.body)
+            res.send(respondent)
+        } catch (err) {
+            res.status(500).send({
+                error: 'An error has occured tryn to create a respondent'
+            })
+        }
+    },
+
     async show (req, res) {
         try {
             const respondent = await Respondent.findByPk(req.params.respondentId)
