@@ -10,9 +10,65 @@ const RoleController = require("../src/Controllers/RoleController")
 const isAuthenticated = require('./policies/isAuthenticated')
 
 module.exports = (app) => {
+
+  /**
+   * @swagger
+   * /register:
+   *   post:
+   *     tags: [
+   *       "Users"
+   *     ]
+   *     description: add a user
+   *     consumes:
+   *      - application/json
+   *     parameters:
+   *       - in: body
+   *         name: user
+   *         required: true
+   *         description: The user to create.
+   *         schema:
+   *           type: object
+   *           properties:
+   *             email:
+   *               type: string
+   *             password:
+   *               type: string
+   *     responses:
+   *       200:
+   *         description: Success
+   * 
+  */ 
   app.post('/register',
     AuthenticationControllerPolicy.register,
     AuthenticationController.register)
+  
+  /**
+   * @swagger
+   * /login:
+   *   post:
+   *     tags: [
+   *       "Users"
+   *     ]
+   *     description: login (get Auth Token)
+   *     consumes:
+   *      - application/json
+   *     parameters:
+   *       - in: body
+   *         name: user
+   *         required: true
+   *         description: The user to login.
+   *         schema:
+   *           type: object
+   *           properties:
+   *             email:
+   *               type: string
+   *             password:
+   *               type: string
+   *     responses:
+   *       200:
+   *         description: Success
+   * 
+  */ 
   app.post('/login',
     AuthenticationController.login)
 
@@ -260,34 +316,7 @@ module.exports = (app) => {
   app.get('/users',
     isAuthenticated,
     UserController.index)
-  
-  /**
-   * @swagger
-   * /user:
-   *   post:
-   *     tags: [
-   *       "Users"
-   *     ]
-   *     description: add a user
-   *     consumes:
-   *      - application/json
-   *     parameters:
-   *       - in: body
-   *         name: user
-   *         required: true
-   *         description: The user to create.
-   *         schema:
-   *           type: object
-   *           properties:
-   *             email:
-   *               type: string
-   *             password:
-   *               type: string
-   *     responses:
-   *       200:
-   *         description: Success
-   * 
-  */  
+   
   app.post('/user',
     isAuthenticated,
     UserController.post)
@@ -316,37 +345,7 @@ module.exports = (app) => {
     isAuthenticated,
     UserController.show),
 
-  /**
-   * @swagger
-   * /users/{userId}:
-   *   put:
-   *     tags: [
-   *       "Users"
-   *     ]
-   *     description: update a user
-   *     parameters:
-   *       - in: path
-   *         name: userId
-   *         required: true
-   *         description: Numeric ID of the respondent to retrieve.
-   *         schema:
-   *           type: integer
-   *       - in: body
-   *         name: user
-   *         required: true
-   *         description: The user to update.
-   *         schema:
-   *           type: object
-   *           required:
-   *             - userName
-   *           properties:
-   *             password:
-   *               type: string
-   *     responses:
-   *       200:
-   *         description: Success
-   *     
-  */ 
+ 
   app.put('/user/:userId',
     isAuthenticated,
     UserController.put)
