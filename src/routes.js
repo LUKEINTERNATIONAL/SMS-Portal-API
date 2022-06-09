@@ -194,31 +194,183 @@ module.exports = (app) => {
     isAuthenticated,
     RespondentController.delete)
 
+  /**
+   * @swagger
+   * /cases:
+   *   get:
+   *     tags: [
+   *       "Cases"
+   *     ]
+   *     description: Get all respondents
+   *     responses:
+   *       200:
+   *         description: Success
+   * 
+  */
   app.get('/cases',
     isAuthenticated,
     CaseController.index)
+
+
   app.post('/cases/year',
     isAuthenticated,
     CaseController.getYearCases)
+  
   app.post('/case',
     isAuthenticated,
     CaseController.post)
+  
+  /**
+   * @swagger
+   * /cases/{caseId}:
+   *   get:
+   *     tags: [
+   *       "Cases"
+   *     ]
+   *     description: get a case
+   *     parameters:
+   *       - in: path
+   *         name: caseId
+   *         required: true
+   *         description: Numeric ID of the respondent to retrieve.
+   *         schema:
+   *           type: integer
+   *     responses:
+   *       200:
+   *         description: Success
+   *     
+  */
   app.get('/cases/:caseId',
     isAuthenticated,
     CaseController.show)
 
+  /**
+   * @swagger
+   * /users:
+   *   get:
+   *     tags: [
+   *       "Users"
+   *     ]
+   *     description: Get all users
+   *     responses:
+   *       200:
+   *         description: Success
+   * 
+  */
   app.get('/users',
     isAuthenticated,
     UserController.index)
+  
+  /**
+   * @swagger
+   * /user:
+   *   post:
+   *     tags: [
+   *       "Users"
+   *     ]
+   *     description: add a user
+   *     consumes:
+   *      - application/json
+   *     parameters:
+   *       - in: body
+   *         name: user
+   *         required: true
+   *         description: The user to create.
+   *         schema:
+   *           type: object
+   *           properties:
+   *             email:
+   *               type: string
+   *             password:
+   *               type: string
+   *     responses:
+   *       200:
+   *         description: Success
+   * 
+  */  
   app.post('/user',
     isAuthenticated,
     UserController.post)
+  
+  /**
+   * @swagger
+   * /users/{userId}:
+   *   get:
+   *     tags: [
+   *       "Users"
+   *     ]
+   *     description: get a user
+   *     parameters:
+   *       - in: path
+   *         name: userId
+   *         required: true
+   *         description: Numeric ID of the user to retrieve.
+   *         schema:
+   *           type: integer
+   *     responses:
+   *       200:
+   *         description: Success
+   *     
+  */  
   app.get('/users/:userId',
     isAuthenticated,
     UserController.show),
+
+  /**
+   * @swagger
+   * /users/{userId}:
+   *   put:
+   *     tags: [
+   *       "Users"
+   *     ]
+   *     description: update a user
+   *     parameters:
+   *       - in: path
+   *         name: userId
+   *         required: true
+   *         description: Numeric ID of the respondent to retrieve.
+   *         schema:
+   *           type: integer
+   *       - in: body
+   *         name: user
+   *         required: true
+   *         description: The user to update.
+   *         schema:
+   *           type: object
+   *           required:
+   *             - userName
+   *           properties:
+   *             password:
+   *               type: string
+   *     responses:
+   *       200:
+   *         description: Success
+   *     
+  */ 
   app.put('/user/:userId',
     isAuthenticated,
     UserController.put)
+
+  /**
+   * @swagger
+   * /user/{userId}:
+   *   delete:
+   *     tags: [
+   *       "Users"
+   *     ]
+   *     description: delete a case
+   *     parameters:
+   *       - in: path
+   *         name: caseId
+   *         required: true
+   *         description: Numeric ID of the case to delete.
+   *         schema:
+   *           type: integer
+   *     responses:
+   *       200:
+   *         description: Success
+   *     
+  */
   app.delete('/user/:userId',
     isAuthenticated,
     UserController.delete)
