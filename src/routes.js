@@ -378,7 +378,21 @@ module.exports = (app) => {
     isAuthenticated,
     UserController.delete)
 
+  /**
+   * @swagger
+   * /roles:
+   *   get:
+   *     tags: [
+   *       "Roles"
+   *     ]
+   *     description: Get all roles
+   *     responses:
+   *       200:
+   *         description: Success
+   * 
+  */
   app.get('/roles',
+  isAuthenticated,
     RoleController.index)
   app.post('/role',
     isAuthenticated,

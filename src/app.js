@@ -22,14 +22,14 @@ const swaggerOptions = {
       title: "SMS Portal API",
       version: '1.0.0',
       description:
-        'This is a REST API application made with Express. It retrieves data from JSONPlaceholder.',
+        'This is a REST API application made with Express. It retrieves data for EIDSR Notification Portal.',
       license: {
         name: 'Licensed Under MIT',
         url: 'https://spdx.org/licenses/MIT.html',
       },
       contact: {
-        name: 'JSONPlaceholder',
-        url: 'https://jsonplaceholder.typicode.com',
+        name: 'EIDSRNotificationPortal',
+        url: 'http://localhost:8080',
       },
     },
     components: {
