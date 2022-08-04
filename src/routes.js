@@ -18,7 +18,7 @@ module.exports = (app) => {
    *     tags: [
    *       "Users"
    *     ]
-   *     description: add a user
+   *     description: use this path for adding a user
    *     consumes:
    *      - application/json
    *     parameters:
