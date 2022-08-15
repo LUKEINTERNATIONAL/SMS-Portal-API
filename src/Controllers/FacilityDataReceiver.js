@@ -2,6 +2,7 @@ const {User} = require('../models')
 const {Condition} = require('../models')
 const {Facility} = require('../models')
 const {Case} = require('../models')
+const { Op } = require("sequelize"); 
 const SaveCase = require('../Services/SaveCase')
 
 module.exports = {
@@ -86,7 +87,7 @@ module.exports = {
 
           if (total > 0) {
             try {
-              SaveCase.store({facility_code: emr_facility_id, condition_name: ConditionName, less_five_years: lessFiveYearsCases, greater_equal_five_years: GreaterEqualFiveYearsCases})
+              await compareIfDuplicateCase(emr_facility_id,ConditionName,lessFiveYearsCases,GreaterEqualFiveYearsCases)
               // await Case.create({facility_code: emr_facility_id, condition_name: ConditionName, less_five_years: lessFiveYearsCases, greater_equal_five_years: GreaterEqualFiveYearsCases})
             } catch (err) {
               //console.log(err)
@@ -110,5 +111,36 @@ module.exports = {
         error: 'An error has occured trying to log in'
       })
     }
+  }
+}
+
+async function compareIfDuplicateCase(facilityId, conditionName, lessFiveYears, greaterEqualFiveYears) {
+  let todaysDate = new Date()
+  todaysDate = todaysDate.toISOString().slice(0, 10)
+  
+  try {
+    let cases = await Case.findAll({
+      where: {
+        createdAt: {
+          [Op.gte]: todaysDate
+        },
+        facility_code: facilityId,
+        condition_name: conditionName,
+        less_five_years: lessFiveYears,
+        greater_equal_five_years: greaterEqualFiveYears
+      }
+    })
+    
+
+    if(cases.length > 0) {
+      console.log("already saved")
+    }  else {
+      SaveCase.store({facility_code: facilityId,
+         condition_name: conditionName, 
+         less_five_years: lessFiveYears, 
+         greater_equal_five_years: greaterEqualFiveYears})
+    }
+  } catch (error) {
+    console.log(error)
   }
 }
