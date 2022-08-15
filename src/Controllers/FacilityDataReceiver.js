@@ -103,7 +103,7 @@ module.exports = {
 
         const userJson = user.toJSON()
         res.send({
-          user: userJson
+          "status": "recieved"
         })
       }
     } catch (err) {
