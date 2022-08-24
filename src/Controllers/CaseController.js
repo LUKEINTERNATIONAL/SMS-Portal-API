@@ -1,5 +1,6 @@
 const {Case} = require('../models')
-const { Op } = require("sequelize"); 
+const {Facility} = require('../models')
+const { Op } = require("sequelize")
 const { condition } = require('sequelize');
 module.exports = {
     async index(req, res) {
@@ -13,7 +14,7 @@ module.exports = {
             res.send(cases)
         } catch(err) {
             res.status(500).send({
-                error: 'An error has occured trying to retrive a _case'
+                error: 'An error has occured trying to retrive a _case: '+err
             })
         }
     },
@@ -82,7 +83,7 @@ module.exports = {
             res.send(_case)
         } catch(error) {
             res.status(500).send({
-                error: 'An error has occured tryn to retrive a _case'
+                error: 'An error has occured tryn to retrive a _case: '+error
             })
         }
     }

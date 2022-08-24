@@ -6,6 +6,7 @@ const RespondentController = require("../src/Controllers/RespondentController")
 const CaseController = require("../src/Controllers/CaseController")
 const UserController = require("../src/Controllers/UserController")
 const RoleController = require("../src/Controllers/RoleController")
+const FacilityController = require("../src/Controllers/FacilityController")
 
 const isAuthenticated = require('./policies/isAuthenticated')
 
@@ -406,5 +407,12 @@ module.exports = (app) => {
   app.delete('/role/:roleId',
    isAuthenticated,
    RoleController.delete)
+
+  app.get('/facilities',
+   isAuthenticated,
+   FacilityController.index)
+  app.get('/facilities/:facilityId',
+   isAuthenticated,
+   FacilityController.show)
 
 }

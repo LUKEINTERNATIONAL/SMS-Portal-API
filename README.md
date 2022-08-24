@@ -6,3 +6,6 @@ an Express JS Api
 2. seed database `npm run seed`
 3. run migrations `npx sequelize-cli db:migrate`
 # use `npm start` to run the server while in root dir
+
+other commands
+`npx sequelize migration:generate --name Models`

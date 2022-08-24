@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
     const Facility = sequelize.define('Facility', {
-        code: {
+        facility_code: {
             type: DataTypes.STRING,
             unique: true
         },

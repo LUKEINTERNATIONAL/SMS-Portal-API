@@ -11,7 +11,7 @@ module.exports = {
                 UserId: userId
             }
 
-            const messages = await Message.findAll()
+            const messages = await Message.findAll({})
             res.send(messages)
         } catch(err) {
             res.status(500).send({
