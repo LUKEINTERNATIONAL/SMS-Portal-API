@@ -7,14 +7,15 @@ module.exports = {
      *
      * Example:
      */
-     await queryInterface.addColumn(
-      'Respondents',
-      'role_idd',
-      {
-        type: Sequelize.STRING,
-        defaultValue: 75
-      }
-    )
+    
+    //  await queryInterface.addColumn(
+    //   'Respondents',
+    //   'role_idd',
+    //   {
+    //     type: Sequelize.STRING,
+    //     defaultValue: 75
+    //   }
+    // )
      
   },
 
