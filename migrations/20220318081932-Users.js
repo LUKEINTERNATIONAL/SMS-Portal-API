@@ -7,17 +7,17 @@ module.exports = {
      *
      * Example:
      */
-     await queryInterface.createTable('Users', 
-     { id: {
-          type: Sequelize.INTEGER,
-          autoIncrement: true,
-          primaryKey: true
-        },
-        email: {
-          type: Sequelize.STRING,
-          unique: true
-        }
-      });
+    //  await queryInterface.createTable('Users', 
+    //  { id: {
+    //       type: Sequelize.INTEGER,
+    //       autoIncrement: true,
+    //       primaryKey: true
+    //     },
+    //     email: {
+    //       type: Sequelize.STRING,
+    //       unique: true
+    //     }
+    //   });
   },
 
   async down (queryInterface, Sequelize) {
@@ -27,7 +27,7 @@ module.exports = {
      * Example:
      * 
      */
-     await queryInterface.dropTable('users');
+     //await queryInterface.dropTable('users');
   }
 };
 //npx sequelize migration:generate --name Users
