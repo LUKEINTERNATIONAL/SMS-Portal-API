@@ -38,7 +38,7 @@ async function CasesToMessages(cases) {
 async function GetFacilityName(facility_code) {
   let facility = await Facility.findAll({
     where: {
-      code: facility_code
+      facility_code: facility_code
   }
   })
 
