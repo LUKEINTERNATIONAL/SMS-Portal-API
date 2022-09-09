@@ -52,18 +52,14 @@ module.exports = (app) => {
    *     tags: [
    *       "Users"
    *     ]
-   *     description: add a respondent
+   *     description: log in
    *     consumes:
    *      - application/json
    *     parameters:
    *       - in: body
-   *         name: user
-   *         required: true
    *         description: The user to login.
    *         schema:
    *           type: object
-   *           required:
-   *             - userName
    *           properties:
    *             email:
    *               type: string

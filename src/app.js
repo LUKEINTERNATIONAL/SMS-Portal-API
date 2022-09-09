@@ -80,13 +80,12 @@ sequelize.sync({})
   // '*/10 * * * * *'
 
   cron.schedule('*/60 * * * * *', () => {
-    // MessageService.getCases()
+    MessageService.getCases()
     // InitiateSendMessages.findMessages()
      //MessageService.sendMessage()
-    // MessageService.sendEmailMessage()
+    MessageService.sendEmailMessage()
   }); 
 
-  
 
   // * * * * * *
   // | | | | | |

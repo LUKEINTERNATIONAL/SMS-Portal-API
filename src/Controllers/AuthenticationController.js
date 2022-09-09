@@ -2,6 +2,8 @@ const {User} = require('../models')
 const {Respondent} = require('../models') 
 const { isEmpty } = require('lodash')
 const { jwtSignUser } = require('../Services/AuthenticationService')
+const { json } = require('body-parser')
+const object = require('joi/lib/types/object')
 
 module.exports = {
 
@@ -29,6 +31,7 @@ module.exports = {
   async login (req, res) {
 
     try {
+      console.log(req.body)
       const {email, password} = req.body
       const user = await User.findOne({
         where: {
@@ -87,7 +90,7 @@ module.exports = {
 
     } catch (err) {
       res.status(500).send({
-        error: 'An error has occured trying to log in'
+        error: 'An error has occured trying to log in: '+JSON.stringify(req.body)
       })
     }
     
