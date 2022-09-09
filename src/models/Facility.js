@@ -8,7 +8,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             unique: true
         },
-        region: DataTypes.STRING
+        region: DataTypes.STRING,
+        vpn_ip_address: DataTypes.STRING,
+        last_pinged: DataTypes.DATE
     })
 
     return Facility
