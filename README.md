@@ -8,4 +8,4 @@ an Express JS Api
 # use `npm start` to run the server while in root dir
 
 other commands
-`npx sequelize migration:generate --name Models`
+`npx sequelize migration:generate --name Model`
