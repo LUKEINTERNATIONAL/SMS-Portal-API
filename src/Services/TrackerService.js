@@ -1,24 +1,38 @@
-const fs = require('fs')
+var lineReader = require('reverse-line-reader')
 const {Facility} = require('../models')
 
-/* reading Health access.log */
-fs.readFile('../access.log', 'utf8', function(err, data) {
-    if (err) throw err;
-    //console.log(data);
-});
 
-async function getFacility(ip_address) {
+await function updateLastPing(ip_address) {
+
+    lineReader.eachLine('../access.log', function(line, last, cb) {
+        ipExists = line.search(ip_address)
+    
+        if(ipExists != -1) {
+            cb(false); // stop reading
+            
+
+        }
+        if (last) {
+          cb(false); // stop reading
+        } else {
+          cb();
+        }
+    })
+}
+
+async function getFacilities() {
     try {
-        const facility = await Facility.findOne({
-            where: {
-              vpn_ip_address: ip_address
-            }
-        })
+        const facilities = await Facility.findAll()
 
-        console.log(facility)
+        facilities.forEach(facility => {
+            if (facility.dataValues.vpn_ip_address != null) {
+                
+            }
+        });
+
     } catch (error) {
         console.log("error: "+error)
     }
 }
 
-getFacility('127.0.0.1')
+getFacilities()
