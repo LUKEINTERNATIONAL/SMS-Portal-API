@@ -12,8 +12,6 @@ async function updateLastPing(ip_address) {
             cb(false) 
         } else {
             if(ipExists != -1) {
-                //last = false
-                //cb(false) // stop reading
                 //getting latest pinged date
                 const extractedDate = line.substring(
                     line.indexOf("[") + 1, 
@@ -44,6 +42,14 @@ async function getFacilities() {
     } catch (error) {
         console.log("error: "+error)
     }
+}
+
+async function updateFacilty(ip_address, date) {
+    const message = await Facility.update({ last_pinged: date }, {
+        where: {
+            vpn_ip_address: ip_address
+        }
+    })
 }
 
 getFacilities()
