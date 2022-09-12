@@ -5,7 +5,7 @@ const {Facility} = require('../models')
 async function updateLastPing(ip_address) {
 
     lineReader.eachLine('../access.log', function(line, last, cb) {
-        ipExists = line.search(ip_address)
+        const ipExists = line.search(ip_address)
     
         if (last) {
             // stop reading
