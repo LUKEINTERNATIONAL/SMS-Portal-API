@@ -9,8 +9,9 @@ const config = require('../src/config/config')
 var cron = require('node-cron');
 const MessageService = require('../src/Services/MessageService')
 const InitiateSendMessages = require('../src/Services/InitiateSendMessages')
-const swaggerJsDoc = require('swagger-jsdoc');
-const swaggerUI = require('swagger-ui-express');
+const swaggerJsDoc = require('swagger-jsdoc')
+const swaggerUI = require('swagger-ui-express')
+const TrackerService = require('../src/Services/TrackerService')
 
 
 const app = express()
@@ -84,6 +85,7 @@ sequelize.sync({})
     // InitiateSendMessages.findMessages()
      //MessageService.sendMessage()
     MessageService.sendEmailMessage()
+    TrackerService.initSrvc()
   }); 
 
 
