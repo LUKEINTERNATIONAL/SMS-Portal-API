@@ -6,12 +6,12 @@ async function store(dataObj) {
         await deleteCases(dataObj.facility_code);
         
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
     try {
        await Case.create(dataObj) 
     } catch (err) {
-        console.log(err)
+        console.error(err)
     }
 }
 async function deleteCases(facility_id) {
@@ -28,7 +28,7 @@ async function deleteCases(facility_id) {
            }
        })
     } catch (err) {
-        console.log(err)
+        console.error(err)
     }
 }
 module.exports =  { store }
