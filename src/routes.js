@@ -7,6 +7,7 @@ const CaseController = require("../src/Controllers/CaseController")
 const UserController = require("../src/Controllers/UserController")
 const RoleController = require("../src/Controllers/RoleController")
 const FacilityController = require("../src/Controllers/FacilityController")
+const ConditionController = require("../src/Controllers/ConditionController")
 
 const isAuthenticated = require('./policies/isAuthenticated')
 
@@ -410,5 +411,15 @@ module.exports = (app) => {
   app.get('/facilities/:facilityId',
    isAuthenticated,
    FacilityController.show)
+
+  app.get('/conditions',
+   isAuthenticated,
+   ConditionController.index)
+  app.get('/conditions/:conditionId',
+   isAuthenticated,
+   ConditionController.show)
+  app.post('/condition',
+   isAuthenticated,
+   ConditionController.put)
 
 }
