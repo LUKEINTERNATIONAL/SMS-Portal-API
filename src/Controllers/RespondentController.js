@@ -77,8 +77,21 @@ module.exports = {
      *         description: Success
      */
     async put (req, res) {
+        let dataObject = req.body
+        let { password } = req.body
+
+        if(password) {
+            const respondent = await Respondent.findOne({
+                where: {
+                    id: req.params.respondentId
+                }
+            })
+
+            password = await respondent.updatePassword(password)
+            dataObject = { password: password }
+        }
         try {
-            const respondent = await Respondent.update(req.body, {
+            const respondent = await Respondent.update(dataObject, {
                 where: {
                     id: req.params.respondentId
                 }

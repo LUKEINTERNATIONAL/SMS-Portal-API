@@ -1,9 +1,7 @@
 const {User} = require('../models')
 const {Respondent} = require('../models') 
 const { isEmpty } = require('lodash')
-const { jwtSignUser } = require('../Services/AuthenticationService')
-const { json } = require('body-parser')
-const object = require('joi/lib/types/object')
+const { jwtSignUser, jwtSignRespondent } = require('../Services/AuthenticationService')
 
 module.exports = {
 
@@ -64,7 +62,7 @@ module.exports = {
             const respondentJson = respondent.toJSON()
             res.send({
               user: respondentJson,
-              token: jwtSignUser(respondentJson)
+              token: jwtSignRespondent(respondentJson)
             })
           }
         } catch (error) {

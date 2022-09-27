@@ -8,4 +8,11 @@ function jwtSignUser (user) {
   })
 }
 
-module.exports = { jwtSignUser }
+function jwtSignRespondent (respondent) {
+  const FOUR_DAYS = 60 * 60 * 24 * 4
+  return jwt.sign(respondent, config.authentication.jwtSecret, {
+    expiresIn: FOUR_DAYS
+  })
+}
+
+module.exports = { jwtSignUser, jwtSignRespondent }
