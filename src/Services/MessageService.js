@@ -42,13 +42,13 @@ async function GetFacilityName(facility_code) {
   }
   })
 
-  if(facility) {
-    return facility[0].dataValues.name
-  }
+  // if(facility) {
+  //   return facility[0].dataValues.name
+  // }
    
-  else {
+  // else {
     return facility_code
-  }
+  // }
 }
 
 async function changeCaseStatus(caseId) {
@@ -138,12 +138,12 @@ async function sendMessage() {
      }]
   });
   if(message[0].dataValues.Messages.length > 0) {
-    let payload = [{
+    let payload = {
       message: message[0].dataValues.Messages[0].dataValues.body,
       phone: message[0].dataValues.phone_pri,
       message_id: message[0].dataValues.Messages[0].dataValues.id,
       ipAddress: getIpAddress()+":8186"
-    }]
+    }
     sendToPhone(JSON.stringify(payload))
   } else {
     sendFailedMessage();
@@ -153,9 +153,9 @@ async function sendMessage() {
 function sendToPhone(data) {
   const req = request.request(
     {
-      host: '192.168.11.10',
-      port: '3003',
-      path: '/',
+      host: '0.0.0.0',
+      port: '8188',
+      path: '/sendsms',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -170,6 +170,7 @@ function sendToPhone(data) {
   }); 
   req.write(data)
   req.end();
+
 }
 
 module.exports = { getCases, sendMessage, sendEmailMessage} 
