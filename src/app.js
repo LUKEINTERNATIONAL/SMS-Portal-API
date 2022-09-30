@@ -85,7 +85,7 @@ sequelize.sync({})
     // InitiateSendMessages.findMessages()
      //MessageService.sendMessage()
     MessageService.sendEmailMessage()
-    TrackerService.initSrvc()
+    //TrackerService.initSrvc()
   }); 
 
 

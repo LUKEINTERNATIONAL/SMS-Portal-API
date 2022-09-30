@@ -1,6 +1,6 @@
 
 const passport = require('passport')
-const {User} = require('./models')
+const {User, Respondent } = require('./models')
 
 const JwtStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt
@@ -19,7 +19,20 @@ passport.use(
         }
       })
       if (!user) {
-        return done(new Error(), false)
+        /** a bit confusing i know.. will rework this code */
+        try {
+          const respondent = await Respondent.findOne({
+            where: {
+              id: jwtPayload.id
+            }
+          })
+          if(!respondent) {
+            return done(new Error(), false)
+          }
+          return done(null, respondent)
+        } catch (error) {
+          return done(new Error(), false)
+        }
       }
       return done(null, user)
     } catch (err) {
