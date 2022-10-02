@@ -6,6 +6,8 @@ const { Op } = require("sequelize")
 const {sendEmail, sendEmailViaExternalAPI} = require('./EmailService')
 const { getIpAddress } = require('./MachineIpAddress')
 const  request = require ('http');
+// var sequelize = require('sequelize');
+const sequelize        = require('../../models/index')
 
 async function getCases() {
   let cases = await Case.findAll({
@@ -80,28 +82,27 @@ async function SaveMessage(messsage_body) {
   }
 }
 async function sendFailedMessage() {
-  Respondent.hasMany(Message, {foreignKey: 'respondent_id'})
-  Message.belongsTo(Respondent, {foreignKey: 'respondent_id'})
-  var message = await Respondent.findAll({
-    include: [{
-      model: Message,
-      where: {
-        status: {
-          [Op.not]: 'SMS sent'
-        }
-      },
-      limit: 1
-     }]
-  });
-  if(message[0].dataValues.Messages.length > 0)
-  {
-    let payload = [{
-      message: message[0].dataValues.Messages[0].dataValues.body,
-      phone: message[0].dataValues.phone_pri,
-      message_id: message[0].dataValues.Messages[0].dataValues.id
-    }]
+  var message = await sequelize.query(`SELECT * FROM Respondents r 
+  INNER JOIN Messages m on r.id = m.respondent_id 
+  where status !='SMS sent'
+  order by m.updatedAt asc limit 1;`);
+
+  var phone = 0;
+  if(message[0][0].phone_sec != "")
+    phone  = message[0][0].phone_sec
+  else
+    phone  = message[0][0].phone_pri
+
+  if(message[0].length > 0) {
+    let payload = {
+    message: message[0][0]['body'],
+    phone: phone,
+    message_id: message[0][0].id,
+    ipAddress: getIpAddress()+":8186"
+    }
+    console.log(JSON.stringify(payload))
     sendToPhone(JSON.stringify(payload))
-  }
+  } 
 }
 
 async function sendEmailMessage() {
@@ -128,25 +129,23 @@ async function sendEmailMessage() {
 }
 
 async function sendMessage() {
-  Respondent.hasMany(Message, {foreignKey: 'respondent_id'})
-  Message.belongsTo(Respondent, {foreignKey: 'respondent_id'})
-  var message = await Respondent.findAll({
-    include: [{
-      model: Message,
-      where: {status: 'pending'},
-      limit: 1
-     }]
-  });
-  if(message[0].dataValues.Messages.length > 0) {
+  var message = await sequelize.query(`SELECT * FROM Respondents r 
+                INNER JOIN Messages m on r.id = m.respondent_id 
+                where status ='pending'
+                order by m.updatedAt asc limit 1;`);
+
+  if(message[0].length > 0) {
     let payload = {
-      message: message[0].dataValues.Messages[0].dataValues.body,
-      phone: message[0].dataValues.phone_pri,
-      message_id: message[0].dataValues.Messages[0].dataValues.id,
+      message: message[0][0]['body'],
+      phone: message[0][0]['phone_pri'],
+      message_id: message[0][0].id,
       ipAddress: getIpAddress()+":8186"
     }
+    console.log(JSON.stringify(payload))
     sendToPhone(JSON.stringify(payload))
   } else {
     sendFailedMessage();
+    console.log('fail')
   }
 }
 
