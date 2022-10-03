@@ -3,11 +3,10 @@ const {Message} = require('../models')
 const {Case} = require('../models')
 const {Facility} = require('../models')
 const { Op } = require("sequelize")
-const {sendEmail, sendEmailViaExternalAPI} = require('./EmailService')
+const { sendEmail, sendEmailViaExternalAPI} = require('./EmailService')
 const { getIpAddress } = require('./MachineIpAddress')
-const  request = require ('http');
-// var sequelize = require('sequelize');
-const sequelize        = require('../../models/index')
+const  request = require ('http')
+const { sequelize } = require('../models')
 
 async function getCases() {
   let cases = await Case.findAll({
@@ -38,19 +37,25 @@ async function CasesToMessages(cases) {
 }
 
 async function GetFacilityName(facility_code) {
-  let facility = await Facility.findAll({
-    where: {
-      facility_code: facility_code
-  }
-  })
 
-  // if(facility) {
-  //   return facility[0].dataValues.name
-  // }
-   
-  // else {
-    return facility_code
-  // }
+  try {
+    let facility = await Facility.findAll({
+      where: {
+        facility_code: facility_code
+    }
+    })
+
+    if(facility) {
+      return facility[0].dataValues.name
+    }
+     
+    else {
+      return facility_code
+    }
+
+  } catch (error) {
+    console.error("an error occured: "+error)
+  }
 }
 
 async function changeCaseStatus(caseId) {
