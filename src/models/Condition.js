@@ -4,7 +4,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             unique: true
         },
-        name: DataTypes.STRING
+        name: DataTypes.STRING,
+        active: DataTypes.INTEGER,
+        paired_with_conditions_ids: DataTypes.STRING
     })
 
     return Condition
