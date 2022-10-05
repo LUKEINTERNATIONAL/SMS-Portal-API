@@ -157,7 +157,7 @@ async function sendMessage() {
 function sendToPhone(data) {
   const req = request.request(
     {
-      host: '0.0.0.0',
+      host: '192.168.11.168',
       port: '8188',
       path: '/sendsms',
       method: 'POST',

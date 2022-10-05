@@ -89,7 +89,7 @@ module.exports = (app) => {
   app.get('/messages/:messageId',
     isAuthenticated,
     MessageController.show),
-  app.put('/message/:messageId/:status',
+  app.put('/message',
     MessageController.put)
   app.delete('/message/:messageId',
    isAuthenticated,
