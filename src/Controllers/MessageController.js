@@ -112,10 +112,11 @@ module.exports = {
     },
 
     async put (req, res) {
+        var {messageId, status} = req.body
         try {
-            const message = await Message.update({ status:req.params.status }, {
+            const message = await Message.update({ status }, {
                 where: {
-                    id: req.params.messageId
+                    id: messageId
                 }
             })
             MessageService.sendMessage();
