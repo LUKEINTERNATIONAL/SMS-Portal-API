@@ -143,7 +143,7 @@ async function sendMessage() {
     let payload = {
       message: message[0][0]['body'],
       phone: message[0][0]['phone_pri'],
-      messageId: message[0][0].id,
+      messageID: message[0][0]['id'],
       ipAddress: getIpAddress()+":8186"
     }
     console.log(JSON.stringify(payload))
