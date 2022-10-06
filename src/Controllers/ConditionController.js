@@ -13,6 +13,28 @@ module.exports = {
         }
     },
 
+    async paginatedIndex(req, res) {
+        try {
+            let conditions
+            let { page, size } = req.params
+            page = parseInt(page)
+            size = parseInt(size)
+            if (size == -1) {
+                conditions = await Condition.findAndCountAll()
+            } else {
+                conditions = await Condition.findAndCountAll({
+                    limit: parseInt(size),
+                    offset: parseInt(page)            
+                })
+            }
+            res.send(conditions)
+        } catch (error) {
+            res.status(500).send({
+                error: "an error occured: "+error
+            })
+        }
+    },
+
     async show (req, res) {
         try {
             const condition = await Condition.findByPk(req.params.conditionId)
@@ -34,6 +56,8 @@ module.exports = {
                     id: conditionId
                 }
             })
+
+            //res(condition)
             
         } catch (error) {
             res.status(500).send({

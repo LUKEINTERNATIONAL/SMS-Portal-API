@@ -391,10 +391,10 @@ module.exports = (app) => {
   */
   app.get('/roles',
   isAuthenticated,
-    RoleController.index)
+    RoleController.index),
   app.post('/role',
     isAuthenticated,
-    RoleController.post)
+    RoleController.post),
   app.get('/roles/:roleId',
     isAuthenticated,
     RoleController.show),
@@ -403,23 +403,24 @@ module.exports = (app) => {
     RoleController.put)
   app.delete('/role/:roleId',
    isAuthenticated,
-   RoleController.delete)
+   RoleController.delete),
 
   app.get('/facilities',
    isAuthenticated,
-   FacilityController.index)
+   FacilityController.index),
   app.get('/facilities/:facilityId',
    isAuthenticated,
-   FacilityController.show)
+   FacilityController.show),
 
   app.get('/conditions',
    isAuthenticated,
-   ConditionController.index)
+   ConditionController.index),
   app.get('/conditions/:conditionId',
    isAuthenticated,
-   ConditionController.show)
+   ConditionController.show),
   app.post('/condition',
    isAuthenticated,
-   ConditionController.put)
-
+   ConditionController.put),
+  app.get('/paginatedConditions/:page/:size',
+   ConditionController.paginatedIndex)
 }
