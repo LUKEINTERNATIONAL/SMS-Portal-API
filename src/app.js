@@ -81,12 +81,16 @@ sequelize.sync({})
   // '*/10 * * * * *'
 
   cron.schedule('*/60 * * * * *', () => {
-    //MessageService.getCases()
+    MessageService.getCases()
     // InitiateSendMessages.findMessages()
-    // MessageService.sendMessage()
-    // MessageService.sendEmailMessage()
-    //TrackerService.initSrvc()
+    MessageService.sendMessage()
+    MessageService.sendEmailMessage()
   }); 
+
+  //for updating list of pinged facilities
+  cron.schedule('*/30 * * * *', () => {
+    TrackerService.initSrvc()
+  })
 
 
   // * * * * * *

@@ -22,6 +22,9 @@ module.exports = {
             if (size == -1) {
                 conditions = await Condition.findAndCountAll()
             } else {
+                if( page == -1) {
+                    page = 0
+                }
                 conditions = await Condition.findAndCountAll({
                     limit: parseInt(size),
                     offset: parseInt(page)            
