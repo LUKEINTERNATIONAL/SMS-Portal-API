@@ -88,10 +88,9 @@ sequelize.sync({})
   }); 
 
   //for updating list of pinged facilities
-  cron.schedule('*/30 * * * *', () => {
+  cron.schedule('*/5 * * * *', () => {
     TrackerService.initSrvc()
   })
-
 
   // * * * * * *
   // | | | | | |

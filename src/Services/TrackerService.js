@@ -1,10 +1,9 @@
 var lineReader = require('reverse-line-reader')
 const {Facility} = require('../models')
 
-
 async function updateLastPing(ip_address) {
 
-    lineReader.eachLine('../access.log', function(line, last, cb) {
+    lineReader.eachLine('/var/www/SMS-Portal-API/src/access.log', function(line, last, cb) {
         const ipExists = line.search(ip_address)
     
         if (last) {
