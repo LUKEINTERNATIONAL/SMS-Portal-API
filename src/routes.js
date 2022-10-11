@@ -8,6 +8,7 @@ const UserController = require("../src/Controllers/UserController")
 const RoleController = require("../src/Controllers/RoleController")
 const FacilityController = require("../src/Controllers/FacilityController")
 const ConditionController = require("../src/Controllers/ConditionController")
+const CustomMessageController = require("../src/Controllers/CustomMessageController")
 
 const isAuthenticated = require('./policies/isAuthenticated')
 
@@ -423,4 +424,17 @@ module.exports = (app) => {
    ConditionController.put),
   app.get('/paginatedConditions/:page/:size',
    ConditionController.paginatedIndex)
+
+  app.get('/customMessages',
+   isAuthenticated,
+   CustomMessageController.index),
+  app.post('/customMessage',
+   isAuthenticated,
+   CustomMessageController.post),
+  app.put('/customMessage',
+   isAuthenticated,
+   CustomMessageController.put),
+  app.delete('/customMessage',
+   isAuthenticated,
+   CustomMessageController.delete)
 }
