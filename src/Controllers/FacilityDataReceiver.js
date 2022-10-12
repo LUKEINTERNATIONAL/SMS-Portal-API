@@ -34,26 +34,27 @@ module.exports = {
 
       if(user) {
         //console.log(concept_name_collection)
+        console.log({payload})
+        console.log({concept_name_collection})
+        // for(let key in concept_name_collection) {
 
-        for(let key in concept_name_collection) {
-
-          if (concept_name_collection[key].length > 1 ) {
-            for (let id of concept_name_collection[key]) {
-              try {
-                await Condition.create({code: id, name: key})
-              } catch (err) {
-                //console.log(err)
-              }
-            }
-          } else {
-            for (let id of concept_name_collection[key]) {
-              try {
-                await Condition.create({code: id, name: key})
-              } catch (err) {
-                //console.log(err)
-              }
-            }
-          }
+          // if (concept_name_collection[key].length > 1 ) {
+          //   for (let id of concept_name_collection[key]) {
+          //     try {
+          //       await Condition.create({code: id, name: key})
+          //     } catch (err) {
+          //       //console.log(err)
+          //     }
+          //   }
+          // } else {
+          //   for (let id of concept_name_collection[key]) {
+          //     try {
+          //       await Condition.create({code: id, name: key})
+          //     } catch (err) {
+          //       //console.log(err)
+          //     }
+          //   }
+          // }
 
           // if (concept_name_collection[key].length == 0) {
           //   try {
@@ -62,7 +63,7 @@ module.exports = {
           //     //console.log(err)
           //   }
           // }
-        }
+        // }
 
         for (let key in payload) {
           let lessFiveYearsCases

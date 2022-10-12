@@ -7,7 +7,8 @@ const {
     Respondent,
     Message,
     Role,
-    CustomMessage
+    CustomMessage,
+    GroupCondition
 } = require('../src/models')
 
 const Promise = require('bluebird')
@@ -19,8 +20,9 @@ const respondent = require('./Respondent.json')
 const messsage = require('./Message.json')
 const role = require('./Role.json')
 const customMessage = require('./CustomMessage.json')
+const groupCondition = require('./GroupCondition.json')
 
-sequelize.sync({force: true})
+sequelize.sync({alter: true})
   .then ( async function() {
       await Promise.all(
           users.map(user => {
@@ -68,6 +70,12 @@ sequelize.sync({force: true})
         customMessage.map(customMessage => {
           CustomMessage.create(customMessage)
         }) 
+      )
+
+      await Promise.all(
+        groupCondition.map(groupCondition => {
+          GroupCondition.create(groupCondition)
+        })
       )
  
   })
