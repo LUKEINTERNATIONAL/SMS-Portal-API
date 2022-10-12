@@ -42,9 +42,10 @@ module.exports = {
 
     async put (req, res) {
         try {
+            const { customMessageId } = req.params
             const customMessage = await CustomMessage.update(req.body, {
                 where: {
-                    id: req.params.CustomMessageId
+                    id: customMessageId
                 }
             })
             res.send(customMessage)

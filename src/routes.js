@@ -428,13 +428,16 @@ module.exports = (app) => {
   app.get('/customMessages',
    isAuthenticated,
    CustomMessageController.index),
+  app.get('/customMessages/:customMessageId',
+   isAuthenticated,
+   CustomMessageController.show),
   app.post('/customMessage',
    isAuthenticated,
    CustomMessageController.post),
-  app.put('/customMessage',
+  app.put('/customMessage/:customMessageId',
    isAuthenticated,
    CustomMessageController.put),
-  app.delete('/customMessage',
+  app.delete('/customMessage/:customMessageId',
    isAuthenticated,
    CustomMessageController.delete)
 }
