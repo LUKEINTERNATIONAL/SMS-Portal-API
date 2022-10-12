@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
-    const Condition = sequelize.define('GroupCondition', {
+    const Condition = sequelize.define('GroupedCondition', {
         generated_code_id: {
             type: DataTypes.STRING,
-            unique: true
+            unique: false
         },
         code: {
             type: DataTypes.STRING,
