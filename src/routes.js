@@ -9,6 +9,7 @@ const RoleController = require("../src/Controllers/RoleController")
 const FacilityController = require("../src/Controllers/FacilityController")
 const ConditionController = require("../src/Controllers/ConditionController")
 const CustomMessageController = require("../src/Controllers/CustomMessageController")
+const GroupedConditionForCustomMessageController = require("../src/GroupedConditionForCustomMessageController")
 
 const isAuthenticated = require('./policies/isAuthenticated')
 
@@ -440,4 +441,20 @@ module.exports = (app) => {
   app.delete('/customMessage/:customMessageId',
    isAuthenticated,
    CustomMessageController.delete)
+
+   app.get('/groupedConditionForCustomMessage',
+   isAuthenticated,
+   GroupedConditionForCustomMessageController.index),
+  app.get('/groupedConditionForCustomMessages/:customMessageId',
+   isAuthenticated,
+   GroupedConditionForCustomMessageController.show),
+  app.post('/groupedConditionForCustomMessage',
+   isAuthenticated,
+   GroupedConditionForCustomMessageController.post),
+  app.put('/groupedConditionForCustomMessage/:customMessageId',
+   isAuthenticated,
+   GroupedConditionForCustomMessageController.put),
+  app.delete('/groupedConditionForCustomMessage/:customMessageId',
+   isAuthenticated,
+   GroupedConditionForCustomMessageController.delete)
 }

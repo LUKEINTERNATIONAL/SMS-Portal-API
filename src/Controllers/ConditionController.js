@@ -1,10 +1,12 @@
-const {Condition} = require('../models')
+const {GroupedCondition} = require('../models')
 
 module.exports = {
 
     async index(req, res) {
         try {
-            const conditions = await Condition.findAll()
+            const conditions = await GroupedCondition.findAll({
+                group: "name",
+            })
             res.send(conditions)
         } catch(err) {
             res.status(500).send({
@@ -20,12 +22,15 @@ module.exports = {
             page = parseInt(page)
             size = parseInt(size)
             if (size == -1) {
-                conditions = await Condition.findAndCountAll()
+                conditions = await GroupedCondition.findAndCountAll({
+                    group: "name",
+                })
             } else {
                 if( page == -1) {
                     page = 0
                 }
-                conditions = await Condition.findAndCountAll({
+                conditions = await GroupedCondition.findAndCountAll({
+                    group: "name",
                     limit: parseInt(size),
                     offset: parseInt(page)            
                 })
@@ -40,7 +45,7 @@ module.exports = {
 
     async show (req, res) {
         try {
-            const condition = await Condition.findByPk(req.params.conditionId)
+            const condition = await GroupedCondition.findByPk(req.params.conditionId)
             res.send(condition)
         } catch(err) {
             res.status(500).send({
@@ -54,7 +59,7 @@ module.exports = {
             let dataObject = req.body
             let { conditionId } = req.body
 
-            const condition = await Condition.update( dataObject, {
+            const condition = await GroupedCondition.update( dataObject, {
                 where: {
                     id: conditionId
                 }
