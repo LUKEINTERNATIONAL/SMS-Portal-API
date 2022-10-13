@@ -4,7 +4,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             unique: true,
         },
-        body: DataTypes.STRING
+        body: DataTypes.STRING,
+        active: DataTypes.INTEGER
     })
 
     return CustomMessage
