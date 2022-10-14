@@ -12,6 +12,21 @@ module.exports = {
         }
     },
 
+    async findRelatedCustomMessageID(req, res) {
+        try {
+            const { customMessageCode} = req.params
+            const conditions = await GroupedConditionForCustomMessage.findAll({
+                where: {
+                    customMessageCode: customMessageCode
+                }
+            })
+            res.send(conditions)
+        } catch (err) {
+            res.status(500).send({
+                error: 'An error has occured trying to retrive a message'
+            })
+        }
+    },
     async post(req, res) {
         try {
             const message = await GroupedConditionForCustomMessage.create(req.body)
