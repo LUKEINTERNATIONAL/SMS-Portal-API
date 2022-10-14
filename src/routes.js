@@ -9,7 +9,7 @@ const RoleController = require("../src/Controllers/RoleController")
 const FacilityController = require("../src/Controllers/FacilityController")
 const ConditionController = require("../src/Controllers/ConditionController")
 const CustomMessageController = require("../src/Controllers/CustomMessageController")
-const GroupedConditionForCustomMessageController = require("../src/GroupedConditionForCustomMessageController")
+const GroupedConditionForCustomMessageController = require("../src/Controllers/GroupedConditionForCustomMessageController")
 
 const isAuthenticated = require('./policies/isAuthenticated')
 
