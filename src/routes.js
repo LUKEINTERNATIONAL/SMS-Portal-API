@@ -442,7 +442,7 @@ module.exports = (app) => {
    isAuthenticated,
    CustomMessageController.delete)
 
-   app.get('/groupedConditionForCustomMessage',
+   app.get('/groupedConditionForCustomMessages',
    isAuthenticated,
    GroupedConditionForCustomMessageController.index),
   app.get('/groupedConditionForCustomMessages/:customMessageId',

@@ -7,6 +7,10 @@ module.exports = (sequelize, DataTypes) => {
         customMessageCode: {
             type: DataTypes.STRING,
             unique: false
+        },
+        active: {
+            type: DataTypes.INTEGER,
+            default: 0
         }
     })
 
