@@ -34,7 +34,6 @@ module.exports = {
 
       if(user) {
         //console.log(concept_name_collection)
-
         for(let key in concept_name_collection) {
 
           if (concept_name_collection[key].length > 1 ) {

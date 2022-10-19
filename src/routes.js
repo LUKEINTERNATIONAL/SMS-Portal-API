@@ -8,6 +8,8 @@ const UserController = require("../src/Controllers/UserController")
 const RoleController = require("../src/Controllers/RoleController")
 const FacilityController = require("../src/Controllers/FacilityController")
 const ConditionController = require("../src/Controllers/ConditionController")
+const CustomMessageController = require("../src/Controllers/CustomMessageController")
+const GroupedConditionForCustomMessageController = require("../src/Controllers/GroupedConditionForCustomMessageController")
 
 const isAuthenticated = require('./policies/isAuthenticated')
 
@@ -391,10 +393,10 @@ module.exports = (app) => {
   */
   app.get('/roles',
   isAuthenticated,
-    RoleController.index)
+    RoleController.index),
   app.post('/role',
     isAuthenticated,
-    RoleController.post)
+    RoleController.post),
   app.get('/roles/:roleId',
     isAuthenticated,
     RoleController.show),
@@ -403,23 +405,65 @@ module.exports = (app) => {
     RoleController.put)
   app.delete('/role/:roleId',
    isAuthenticated,
-   RoleController.delete)
+   RoleController.delete),
 
   app.get('/facilities',
    isAuthenticated,
-   FacilityController.index)
+   FacilityController.index),
   app.get('/facilities/:facilityId',
    isAuthenticated,
-   FacilityController.show)
+   FacilityController.show),
 
   app.get('/conditions',
    isAuthenticated,
-   ConditionController.index)
+   ConditionController.index),
+  app.get('/customMessageForGCI/:generatedCodeId',
+   isAuthenticated,
+    ConditionController.getSingleCondition),
   app.get('/conditions/:conditionId',
    isAuthenticated,
-   ConditionController.show)
+   ConditionController.show),
   app.post('/condition',
    isAuthenticated,
-   ConditionController.put)
+   ConditionController.put),
+  app.get('/paginatedConditions/:page/:size',
+   ConditionController.paginatedIndex)
 
+  app.get('/customMessages',
+   isAuthenticated,
+   CustomMessageController.index),
+  app.get('/customMessages/:customMessageId',
+   isAuthenticated,
+   CustomMessageController.show),
+  app.post('/customMessage',
+   isAuthenticated,
+   CustomMessageController.post),
+  app.put('/customMessage/:customMessageId',
+   isAuthenticated,
+   CustomMessageController.put),
+  app.delete('/customMessage/:customMessageId',
+   isAuthenticated,
+   CustomMessageController.delete)
+
+   app.get('/groupedConditionForCustomMessages',
+   isAuthenticated,
+   GroupedConditionForCustomMessageController.index),
+  app.get('/groupedConditionForCustomMessages/:customMessageId',
+   isAuthenticated,
+   GroupedConditionForCustomMessageController.show),
+  app.get('/CustomMessageCode/:customMessageCode',
+   isAuthenticated,
+    GroupedConditionForCustomMessageController.findRelatedCustomMessageID),
+  app.post('/groupedConditionForCustomMessage',
+   isAuthenticated,
+   GroupedConditionForCustomMessageController.post),
+  app.put('/groupedConditionForCustomMessage/:customMessageId',
+   isAuthenticated,
+   GroupedConditionForCustomMessageController.put),
+  app.delete('/groupedConditionForCustomMessage/:customMessageId',
+   isAuthenticated,
+   GroupedConditionForCustomMessageController.delete),
+  app.get('/groupedConditionForCustomMessage/:customMessageCode',
+   isAuthenticated,
+   GroupedConditionForCustomMessageController.multipleDelete)
 }
