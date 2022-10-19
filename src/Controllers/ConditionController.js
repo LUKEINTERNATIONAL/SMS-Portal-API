@@ -15,6 +15,25 @@ module.exports = {
         }
     },
 
+    async getSingleCondition (req, res) {
+        try {
+            const { generatedCodeId } = req.params
+            console.log('################')
+            console.log(generatedCodeId)
+            console.log('#####################')
+            const condition = await GroupedCondition.findOne({
+                where: {
+                    generated_code_id: generatedCodeId
+                }
+            })
+            res.send(condition)
+        } catch (err) {
+            res.status(500).send({
+                error: 'An error has occured trying to retrive a condition: '+err
+            })
+        }
+    },
+
     async paginatedIndex(req, res) {
         try {
             let conditions
@@ -22,15 +41,12 @@ module.exports = {
             page = parseInt(page)
             size = parseInt(size)
             if (size == -1) {
-                conditions = await GroupedCondition.findAndCountAll({
-                    group: "name",
-                })
+                conditions = await GroupedCondition.findAndCountAll()
             } else {
                 if( page == -1) {
                     page = 0
                 }
                 conditions = await GroupedCondition.findAndCountAll({
-                    group: "name",
                     limit: parseInt(size),
                     offset: parseInt(page)            
                 })

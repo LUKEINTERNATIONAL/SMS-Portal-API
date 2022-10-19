@@ -417,6 +417,9 @@ module.exports = (app) => {
   app.get('/conditions',
    isAuthenticated,
    ConditionController.index),
+  app.get('/customMessageForGCI/:generatedCodeId',
+   isAuthenticated,
+    ConditionController.getSingleCondition),
   app.get('/conditions/:conditionId',
    isAuthenticated,
    ConditionController.show),
@@ -459,5 +462,8 @@ module.exports = (app) => {
    GroupedConditionForCustomMessageController.put),
   app.delete('/groupedConditionForCustomMessage/:customMessageId',
    isAuthenticated,
-   GroupedConditionForCustomMessageController.delete)
+   GroupedConditionForCustomMessageController.delete),
+  app.get('/groupedConditionForCustomMessage/:customMessageCode',
+   isAuthenticated,
+   GroupedConditionForCustomMessageController.multipleDelete)
 }

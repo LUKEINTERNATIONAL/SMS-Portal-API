@@ -76,7 +76,24 @@ module.exports = {
            res.send(message)
         } catch(err) {
             res.status(500).send({
-                error: 'An error has occured trying to delete a message'
+                error: 'An error has occured trying to delete a message: '+err
+            })
+        }
+    },
+
+    async multipleDelete(req, res) {
+        const { customMessageCode } = req.params
+        try {
+            const message = GroupedConditionForCustomMessage.destroy({
+                where: {
+                    customMessageCode: customMessageCode
+                }
+            })
+
+            res.send(message)
+        } catch (err) {
+            res.status(500).send({
+                error: 'An error has occured trying to delete a message: '+err
             })
         }
     }
