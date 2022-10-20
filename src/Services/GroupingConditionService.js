@@ -98,4 +98,6 @@ async function getLastGeneratedCode() {
     }
 }
 
+groupConditions()
+
 module.exports = { groupConditions }
