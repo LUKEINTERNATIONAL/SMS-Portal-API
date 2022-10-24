@@ -95,7 +95,7 @@ module.exports = {
         }
 
         try {
-          await Facility.create({code: emr_facility_id, name: emr_facility_name})
+          await Facility.create({facility_code: emr_facility_id, name: emr_facility_name})
         } catch (err) {
           //console.log(err)
         }
