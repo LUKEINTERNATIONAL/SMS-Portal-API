@@ -12,6 +12,7 @@ const InitiateSendMessages = require('../src/Services/InitiateSendMessages')
 const swaggerJsDoc = require('swagger-jsdoc')
 const swaggerUI = require('swagger-ui-express')
 const TrackerService = require('../src/Services/TrackerService')
+const FindRemoteConditions = require('../src/Services/FindRemoteConditins')
 
 
 const app = express()
@@ -90,6 +91,7 @@ sequelize.sync({})
   //for updating list of pinged facilities
   cron.schedule('*/5 * * * *', () => {
     TrackerService.initSrvc()
+    FindRemoteConditions.findFacilitities()
   })
 
   // * * * * * *
