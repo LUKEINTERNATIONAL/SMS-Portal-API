@@ -22,21 +22,20 @@ async function findFacilitities() {
 
 async function callRemoteProcedure(host, username, password) {
   try {
-
-    const ip = host
-    const usrnm = username
-    const psswrd = password
-
     await Promise.all(
       ssh.connect({
-        host: ip,
-        username: usrnm,
-        password: psswrd
+        host: host,
+        username: username,
+        password: password
       }).
       then(() => {
         ssh.execCommand("/bin/bash --login -c \"rails runner notifiable_disease_conditions_report.rb\"", { cwd:'/var/www/BHT-EMR-API/bin/idsr' }).then(function(result) {
+            console.log('___________________________________________________________________________________________________________')
+            console.log(toUpperCase(username))
+            console.log('___________________________________________________________________________________________________________')
             console.log('STDOUT: ' + result.stdout)
             console.log('STDERR: ' + result.stderr)
+            console.log('___________________________________________________________________________________________________________')
           })
       })
     )
@@ -52,10 +51,16 @@ ssh.connect({
   password: 'letmein'
 }).
 then(() => {
-  ssh.execCommand("/bin/bash --login -c \"rails runner notifiable_disease_conditions_report.rb\"", { cwd:'/var/www/BHT-EMR-API/bin/idsr' }).then(function(result) {
+  try {
+    ssh.execCommand("/bin/bash --login -c \"rails runner notifiable_disease_conditions_report.rb\"", { cwd:'/var/www/BHT-EMR-API/bin/idsr' }).then(function(result) {
       console.log('STDOUT: ' + result.stdout)
-      console.log('STDERR: ' + result.stderr)
+      console.error('STDERR: ' + result.stderr)
     })
+  } catch (error) {
+    console.error(error)
+  }
 })
+
+findFacilitities()
 
 module.exports = { findFacilitities }
