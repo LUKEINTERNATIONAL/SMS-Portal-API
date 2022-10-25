@@ -51,14 +51,11 @@ ssh.connect({
   password: 'letmein'
 }).
 then(() => {
-  try {
     ssh.execCommand("/bin/bash --login -c \"rails runner notifiable_disease_conditions_report.rb\"", { cwd:'/var/www/BHT-EMR-API/bin/idsr' }).then(function(result) {
       console.log('STDOUT: ' + result.stdout)
       console.error('STDERR: ' + result.stderr)
     })
-  } catch (error) {
-    console.error(error)
-  }
+
 })
 
 findFacilitities()
