@@ -31,7 +31,7 @@ async function callRemoteProcedure(host, username, password) {
       then(() => {
         ssh.execCommand("/bin/bash --login -c \"rails runner notifiable_disease_conditions_report.rb\"", { cwd:'/var/www/BHT-EMR-API/bin/idsr' }).then(function(result) {
             console.log('___________________________________________________________________________________________________________')
-            console.log(toUpperCase(username))
+            console.log(username.toUpperCase())
             console.log('___________________________________________________________________________________________________________')
             console.log('STDOUT: ' + result.stdout)
             console.log('STDERR: ' + result.stderr)
