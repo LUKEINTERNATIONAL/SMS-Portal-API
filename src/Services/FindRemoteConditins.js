@@ -11,8 +11,16 @@ async function findFacilitities() {
       const host = FACILITY.dataValues.vpn_ip_address
       const username = FACILITY.dataValues.server_username
       const password = FACILITY.dataValues.server_password
-
-      await callRemoteProcedure(host, username, password)
+      let arry = [host, username, password]
+      let check = false
+      for(let item of arry) {
+        if (typeof item === 'string') {
+          check = true
+        } else { check = false}
+      }
+      if(check) {
+        await callRemoteProcedure(host, username, password)
+      }
     }
   
   } catch (error) {
