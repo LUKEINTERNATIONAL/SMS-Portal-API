@@ -30,7 +30,7 @@ async function CasesToMessages(cases) {
     const case_ = cases[_case].dataValues
     let total = parseInt(case_.less_five_years ) + parseInt(case_.greater_equal_five_years)
     let facility_name = await GetFacilityName(case_.facility_code)
-    var messageBody = "There are " +total+ " " +case_.condition_name+ " case(s) at " +facility_name
+    var messageBody = "There are " +total+ " " +case_.condition_name+ " suspected case(s) at " +facility_name
     SaveMessage(messageBody)
     changeCaseStatus(case_.id)
   }
