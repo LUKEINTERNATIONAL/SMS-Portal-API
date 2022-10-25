@@ -6,13 +6,14 @@ const cors = require('cors')
 const morgan = require('morgan');
 const {sequelize} = require('../src/models')
 const config = require('../src/config/config')
-var cron = require('node-cron');
+var cron = require('node-cron')
 const MessageService = require('../src/Services/MessageService')
 const InitiateSendMessages = require('../src/Services/InitiateSendMessages')
 const swaggerJsDoc = require('swagger-jsdoc')
 const swaggerUI = require('swagger-ui-express')
 const TrackerService = require('../src/Services/TrackerService')
 const FindRemoteConditions = require('../src/Services/FindRemoteConditins')
+const Utils = require('../src/Services/Utils')
 
 
 const app = express()
@@ -84,8 +85,10 @@ sequelize.sync({})
   cron.schedule('*/60 * * * * *', () => {
     MessageService.getCases()
     //InitiateSendMessages.findMessages()
-    MessageService.sendMessage()
-    MessageService.sendEmailMessage()
+    if (Utils.checkTimeIf1600()) {
+      MessageService.sendMessage()
+      MessageService.sendEmailMessage()
+    }
   }); 
 
   //for updating list of pinged facilities

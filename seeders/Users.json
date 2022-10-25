@@ -7,7 +7,7 @@
         "phone_pri": "0888231289",
         "about": "Software developers conceive of, design, and build computer programs. Some develop new applications..",
         "email": "admin@email.test",
-        "password": "administrator",
+        "password": "admin",
         "role_id": "824"
     },
     {
@@ -17,7 +17,7 @@
         "address": "kwanzu, 78, nchalo",
         "phone_pri": "0999231289",
         "email": "dom@jkj.co",
-        "password": "12345678",
+        "password": "administrator",
         "role_id": "824"
     }
 
