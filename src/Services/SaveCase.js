@@ -21,7 +21,7 @@ async function deleteCases(facility_id) {
 
        const cases = await Case.destroy({
            where:{
-            facility_code: 242,
+            facility_code: facility_id,
             createdAt: {
                     [Op.gte]: todaysDate
                     }
