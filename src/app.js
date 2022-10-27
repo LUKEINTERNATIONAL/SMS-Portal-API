@@ -80,14 +80,10 @@ sequelize.sync({})
     console.log(`Server started on port ${config.port}`)
   })
 
-  // '*/10 * * * * *'
-
   cron.schedule('*/60 * * * * *', () => {
-    MessageService.getCases()
     //InitiateSendMessages.findMessages()
-    if (Utils.checkTimeIf1600()) {
-      MessageService.sendMessage()
-      MessageService.sendEmailMessage()
+    if (Utils.checkTimeIf1700()) {
+      MessageService.initSrvc()
     }
   }); 
 

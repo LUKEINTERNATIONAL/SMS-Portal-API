@@ -1,9 +1,9 @@
-function checkTimeIf1600() {
+function checkTimeIf1700() {
     var now = new Date
     var time = now.getUTCHours()
 
     var d = new Date;
-    d.setHours(16)
+    d.setHours(17)
     d = d.getUTCHours()
     
     if(time == d) {
@@ -13,4 +13,4 @@ function checkTimeIf1600() {
     }
 }
 
-module.exports = { checkTimeIf1600 }
+module.exports = { checkTimeIf1700 }

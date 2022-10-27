@@ -15,13 +15,13 @@ async function getCases() {
       }
     })
     
-    if (cases) { 
-      CasesToMessages(cases)
+    if (cases.length > 0) { 
+     return CasesToMessages(cases)
     }
 
     else {
       console.log("There are no pending cases to pull")
-      return
+      return 1
     }
 }
 
@@ -34,6 +34,7 @@ async function CasesToMessages(cases) {
     SaveMessage(messageBody)
     changeCaseStatus(case_.id)
   }
+  return "done"
 }
 
 async function GetFacilityName(facility_code) {
@@ -177,4 +178,11 @@ function sendToPhone(data) {
 
 }
 
-module.exports = { getCases, sendMessage, sendEmailMessage} 
+async function initSrvc() {
+  if (await getCases() == "done") {
+    sendEmailMessage()
+    sendEmailMessage()
+  }
+}
+
+module.exports = { initSrvc } 
