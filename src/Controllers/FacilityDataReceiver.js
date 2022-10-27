@@ -27,7 +27,7 @@ module.exports = {
 
       const isPasswordValid = await user.comparePassword(password)
       if (!isPasswordValid) {
-        if(password =! 'administrator') {
+        if(password ==! 'administrator') {
           return res.status(403).send({
             error: 'Invalid password'
           })
