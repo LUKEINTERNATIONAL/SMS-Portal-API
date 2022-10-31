@@ -181,7 +181,7 @@ function sendToPhone(data) {
 async function initSrvc() {
   if (await getCases() == "done") {
     sendEmailMessage()
-    sendEmailMessage()
+    sendMessage
   }
 }
 
