@@ -135,23 +135,29 @@ async function sendEmailMessage() {
 }
 
 async function sendMessage() {
-  var message = await sequelize.query(`SELECT * FROM Respondents r 
+  var message = await sequelize.query(`SELECT *, DATE_FORMAT(m.createdAt, '%Y-%m-%d') FROM Respondents r 
                 INNER JOIN Messages m on r.id = m.respondent_id 
-                where status ='pending'
-                order by m.updatedAt asc limit 1;`);
+                where status ='pending' AND date(m.createdAt) = curdate()
+                order by m.updatedAt asc limit 2;`);
 
-  if(message[0].length > 0) {
+  if ( message[0].length > 0 ) {
+    let message_body = ''
+    let message_ids = []
+    let phone
+
+    for ( let _msg of message[0]) {
+      message_body +=_msg.body+'\n'
+      message_ids.push(_msg.id)
+      phone = _msg.phone_pri
+    }
+
     let payload = {
-      message: message[0][0]['body'],
-      phone: message[0][0]['phone_pri'],
-      messageID: message[0][0]['id'],
+      message: message_body,
+      phone: phone,
+      messageID: message_ids,
       ipAddress: getIpAddress()+":8186"
     }
-    console.log(JSON.stringify(payload))
     sendToPhone(JSON.stringify(payload))
-  } else {
-    sendFailedMessage();
-    console.log('fail')
   }
 }
 
@@ -181,7 +187,7 @@ function sendToPhone(data) {
 async function initSrvc() {
   if (await getCases() == "done") {
     sendEmailMessage()
-    sendMessage
+    sendMessage()
   }
 }
 
