@@ -186,9 +186,11 @@ function sendToPhone(data) {
 
 async function initSrvc() {
   if (await getCases() == "done") {
-    sendEmailMessage()
-    sendMessage()
+    setTimeout(() => {
+      sendEmailMessage()
+      sendMessage()
+    }, 300000);
   }
 }
 
-module.exports = { initSrvc } 
+module.exports = { initSrvc, sendMessage } 
