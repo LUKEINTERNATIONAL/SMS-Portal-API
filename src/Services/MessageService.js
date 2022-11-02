@@ -138,7 +138,7 @@ async function sendMessage() {
   var message = await sequelize.query(`SELECT *, DATE_FORMAT(m.createdAt, '%Y-%m-%d') FROM Respondents r 
                 INNER JOIN Messages m on r.id = m.respondent_id 
                 where status ='pending' AND date(m.createdAt) = curdate()
-                order by m.updatedAt asc limit 2;`);
+                order by m.updatedAt asc limit 1;`);
 
   if ( message[0].length > 0 ) {
     let message_body = ''
