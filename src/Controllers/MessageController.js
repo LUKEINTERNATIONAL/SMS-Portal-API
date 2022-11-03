@@ -118,7 +118,9 @@ module.exports = {
                     id: req.body.messageId
                 }
             })
-            MessageService.sendMessage();
+            if (message) {
+                MessageService.sendMessage()
+            }
             res.send(message)
         } catch(err) {
             res.status(500).send({
