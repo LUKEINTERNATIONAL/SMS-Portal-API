@@ -1,3 +1,4 @@
+const { random } = require('lodash')
 const {Condition} = require('../models')
 const {GroupedCondition} = require('../models')
 const { sequelize } = require('../models')
@@ -11,20 +12,22 @@ async function groupConditions() {
                 condition = filtredCondition
                 let generated_code_id = null
                 let condition_code = null
+                let generated_code = null
                 const _condition = await getGroupedCondition(condition.dataValues.name)
                 if (_condition) {
                     if (_condition.dataValues.name == condition.dataValues.name) {
                         generated_code_id = _condition.dataValues.generated_code_id
                         condition_code = _condition.dataValues.code
+                        generated_code = _condition.color
     
                         if (condition_code != condition.dataValues.code) {
                             await createGroupedCondition({
                                 generated_code_id: generated_code_id,
                                 code: condition.dataValues.code,
                                 name: condition.dataValues.name,
-                                active: 1
+                                active: 1,
+                                color: generated_code
                             })
-    
                         }
                     }
                 } else {
@@ -33,12 +36,17 @@ async function groupConditions() {
                         generated_code_id: LastGeneratedCode,
                         code: condition.dataValues.code,
                         name: condition.dataValues.name,
-                        active: 1
+                        active: 1,
+                        color: generateRandomColorHex()
                     })
                 }
             }
         }
     }
+}
+
+function generateRandomColorHex() {
+    return "#" + ("00000" + Math.floor(Math.random() * Math.pow(16, 6)).toString(16)).slice(-6);
 }
 
 async function getAllConditions() {
