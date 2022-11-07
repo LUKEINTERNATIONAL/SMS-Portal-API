@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
         },
         name: DataTypes.STRING,
         active: DataTypes.INTEGER,
-        paired_with_conditions_ids: DataTypes.STRING
+        paired_with_conditions_ids: DataTypes.STRING,
+        color: DataTypes.STRING
     })
 
     return Condition
