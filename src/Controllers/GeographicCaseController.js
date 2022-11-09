@@ -7,7 +7,7 @@ async function generateCasesJoinedFacilities() {
         ON Facilities.facility_code = Cases.facility_code
         INNER JOIN GroupedConditions
         ON GroupedConditions.name = Cases.condition_name
-        GROUP BY Facilities.id;`)
+        GROUP BY count;`)
 
     return dataObj[0]
 }
