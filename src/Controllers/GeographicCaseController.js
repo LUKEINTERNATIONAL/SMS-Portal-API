@@ -1,7 +1,7 @@
 const { sequelize } = require('../models')
 
 async function generateCasesJoinedFacilities() {
-    var dataObj = await sequelize.query(`SELECT condition_name, Facilities.name, latitude, longitude, color, (less_five_years + greater_equal_five_years) as count
+    var dataObj = await sequelize.query(`SELECT condition_name, Facilities.name, latitude, longitude, (less_five_years + greater_equal_five_years) as count
         FROM Facilities
         INNER JOIN Cases
         ON Facilities.facility_code = Cases.facility_code;`)
