@@ -4,10 +4,7 @@ async function generateCasesJoinedFacilities() {
     var dataObj = await sequelize.query(`SELECT condition_name, Facilities.name, latitude, longitude, color, (less_five_years + greater_equal_five_years) as count
         FROM Facilities
         INNER JOIN Cases
-        ON Facilities.facility_code = Cases.facility_code
-        INNER JOIN GroupedConditions
-        ON GroupedConditions.name = Cases.condition_name
-        GROUP BY count;`)
+        ON Facilities.facility_code = Cases.facility_code;`)
 
     return dataObj[0]
 }
