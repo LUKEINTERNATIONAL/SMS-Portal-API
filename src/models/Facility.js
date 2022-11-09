@@ -12,7 +12,9 @@ module.exports = (sequelize, DataTypes) => {
         vpn_ip_address: DataTypes.STRING,
         last_pinged: DataTypes.DATE,
         server_username: DataTypes.STRING,
-        server_password: DataTypes.STRING
+        server_password: DataTypes.STRING,
+        latitude: DataTypes.STRING,
+        longitude: DataTypes.STRING
     })
 
     return Facility

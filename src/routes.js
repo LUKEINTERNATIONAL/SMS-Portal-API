@@ -10,6 +10,7 @@ const FacilityController = require("../src/Controllers/FacilityController")
 const ConditionController = require("../src/Controllers/ConditionController")
 const CustomMessageController = require("../src/Controllers/CustomMessageController")
 const GroupedConditionForCustomMessageController = require("../src/Controllers/GroupedConditionForCustomMessageController")
+const GeographicCaseController = require("../src/Controllers/GeographicCaseController")
 
 const isAuthenticated = require('./policies/isAuthenticated')
 
@@ -466,4 +467,8 @@ module.exports = (app) => {
   app.get('/groupedConditionForCustomMessage/:customMessageCode',
    isAuthenticated,
    GroupedConditionForCustomMessageController.multipleDelete)
+
+  app.get('/GeographicCases',
+   isAuthenticated,
+   GeographicCaseController.index)
 }
