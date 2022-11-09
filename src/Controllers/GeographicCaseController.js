@@ -1,7 +1,7 @@
 const { sequelize } = require('../models')
 
 async function generateCasesJoinedFacilities() {
-    var dataObj = await sequelize.query(`SELECT condition_name, Facilities.name, latitude, longitude, color
+    var dataObj = await sequelize.query(`SELECT condition_name, Facilities.name, latitude, longitude, color, (less_five_years + greater_equal_five_years) as count
         FROM Facilities
         INNER JOIN Cases
         ON Facilities.facility_code = Cases.facility_code
@@ -9,7 +9,6 @@ async function generateCasesJoinedFacilities() {
         ON GroupedConditions.name = Cases.condition_name
         GROUP BY GroupedConditions.name;`)
 
-    console.log(dataObj[0])
     return dataObj[0]
 }
 
@@ -19,7 +18,7 @@ module.exports = {
             res.send(await generateCasesJoinedFacilities())
         } catch(err) {
             res.status(500).send({
-                error: 'An error has occured trying to retrive a role'
+                error: err
             })
         }
     },
