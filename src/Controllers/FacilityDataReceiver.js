@@ -136,7 +136,7 @@ async function compareIfDuplicateCase(facilityId, conditionName, lessFiveYears, 
     if(cases.length > 0) {
       console.log("already saved")
     }  else {
-      if (conditionName != 'Rabies (confirmed cases)')
+      if (conditionName != 'Rabies (confirmed cases)' || 'Acute hemorrhagic fever syndrome (Ebola, Marburg, Lassa Fever, Rift Valley Fever (RVF), Crimean-Congo)')
       SaveCase.store({facility_code: facilityId,
          condition_name: conditionName, 
          less_five_years: lessFiveYears, 
