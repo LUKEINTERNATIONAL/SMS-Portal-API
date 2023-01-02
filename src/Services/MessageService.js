@@ -1,19 +1,15 @@
-const {Respondent} = require('../models')
-const {Message} = require('../models')
-const {Case} = require('../models')
-const {Facility} = require('../models')
+const {sequelize, Respondent, Message, Case, Facility} = require('../models')
 const { Op } = require("sequelize")
 const { sendEmail, sendEmailViaExternalAPI} = require('./EmailService')
 const { getIpAddress } = require('./MachineIpAddress')
 const  request = require ('http')
-const { sequelize } = require('../models')
 
 async function getCases() {
   const TODAY_START = new Date().setHours(0, 0, 0, 0)
   const NOW = new Date()
   let cases = await Case.findAll({
       where: {
-        message_generated: 0,
+        // message_generated: 0,
         createdAt: { 
           [Op.gt]: TODAY_START,
           [Op.lt]: NOW
@@ -22,6 +18,7 @@ async function getCases() {
     })
     
     if (cases.length > 0) { 
+     SummaryForRespondents(cases)
      return CasesToMessages(cases)
     }
 
@@ -29,6 +26,47 @@ async function getCases() {
       console.log("There are no pending cases to pull")
       return 1
     }
+}
+
+async function SummaryForRespondents(cases) {
+  const facilities = await Facility.findAll()
+  const condition_names = []
+  for(let _case in cases) {
+    const case_ = cases[_case].dataValues
+    condition_names.push({
+      name: case_.condition_name
+    })
+  }
+  for(let facility in facilities) {
+    const _facility = facilities[facility].dataValues
+    const facilityCode = _facility.facility_code
+
+    const dataObj = []
+
+    if(facilityCode != null) {
+      const conditions = []
+      for(let _case in cases) {
+        const case_ = cases[_case].dataValues
+
+        conditions.push({
+          condition_name: case_.condition_name,
+          less_five_years: case_.less_five_years,
+          greater_equal_five_years: case_.greater_equal_five_years
+        })
+      }
+
+      dataObj.push({
+        'facility_name': await GetFacilityName(facilityCode),
+        'cases': JSON.stringify(conditions)
+      })
+    } 
+
+    dataObj.push({
+      'condition_names': JSON.stringify(condition_names)
+    })
+
+   console.log(dataObj)
+  }
 }
 
 async function CasesToMessages(cases) {
@@ -200,3 +238,5 @@ async function initSrvc() {
 }
 
 module.exports = { initSrvc, sendMessage } 
+
+getCases()
