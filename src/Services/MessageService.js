@@ -9,9 +9,15 @@ const  request = require ('http')
 const { sequelize } = require('../models')
 
 async function getCases() {
+  const TODAY_START = new Date().setHours(0, 0, 0, 0)
+  const NOW = new Date()
   let cases = await Case.findAll({
       where: {
-        message_generated: 0
+        message_generated: 0,
+        createdAt: { 
+          [Op.gt]: TODAY_START,
+          [Op.lt]: NOW
+        },
       }
     })
     
