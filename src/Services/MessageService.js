@@ -9,7 +9,7 @@ async function getCases() {
   const NOW = new Date()
   let cases = await Case.findAll({
       where: {
-        // message_generated: 0,
+        message_generated: 0,
         createdAt: { 
           [Op.gt]: TODAY_START,
           [Op.lt]: NOW
@@ -18,7 +18,6 @@ async function getCases() {
     })
     
     if (cases.length > 0) { 
-     SummaryForRespondents(cases)
      return CasesToMessages(cases)
     }
 
@@ -29,44 +28,48 @@ async function getCases() {
 }
 
 async function SummaryForRespondents(cases) {
+  const dataObj = []
   const facilities = await Facility.findAll()
   const condition_names = []
-  for(let _case in cases) {
+  for (let _case in cases) {
     const case_ = cases[_case].dataValues
-    condition_names.push({
-      name: case_.condition_name
-    })
+    if (!condition_names.includes(case_.condition_name)) {
+      condition_names.push(
+        case_.condition_name
+      )
+    }
+
   }
+  dataObj.push({
+    'condition_names': JSON.stringify(condition_names)
+  })
   for(let facility in facilities) {
     const _facility = facilities[facility].dataValues
     const facilityCode = _facility.facility_code
-
-    const dataObj = []
 
     if(facilityCode != null) {
       const conditions = []
       for(let _case in cases) {
         const case_ = cases[_case].dataValues
-
-        conditions.push({
-          condition_name: case_.condition_name,
-          less_five_years: case_.less_five_years,
-          greater_equal_five_years: case_.greater_equal_five_years
+        if (facilityCode == case_.facility_code) {
+          conditions.push({
+            condition_name: case_.condition_name,
+            less_five_years: case_.less_five_years,
+            greater_equal_five_years: case_.greater_equal_five_years
+          })
+        }
+      }
+      
+      if (conditions.length) {
+        dataObj.push({
+          'facility_name': await GetFacilityName(facilityCode),
+          'cases': JSON.stringify(conditions)
         })
       }
-
-      dataObj.push({
-        'facility_name': await GetFacilityName(facilityCode),
-        'cases': JSON.stringify(conditions)
-      })
     } 
-
-    dataObj.push({
-      'condition_names': JSON.stringify(condition_names)
-    })
-
-   console.log(dataObj)
   }
+  console.log(dataObj)
+  submitEmailSummary(dataObj)
 }
 
 async function CasesToMessages(cases) {
@@ -78,6 +81,7 @@ async function CasesToMessages(cases) {
     SaveMessage(messageBody)
     changeCaseStatus(case_.id)
   }
+  SummaryForRespondents(cases)
   return "done"
 }
 
@@ -155,7 +159,30 @@ async function sendFailedMessage() {
   } 
 }
 
-async function sendEmailMessage() {
+// async function sendEmailMessage() {
+//   Respondent.hasMany(Message, {foreignKey: 'respondent_id'})
+//   Message.belongsTo(Respondent, {foreignKey: 'respondent_id'})
+//   var message = await Respondent.findAll({
+//     include: [{
+//       model: Message,
+//       where: {email_status: '0'}
+//      }]
+//   });
+
+//   for ( let respondent of message) {
+//     let message_body = ''
+//     let message_ids = []
+//     let email_address = respondent.dataValues.email
+//     for (let _message of respondent.dataValues.Messages) {
+//       message_ids.push(_message.dataValues.id)
+//       message_body+=_message.dataValues.body+'\n'
+//     }
+//     //sendEmail(email_address, message_body, message_ids)
+//     sendEmailViaExternalAPI(email_address, message_body, message_ids)
+//   }
+// }
+
+async function submitEmailSummary(dataObj) {
   Respondent.hasMany(Message, {foreignKey: 'respondent_id'})
   Message.belongsTo(Respondent, {foreignKey: 'respondent_id'})
   var message = await Respondent.findAll({
@@ -166,15 +193,12 @@ async function sendEmailMessage() {
   });
 
   for ( let respondent of message) {
-    let message_body = ''
     let message_ids = []
     let email_address = respondent.dataValues.email
     for (let _message of respondent.dataValues.Messages) {
       message_ids.push(_message.dataValues.id)
-      message_body+=_message.dataValues.body+'\n'
     }
-    //sendEmail(email_address, message_body, message_ids)
-    sendEmailViaExternalAPI(email_address, message_body, message_ids)
+    sendEmailViaExternalAPI(email_address, dataObj, message_ids)
   }
 }
 
@@ -231,7 +255,7 @@ function sendToPhone(data) {
 async function initSrvc() {
   if (await getCases() == "done") {
     setTimeout(() => {
-      sendEmailMessage()
+      //sendEmailMessage()
       sendMessage()
     }, 300000);
   }
