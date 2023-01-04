@@ -232,7 +232,7 @@ async function sendMessage() {
 function sendToPhone(data) {
   const req = request.request(
     {
-      host: '192.168.11.168',
+      host: '192.168.11.11',
       port: '8188',
       path: '/sendsms',
       method: 'POST',
@@ -255,12 +255,11 @@ function sendToPhone(data) {
 async function initSrvc() {
   if (await getCases() == "done") {
     setTimeout(() => {
+      //old way (new implementation still being tested)
       //sendEmailMessage()
       sendMessage()
     }, 300000);
   }
 }
 
-module.exports = { initSrvc, sendMessage } 
-
-getCases()
+module.exports = { initSrvc, sendMessage }
