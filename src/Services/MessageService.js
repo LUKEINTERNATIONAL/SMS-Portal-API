@@ -5,19 +5,23 @@ const { getIpAddress } = require('./MachineIpAddress')
 const  request = require ('http')
 
 async function getCases() {
-  const TODAY_START = new Date().setHours(0, 0, 0, 0)
-  const NOW = new Date()
+  var now = new Date()
+  now.setDate(now.getDate())
+  now.setHours(1,59,0)
+
   let cases = await Case.findAll({
       where: {
         message_generated: 0,
-        createdAt: { 
-          [Op.gt]: TODAY_START,
-          [Op.lt]: NOW
+        createdAt: {
+          [Op.gte]: now.toISOString()
+        },
+        condition_name: {
+          [Op.not]: ['Rabies (confirmed cases)', 'Acute hemorrhagic fever syndrome (Ebola, Marburg, Lassa Fever, Rift Valley Fever (RVF), Crimean-Congo)']
         },
       }
     })
-    
-    if (cases.length > 0) { 
+
+    if (cases.length > 0) {
      return CasesToMessages(cases)
     }
 
@@ -68,13 +72,13 @@ async function SummaryForRespondents(cases) {
       }
     } 
   }
-  console.log(dataObj)
   submitEmailSummary(dataObj)
 }
 
 async function CasesToMessages(cases) {
   for(let _case in cases) {
     const case_ = cases[_case].dataValues
+    console.log(case_)
     let total = parseInt(case_.less_five_years ) + parseInt(case_.greater_equal_five_years)
     let facility_name = await GetFacilityName(case_.facility_code)
     var messageBody = "There are " +total+ " " +case_.condition_name+ " suspected case(s) at " +facility_name
@@ -159,28 +163,28 @@ async function sendFailedMessage() {
   } 
 }
 
-// async function sendEmailMessage() {
-//   Respondent.hasMany(Message, {foreignKey: 'respondent_id'})
-//   Message.belongsTo(Respondent, {foreignKey: 'respondent_id'})
-//   var message = await Respondent.findAll({
-//     include: [{
-//       model: Message,
-//       where: {email_status: '0'}
-//      }]
-//   });
+async function sendEmailMessage() {
+  Respondent.hasMany(Message, {foreignKey: 'respondent_id'})
+  Message.belongsTo(Respondent, {foreignKey: 'respondent_id'})
+  var message = await Respondent.findAll({
+    include: [{
+      model: Message,
+      where: {email_status: '0'}
+     }]
+  });
 
-//   for ( let respondent of message) {
-//     let message_body = ''
-//     let message_ids = []
-//     let email_address = respondent.dataValues.email
-//     for (let _message of respondent.dataValues.Messages) {
-//       message_ids.push(_message.dataValues.id)
-//       message_body+=_message.dataValues.body+'\n'
-//     }
-//     //sendEmail(email_address, message_body, message_ids)
-//     sendEmailViaExternalAPI(email_address, message_body, message_ids)
-//   }
-// }
+  for ( let respondent of message) {
+    let message_body = ''
+    let message_ids = []
+    let email_address = respondent.dataValues.email
+    for (let _message of respondent.dataValues.Messages) {
+      message_ids.push(_message.dataValues.id)
+      message_body+=_message.dataValues.body+'\n'
+    }
+    //sendEmail(email_address, message_body, message_ids)
+    sendEmailViaExternalAPI(email_address, message_body, message_ids)
+  }
+}
 
 async function submitEmailSummary(dataObj) {
   Respondent.hasMany(Message, {foreignKey: 'respondent_id'})
