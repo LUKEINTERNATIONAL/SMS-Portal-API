@@ -1,12 +1,8 @@
-const {Respondent} = require('../models')
-const {Message} = require('../models')
-const {Case} = require('../models')
-const {Facility} = require('../models')
+const {sequelize, Respondent, Message, Case, Facility} = require('../models')
 const { Op } = require("sequelize")
 const { sendEmail, sendEmailViaExternalAPI} = require('./EmailService')
 const { getIpAddress } = require('./MachineIpAddress')
 const  request = require ('http')
-const { sequelize } = require('../models')
 
 async function getCases() {
   const TODAY_START = new Date().setHours(0, 0, 0, 0)
@@ -31,6 +27,51 @@ async function getCases() {
     }
 }
 
+async function SummaryForRespondents(cases) {
+  const dataObj = []
+  const facilities = await Facility.findAll()
+  const condition_names = []
+  for (let _case in cases) {
+    const case_ = cases[_case].dataValues
+    if (!condition_names.includes(case_.condition_name)) {
+      condition_names.push(
+        case_.condition_name
+      )
+    }
+
+  }
+  dataObj.push({
+    'condition_names': JSON.stringify(condition_names)
+  })
+  for(let facility in facilities) {
+    const _facility = facilities[facility].dataValues
+    const facilityCode = _facility.facility_code
+
+    if(facilityCode != null) {
+      const conditions = []
+      for(let _case in cases) {
+        const case_ = cases[_case].dataValues
+        if (facilityCode == case_.facility_code) {
+          conditions.push({
+            condition_name: case_.condition_name,
+            less_five_years: case_.less_five_years,
+            greater_equal_five_years: case_.greater_equal_five_years
+          })
+        }
+      }
+      
+      if (conditions.length) {
+        dataObj.push({
+          'facility_name': await GetFacilityName(facilityCode),
+          'cases': JSON.stringify(conditions)
+        })
+      }
+    } 
+  }
+  console.log(dataObj)
+  submitEmailSummary(dataObj)
+}
+
 async function CasesToMessages(cases) {
   for(let _case in cases) {
     const case_ = cases[_case].dataValues
@@ -40,6 +81,7 @@ async function CasesToMessages(cases) {
     SaveMessage(messageBody)
     changeCaseStatus(case_.id)
   }
+  SummaryForRespondents(cases)
   return "done"
 }
 
@@ -117,7 +159,30 @@ async function sendFailedMessage() {
   } 
 }
 
-async function sendEmailMessage() {
+// async function sendEmailMessage() {
+//   Respondent.hasMany(Message, {foreignKey: 'respondent_id'})
+//   Message.belongsTo(Respondent, {foreignKey: 'respondent_id'})
+//   var message = await Respondent.findAll({
+//     include: [{
+//       model: Message,
+//       where: {email_status: '0'}
+//      }]
+//   });
+
+//   for ( let respondent of message) {
+//     let message_body = ''
+//     let message_ids = []
+//     let email_address = respondent.dataValues.email
+//     for (let _message of respondent.dataValues.Messages) {
+//       message_ids.push(_message.dataValues.id)
+//       message_body+=_message.dataValues.body+'\n'
+//     }
+//     //sendEmail(email_address, message_body, message_ids)
+//     sendEmailViaExternalAPI(email_address, message_body, message_ids)
+//   }
+// }
+
+async function submitEmailSummary(dataObj) {
   Respondent.hasMany(Message, {foreignKey: 'respondent_id'})
   Message.belongsTo(Respondent, {foreignKey: 'respondent_id'})
   var message = await Respondent.findAll({
@@ -128,15 +193,12 @@ async function sendEmailMessage() {
   });
 
   for ( let respondent of message) {
-    let message_body = ''
     let message_ids = []
     let email_address = respondent.dataValues.email
     for (let _message of respondent.dataValues.Messages) {
       message_ids.push(_message.dataValues.id)
-      message_body+=_message.dataValues.body+'\n'
     }
-    //sendEmail(email_address, message_body, message_ids)
-    sendEmailViaExternalAPI(email_address, message_body, message_ids)
+    sendEmailViaExternalAPI(email_address, dataObj, message_ids)
   }
 }
 
@@ -170,7 +232,7 @@ async function sendMessage() {
 function sendToPhone(data) {
   const req = request.request(
     {
-      host: '192.168.11.168',
+      host: '192.168.11.11',
       port: '8188',
       path: '/sendsms',
       method: 'POST',
@@ -193,10 +255,11 @@ function sendToPhone(data) {
 async function initSrvc() {
   if (await getCases() == "done") {
     setTimeout(() => {
-      sendEmailMessage()
+      //old way (new implementation still being tested)
+      //sendEmailMessage()
       sendMessage()
     }, 300000);
   }
 }
 
-module.exports = { initSrvc, sendMessage } 
+module.exports = { initSrvc, sendMessage }

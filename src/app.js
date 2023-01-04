@@ -50,7 +50,7 @@ const swaggerOptions = {
     servers: [
       {
         url: 'http://localhost:8186',
-        description: 'Development server',
+        description: 'EIDSR SMS PORTAL',
       },
     ],
   },
