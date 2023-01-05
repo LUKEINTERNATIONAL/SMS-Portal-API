@@ -3,6 +3,7 @@ const { Op } = require("sequelize")
 const { sendEmail, sendEmailViaExternalAPI} = require('./EmailService')
 const { getIpAddress } = require('./MachineIpAddress')
 const  request = require ('http')
+const console = require('console')
 
 async function getCases() {
   var now = new Date()
@@ -16,7 +17,7 @@ async function getCases() {
           [Op.gte]: now.toISOString()
         },
         condition_name: {
-          [Op.not]: ['Rabies (confirmed cases)', 'Acute hemorrhagic fever syndrome (Ebola, Marburg, Lassa Fever, Rift Valley Fever (RVF), Crimean-Congo)']
+          [Op.not]: [ 'Rabies (confirmed cases)', 'Acute hemorrhagic fever syndrome (Ebola, Marburg, Lassa Fever, Rift Valley Fever (RVF), Crimean-Congo)']
         },
       }
     })
@@ -33,7 +34,6 @@ async function getCases() {
 
 async function SummaryForRespondents(cases) {
   const dataObj = []
-  const facilities = await Facility.findAll()
   const condition_names = []
   for (let _case in cases) {
     const case_ = cases[_case].dataValues
@@ -42,43 +42,59 @@ async function SummaryForRespondents(cases) {
         case_.condition_name
       )
     }
-
   }
+
+  const facility_codes = []
+  for (let _case in cases) {
+    const case_ = cases[_case].dataValues
+    if (!facility_codes.includes(case_.facility_code)) {
+      facility_codes.push(
+        case_.facility_code
+      )
+    }
+  }
+
+  const duplicate_f_codes = []
+  for(let f_code of facility_codes) {
+    const conditions = []
+    cases.forEach(_case => {
+      if (f_code == _case.facility_code) {
+        duplicate_f_codes.push(f_code)
+        conditions.push({
+          condition_name: _case.condition_name,
+          less_five_years: _case.less_five_years,
+          greater_equal_five_years: _case.greater_equal_five_years
+        })
+      }
+    })
+    
+    dataObj.push({
+      'facility_name': await GetFacilityName(f_code),
+      'cases': JSON.stringify(conditions)
+    })
+  }
+
+  let COUNTER = 0
+  duplicate_f_codes.forEach(element => {
+    if (duplicate_f_codes.filter( (v) => (v === element)).length > 1) {
+      console.log("qwert")
+      COUNTER++
+  }})
+
+  if (COUNTER > 3) {
+    condition_names.reverse()
+  }
+  
   dataObj.push({
     'condition_names': JSON.stringify(condition_names)
   })
-  for(let facility in facilities) {
-    const _facility = facilities[facility].dataValues
-    const facilityCode = _facility.facility_code
-
-    if(facilityCode != null) {
-      const conditions = []
-      for(let _case in cases) {
-        const case_ = cases[_case].dataValues
-        if (facilityCode == case_.facility_code) {
-          conditions.push({
-            condition_name: case_.condition_name,
-            less_five_years: case_.less_five_years,
-            greater_equal_five_years: case_.greater_equal_five_years
-          })
-        }
-      }
-      
-      if (conditions.length) {
-        dataObj.push({
-          'facility_name': await GetFacilityName(facilityCode),
-          'cases': JSON.stringify(conditions)
-        })
-      }
-    } 
-  }
-  submitEmailSummary(dataObj)
+    
+  submitEmailSummary(dataObj.reverse())
 }
 
 async function CasesToMessages(cases) {
   for(let _case in cases) {
     const case_ = cases[_case].dataValues
-    console.log(case_)
     let total = parseInt(case_.less_five_years ) + parseInt(case_.greater_equal_five_years)
     let facility_name = await GetFacilityName(case_.facility_code)
     var messageBody = "There are " +total+ " " +case_.condition_name+ " suspected case(s) at " +facility_name
@@ -171,7 +187,7 @@ async function sendEmailMessage() {
       model: Message,
       where: {email_status: '0'}
      }]
-  });
+  })
 
   for ( let respondent of message) {
     let message_body = ''
@@ -194,7 +210,7 @@ async function submitEmailSummary(dataObj) {
       model: Message,
       where: {email_status: '0'}
      }]
-  });
+  })
 
   for ( let respondent of message) {
     let message_ids = []
@@ -249,10 +265,10 @@ function sendToPhone(data) {
     }
   );
   req.on('error', (e) => {
-    console.error(`problem with request: ${e.message}`);
+    console.error(`problem with request: ${e.message}`)
   }); 
   req.write(data)
-  req.end();
+  req.end()
 
 }
 
@@ -262,7 +278,7 @@ async function initSrvc() {
       //old way (new implementation still being tested)
       //sendEmailMessage()
       sendMessage()
-    }, 300000);
+    }, 300000)
   }
 }
 
