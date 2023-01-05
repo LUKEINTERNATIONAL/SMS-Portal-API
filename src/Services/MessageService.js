@@ -1,6 +1,6 @@
 const {sequelize, Respondent, Message, Case, Facility} = require('../models')
 const { Op } = require("sequelize")
-const { sendEmail, sendEmailViaExternalAPI} = require('./EmailService')
+const { sendEmailViaExternalAPI} = require('./EmailService')
 const { getIpAddress } = require('./MachineIpAddress')
 const  request = require ('http')
 const console = require('console')
@@ -179,28 +179,28 @@ async function sendFailedMessage() {
   } 
 }
 
-async function sendEmailMessage() {
-  Respondent.hasMany(Message, {foreignKey: 'respondent_id'})
-  Message.belongsTo(Respondent, {foreignKey: 'respondent_id'})
-  var message = await Respondent.findAll({
-    include: [{
-      model: Message,
-      where: {email_status: '0'}
-     }]
-  })
+// async function sendEmailMessage() {
+//   Respondent.hasMany(Message, {foreignKey: 'respondent_id'})
+//   Message.belongsTo(Respondent, {foreignKey: 'respondent_id'})
+//   var message = await Respondent.findAll({
+//     include: [{
+//       model: Message,
+//       where: {email_status: '0'}
+//      }]
+//   })
 
-  for ( let respondent of message) {
-    let message_body = ''
-    let message_ids = []
-    let email_address = respondent.dataValues.email
-    for (let _message of respondent.dataValues.Messages) {
-      message_ids.push(_message.dataValues.id)
-      message_body+=_message.dataValues.body+'\n'
-    }
-    //sendEmail(email_address, message_body, message_ids)
-    sendEmailViaExternalAPI(email_address, message_body, message_ids)
-  }
-}
+//   for ( let respondent of message) {
+//     let message_body = ''
+//     let message_ids = []
+//     let email_address = respondent.dataValues.email
+//     for (let _message of respondent.dataValues.Messages) {
+//       message_ids.push(_message.dataValues.id)
+//       message_body+=_message.dataValues.body+'\n'
+//     }
+//     //sendEmail(email_address, message_body, message_ids)
+//     sendEmailViaExternalAPI(email_address, message_body, message_ids)
+//   }
+// }
 
 async function submitEmailSummary(dataObj) {
   Respondent.hasMany(Message, {foreignKey: 'respondent_id'})
