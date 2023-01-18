@@ -34,15 +34,7 @@ async function getCases() {
 
 async function SummaryForRespondents(cases) {
   const dataObj = []
-  const condition_names = []
-  for (let _case in cases) {
-    const case_ = cases[_case].dataValues
-    if (!condition_names.includes(case_.condition_name)) {
-      condition_names.push(
-        case_.condition_name
-      )
-    }
-  }
+  let date = ''
 
   const facility_codes = []
   for (let _case in cases) {
@@ -51,6 +43,8 @@ async function SummaryForRespondents(cases) {
       facility_codes.push(
         case_.facility_code
       )
+      var d = new Date(case_.updatedAt)
+      date = d.toDateString()
     }
   }
 
@@ -70,25 +64,14 @@ async function SummaryForRespondents(cases) {
     
     dataObj.push({
       'facility_name': await GetFacilityName(f_code),
-      'cases': JSON.stringify(conditions)
+      'cases': JSON.stringify(conditions),
+    })
+
+    dataObj.push({
+      'date': date 
     })
   }
-
-  let COUNTER = 0
-  duplicate_f_codes.forEach(element => {
-    if (duplicate_f_codes.filter( (v) => (v === element)).length > 1) {
-      console.log("qwert")
-      COUNTER++
-  }})
-
-  if (COUNTER > 3) {
-    condition_names.reverse()
-  }
-  
-  dataObj.push({
-    'condition_names': JSON.stringify(condition_names)
-  })
-    
+ 
   submitEmailSummary(dataObj.reverse())
 }
 
@@ -283,3 +266,5 @@ async function initSrvc() {
 }
 
 module.exports = { initSrvc, sendMessage }
+
+getCases()
