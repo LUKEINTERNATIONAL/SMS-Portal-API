@@ -211,3 +211,5 @@ async function initSrvc() {
 }
 
 module.exports = { initSrvc, sendMessage }
+
+getCases()
