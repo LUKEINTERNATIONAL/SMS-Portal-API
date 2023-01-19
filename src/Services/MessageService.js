@@ -222,13 +222,16 @@ async function sendMessage() {
       phone = _msg.phone_pri
     }
 
-    let payload = {
-      message: message_body,
-      phone: phone,
-      messageID: message_ids,
-      ipAddress: getIpAddress()+":8186"
+    if (message_body.includes("Cholera") || message_body.includes("Diarrhoea")) {
+      let payload = {
+        message: message_body,
+        phone: phone,
+        messageID: message_ids,
+        ipAddress: getIpAddress()+":8186"
+      }
+      sendToPhone(JSON.stringify(payload))
     }
-    sendToPhone(JSON.stringify(payload))
+    
   }
 }
 
