@@ -179,15 +179,29 @@ async function sendMessage() {
       phone = _msg.phone_pri
     }
 
-    let payload = {
-      message: message_body,
-      phone: phone,
-      messageID: message_ids,
-      ipAddress: getIpAddress()+":8186"
+    if (message_body.toLocaleLowerCase().includes("cholera") || message_body.toLocaleLowerCase().includes("diarrhoea")) {
+      let payload = {
+        message: message_body,
+        phone: phone,
+        messageID: message_ids,
+        ipAddress: getIpAddress()+":8186"
+      }
+      sendToPhone(JSON.stringify(payload))
+    } else {
+        await Message.update({ status: 'SMS failed' }, {
+          where: {
+              id: message_ids
+        }
+        })
+        sendMessage()
     }
-    sendToPhone(JSON.stringify(payload))
   }
 }
+
+
+
+
+
 
 async function initSrvc() {
   if (await getCases() == "done") {
