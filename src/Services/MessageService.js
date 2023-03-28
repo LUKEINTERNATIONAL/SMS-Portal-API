@@ -2,6 +2,7 @@ const {sequelize, Respondent, Message, Case, Facility} = require('../models')
 const { Op } = require("sequelize")
 const { sendEmailViaExternalAPI} = require('./EmailService')
 const { getIpAddress } = require('./MachineIpAddress')
+const { getHTML } = require('./mailOptionService')
 const  request = require ('http')
 const console = require('console')
 
@@ -218,7 +219,9 @@ async function submitEmailSummary(dataObj) {
     for (let _message of respondent.dataValues.Messages) {
       message_ids.push(_message.dataValues.id)
     }
-    sendEmailViaExternalAPI(email_address, dataObj, message_ids)
+
+    const mailOptions = getHTML(dataObj, email_address)
+    sendEmailViaExternalAPI(mailOptions, message_ids, getIpAddress())
   }
 }
 
