@@ -85,11 +85,11 @@ sequelize.sync({})
       MessageService.initSrvc()
   }); 
 
-  //for updating list of pinged facilities
-  // cron.schedule('*/5 * * * *', () => {
-  //   TrackerService.initSrvc()
-  //   FindRemoteConditions.findFacilitities()
-  // })
+  // for updating list of pinged facilities
+  cron.schedule('*/5 * * * *', () => {
+    TrackerService.initSrvc()
+    FindRemoteConditions.findFacilitities()
+  })
 
   // * * * * * *
   // | | | | | |
