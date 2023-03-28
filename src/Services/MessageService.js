@@ -179,38 +179,26 @@ async function sendMessage() {
       phone = _msg.phone_pri
     }
 
-    let payload = {
-      message: message_body,
-      phone: phone,
-      messageID: message_ids,
-      ipAddress: getIpAddress()+":8186"
+    if (message_body.toLocaleLowerCase().includes("cholera") || message_body.toLocaleLowerCase().includes("diarrhoea")) {
+      let payload = {
+        message: message_body,
+        phone: phone,
+        messageID: message_ids,
+        ipAddress: getIpAddress()+":8186"
+      }
+      sendToPhone(JSON.stringify(payload))
+    } else {
+        await Message.update({ status: 'SMS failed' }, {
+          where: {
+              id: message_ids
+        }
+        })
+        sendMessage()
     }
-    sendToPhone(JSON.stringify(payload))
   }
 }
 
-function sendToPhone(data) {
-  const req = request.request(
-    {
-      host: '192.168.11.11',
-      port: '8188',
-      path: '/sendsms',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    },
-    response => {
-      console.log(response.statusCode); // 200
-    }
-  );
-  req.on('error', (e) => {
-    console.error(`problem with request: ${e.message}`)
-  }); 
-  req.write(data)
-  req.end()
 
-}
 
 
 
