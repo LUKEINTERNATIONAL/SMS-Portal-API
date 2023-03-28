@@ -3,13 +3,14 @@ const nodemailer = require('nodemailer')
 const hbs = require('nodemailer-express-handlebars')
 const request = require ('http');
 require('dotenv').config(); // Load environment variables from .env file
+
 var transporter = nodemailer.createTransport({
   host: "mx-10.globemw.net",
   port: 587,
   secure: false, // true for 465, false for other ports
   auth: {
-    user: 'idsrnotification@linmalawi.org',
-    pass: 'lukeinternational'
+    user: '',
+    pass: ''
   }
 });
 

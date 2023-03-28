@@ -99,6 +99,8 @@ module.exports = (app) => {
    MessageController.delete),
   app.post('/updateemailstatus',
    MessageController.updateEmailStatus)
+  app.post('/updatesmsstatus',
+   MessageController.updateSMSStatus)
 
   /**
    * @swagger

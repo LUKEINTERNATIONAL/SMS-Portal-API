@@ -67,6 +67,4 @@ async function callRemoteProcedure(facility_name, host, username, password) {
 
 // })
 
-findFacilitities()
-
 module.exports = { findFacilitities }
