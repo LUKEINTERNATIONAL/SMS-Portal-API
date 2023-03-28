@@ -80,18 +80,16 @@ sequelize.sync({})
     console.log(`Server started on port ${config.port}`)
   })
 
-  cron.schedule('*/6 * * * *', () => {
+  cron.schedule('05 17 * * *', () => {
     //InitiateSendMessages.findMessages()
-    if (Utils.checkTimeIf1700()) {
       MessageService.initSrvc()
-    }
   }); 
 
   //for updating list of pinged facilities
-  cron.schedule('*/5 * * * *', () => {
-    TrackerService.initSrvc()
-    FindRemoteConditions.findFacilitities()
-  })
+  // cron.schedule('*/5 * * * *', () => {
+  //   TrackerService.initSrvc()
+  //   FindRemoteConditions.findFacilitities()
+  // })
 
   // * * * * * *
   // | | | | | |

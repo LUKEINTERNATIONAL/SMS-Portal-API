@@ -3,7 +3,7 @@ const { Op } = require("sequelize")
 const { sendEmailViaExternalAPI} = require('./EmailService')
 const { getIpAddress } = require('./MachineIpAddress')
 const { getHTML } = require('./mailOptionService')
-const  request = require ('http')
+const { sendToPhone } = require('./SMSService')
 const console = require('console')
 
 async function getCases() {
@@ -139,52 +139,6 @@ async function SaveMessage(messsage_body) {
     console.log("There are no respondents in table")
   }
 }
-async function sendFailedMessage() {
-  var message = await sequelize.query(`SELECT * FROM Respondents r 
-  INNER JOIN Messages m on r.id = m.respondent_id 
-  where status !='SMS sent'
-  order by m.updatedAt asc limit 1;`);
-
-  var phone = 0;
-  if(message[0][0].phone_sec != "")
-    phone  = message[0][0].phone_sec
-  else
-    phone  = message[0][0].phone_pri
-
-  if(message[0].length > 0) {
-    let payload = {
-    message: message[0][0]['body'],
-    phone: phone,
-    message_id: message[0][0].id,
-    ipAddress: getIpAddress()+":8186"
-    }
-    console.log(JSON.stringify(payload))
-    sendToPhone(JSON.stringify(payload))
-  } 
-}
-
-// async function sendEmailMessage() {
-//   Respondent.hasMany(Message, {foreignKey: 'respondent_id'})
-//   Message.belongsTo(Respondent, {foreignKey: 'respondent_id'})
-//   var message = await Respondent.findAll({
-//     include: [{
-//       model: Message,
-//       where: {email_status: '0'}
-//      }]
-//   })
-
-//   for ( let respondent of message) {
-//     let message_body = ''
-//     let message_ids = []
-//     let email_address = respondent.dataValues.email
-//     for (let _message of respondent.dataValues.Messages) {
-//       message_ids.push(_message.dataValues.id)
-//       message_body+=_message.dataValues.body+'\n'
-//     }
-//     //sendEmail(email_address, message_body, message_ids)
-//     sendEmailViaExternalAPI(email_address, message_body, message_ids)
-//   }
-// }
 
 async function submitEmailSummary(dataObj) {
   Respondent.hasMany(Message, {foreignKey: 'respondent_id'})
@@ -225,7 +179,7 @@ async function sendMessage() {
       phone = _msg.phone_pri
     }
 
-    if (message_body.includes("Cholera") || message_body.includes("Diarrhoea")) {
+    if (message_body.toLocaleLowerCase().includes("cholera") || message_body.toLocaleLowerCase().includes("diarrhoea")) {
       let payload = {
         message: message_body,
         phone: phone,
@@ -233,33 +187,18 @@ async function sendMessage() {
         ipAddress: getIpAddress()+":8186"
       }
       sendToPhone(JSON.stringify(payload))
+    } else {
+        await Message.update({ status: 'SMS failed' }, {
+          where: {
+              id: message_ids
+        }
+        })
+        sendMessage()
     }
-    
   }
 }
 
-function sendToPhone(data) {
-  const req = request.request(
-    {
-      host: '192.168.11.11',
-      port: '8188',
-      path: '/sendsms',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    },
-    response => {
-      console.log(response.statusCode); // 200
-    }
-  );
-  req.on('error', (e) => {
-    console.error(`problem with request: ${e.message}`)
-  }); 
-  req.write(data)
-  req.end()
 
-}
 
 async function initSrvc() {
   if (await getCases() == "done") {
@@ -267,7 +206,7 @@ async function initSrvc() {
       //old way (new implementation still being tested)
       //sendEmailMessage()
       sendMessage()
-    }, 300000)
+    }, 900000)
   }
 }
 

@@ -29,4 +29,8 @@ function groupBy(collection, property) {
     return result;
 }
 
-module.exports = { checkTimeIf1700, groupBy }
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+ }
+
+module.exports = { checkTimeIf1700, groupBy, sleep }

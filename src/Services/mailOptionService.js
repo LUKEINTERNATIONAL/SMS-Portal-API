@@ -6,7 +6,9 @@ function getHTML(messageObj, recipient) {
         let date = ''
 
         messageObj.forEach(dataObj => {
-            date = dataObj.date
+            if (dataObj.date != undefined) {
+                date = dataObj.date
+              }
             if (dataObj.cases != undefined) {
               let facility_name = dataObj.facility_name
               if(row_counter % 2 == 0) {
@@ -54,20 +56,20 @@ function getHTML(messageObj, recipient) {
         html: `<html>
                 <body style="margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; color: #000000c9">
                 <h1>EIDSR Notifiable Disease Conditions | (${date})</h1>
-                  <div style="margin-left: 0.5%;">
-                  ${notificatonsTable}
-                  </div>
-                  <footer style="padding: 20px 0;">
+                <div>
+                ${notificatonsTable}
+                </div>
+                <footer style="padding: 20px 0;">
                     <div style="margin: 0 auto;">
-                      <div style="display: flex; justify-content: center;">
+                    <div style="display: flex; justify-content: center;">
                         <ul style="list-style: none; margin: 0; padding: 0; display: flex; align-items: center;" class="logo-list">
-                          <li style="margin-right: 20px;"><img src="cid:mwpng@nodemailer.com" height="50"></li>
-                          <li style="margin-right: 20px;"><img src="cid:LIN@nodemailer.com" height="50"></li>
-                          <li><img src="cid:egpaf@nodemailer.com" height="50"></li>
+                        <li style="margin-right: 20px;"><img src="cid:mwpng@nodemailer.com" height="50"></li>
+                        <li style="margin-right: 20px;"><img src="cid:LIN@nodemailer.com" height="50"></li>
+                        <li><img src="cid:egpaf@nodemailer.com" height="50"></li>
                         </ul>
-                      </div>
                     </div>
-                  </footer>
+                    </div>
+                </footer>
                 </body>
               </html>
               `,

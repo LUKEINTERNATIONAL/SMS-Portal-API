@@ -129,10 +129,35 @@ module.exports = {
         }
     },
 
+    async updateSMSStatus (req, res) {
+        try {
+            let {messageId, status} = req.body
+            if (typeof(messageId) == "undefined" || typeof(status) == "undefined") {
+                res.send('request parameters unfulfilled')
+            } else {
+                if(messageId != '' && status != '') {
+                    console.log({messageId})
+                    const message = await Message.update({ status: status }, {
+                        where: {
+                            id: messageId
+                        }
+                    })
+                    MessageService.sendMessage();
+                    res.send(message)
+                }
+                else
+                res.send('request parameters unfulfilled')
+            }
+        } catch (error) {
+            res.status(500).send({
+                error: 'An error has occured tryn to update the message'
+            })
+        }
+    },
+
     async updateEmailStatus (req, res) {
         try {
-            var {messageId, status} = req.body
-            console.log(messageId)
+            let {messageId, status} = req.body
             if (typeof(messageId) == "undefined" || typeof(status) == "undefined") {
                 res.send('request parameters unfulfilled')
             } else {
